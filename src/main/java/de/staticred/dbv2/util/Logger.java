@@ -1,7 +1,30 @@
 package de.staticred.dbv2.util;
 
 /**
- * Models a class which can be used to log messages correctly
+ * Interface used to log messages
+ *
+ * @author Devin
+ * @version 1.0.0
  */
-public class Logger {
+public interface Logger {
+
+    /**
+     * Posts an error the console
+     * @param error message
+     */
+    void postError(String error);
+
+    /**
+     * Posts a debug message the console
+     * @param debug message
+     */
+    void postDebug(String debug);
+
+    /**
+     * Posts a message the console
+     * @param message message
+     */
+    void postMessage(String message);
+
+
 }

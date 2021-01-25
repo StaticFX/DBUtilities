@@ -2,7 +2,6 @@ package de.staticred.dbv2.commands.discordcommands;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.commands.util.DiscordCommand;
-import de.staticred.dbv2.player.DBUPlayer;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 

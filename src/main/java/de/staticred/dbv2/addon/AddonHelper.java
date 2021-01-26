@@ -21,9 +21,10 @@ public class AddonHelper {
 
 
 
-    public static void loadAddonDirectory(File datafolder) {
+    public static File loadAddonDirectory(File datafolder) {
         File addonDirectory = new File(datafolder.getAbsolutePath() + "/addons");
         addonDirectory.mkdirs();
+        return addonDirectory;
     }
 
 
@@ -42,7 +43,7 @@ public class AddonHelper {
 
             if (file.getName().endsWith(".jar")) {
                 //probably a .jar
-                URL url = null;
+                URL url;
                 try {
                     url = file.toURI().toURL();
                 } catch (MalformedURLException e) {

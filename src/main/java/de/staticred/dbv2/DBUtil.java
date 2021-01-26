@@ -1,5 +1,6 @@
 package de.staticred.dbv2;
 
+import de.staticred.dbv2.addon.Addon;
 import de.staticred.dbv2.addon.AddonHelper;
 import de.staticred.dbv2.commands.discordcommands.InfoDiscordCommand;
 import de.staticred.dbv2.commands.mccommands.InfoDBUCommand;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * DBUtil 2.0
@@ -103,6 +106,18 @@ public class DBUtil {
     private final File dataFolder;
 
     /**
+     * Directory where there addons are
+     */
+    private final File addonDirectory;
+
+    /**
+     * Nullable
+     * Collection containing all loaded addons
+     */
+    private Collection<Addon> addons;
+
+
+    /**
      * indicates the command manager
      */
     private final CommandManager commandManager;
@@ -124,6 +139,7 @@ public class DBUtil {
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("Can't load UTF-8 Decoder for unknown reason");
         }
+        this.addonDirectory = AddonHelper.loadAddonDirectory(dataFolder);
 
         //letting the logger now we are online
         logger.postMessage("Starting " + PLUGIN_NAME + " " + VERSION + " " + mode.toString());
@@ -138,9 +154,12 @@ public class DBUtil {
             return;
         }
 
-        AddonHelper.loadAddonDirectory(dataFolder);
 
-        AddonHelper.loadAddons(dataFolder);
+
+        logger.postMessage("Loading Addons");
+        addons = AddonHelper.loadAddons(this.addonDirectory);
+        logger.postMessage("Successfully loaded " + addons.size() + " addons");
+
 
         commandManager.registerDiscordCommand(new InfoDiscordCommand());
         commandManager.registerDCLCommand(new InfoDBUCommand());
@@ -152,6 +171,9 @@ public class DBUtil {
             logger.postError("Cant start bot. Please recheck your token in the config.yml");
             return;
         }
+
+
+
 
         BotHelper.registerEvent(new MessageEvent());
 
@@ -196,5 +218,9 @@ public class DBUtil {
 
     public Mode getMode() {
         return mode;
+    }
+
+    public Collection<Addon> getAddons() {
+        return addons;
     }
 }

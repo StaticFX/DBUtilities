@@ -70,6 +70,19 @@ public abstract class Addon {
         this.addonInfoFile = addonInfoFile;
     }
 
+    /**
+     * will be called when every addon is being loaded
+     * mostly on the startup of the dbutil plugin
+     */
+    public abstract void onStart();
+
+
+    /**
+     * will be called when every addon is being unloaded
+     * mostly on the end of the dbutil plugin
+     */
+    public abstract void onEnd();
+
 
     public File getDataFolder() {
         return dataFolder;
@@ -88,18 +101,11 @@ public abstract class Addon {
         return commandManager;
     }
 
-
-    /**
-     * will be called when every addon is being loaded
-     * mostly on the startup of the dbutil plugin
-     */
-    public abstract void onStart();
+    public YamlFile getAddonInfoFile() {
+        return addonInfoFile;
+    }
 
 
-    /**
-     * will be called when every addon is being unloaded
-     * mostly on the end of the dbutil plugin
-     */
-    public abstract void onEnd();
+
 
 }

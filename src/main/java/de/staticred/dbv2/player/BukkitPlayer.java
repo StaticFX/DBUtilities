@@ -3,6 +3,8 @@ package de.staticred.dbv2.player;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 /**
  * BukkitPlayer
  *
@@ -36,5 +38,16 @@ public class BukkitPlayer implements DBUPlayer {
     @Override
     public boolean hasPermission(String permission) {
         return bukkitPlayer.hasPermission(permission);
+    }
+
+
+    @Override
+    public UUID getUUID() {
+        return bukkitPlayer.getUniqueId();
+    }
+
+    @Override
+    public String getName() {
+        return bukkitPlayer.getName();
     }
 }

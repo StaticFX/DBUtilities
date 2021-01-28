@@ -6,17 +6,19 @@ import de.staticred.dbv2.util.BotHelper;
 import net.dv8tion.jda.api.entities.Role;
 
 /**
- * Adds permission to a group
+ * Adds inherit to the role
  *
+ * @author Devin
+ * @version 1.0.0
  */
-public class AddSubcommand {
+public class AddInheritSubCommand {
 
-    private final static String PERMISSION = "db.cmd.mix.dbperms.add";
+    private final static String PERMISSION = "db.cmd.mix.dbperms.addinherit";
 
     /**
      * constructor.
      */
-    public AddSubcommand() {
+    public AddInheritSubCommand() {
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -26,32 +28,36 @@ public class AddSubcommand {
         }
 
         if (args.length != 3) {
-            sender.sendMessage("Use: dbperms add <role> <permission>");
+            sender.sendMessage("Use: dbperms addinherit <role> <role>");
             return;
         }
 
         String roleString = args[1].substring(3, args[1].length() - 1);
 
-        String permission = args[2];
+        String roleInheritString = args[2].substring(3, args[2].length() - 1);
 
         long roleID;
+        long inheritID;
 
         try {
             roleID = Long.parseLong(roleString);
+            inheritID = Long.parseLong(roleInheritString);
         } catch (NumberFormatException e) {
             sender.sendMessage("Can't convert given id into long");
             return;
         }
 
         Role role = BotHelper.jda.getRoleById(roleID);
+        Role roleInherit = BotHelper.jda.getRoleById(inheritID);
 
-        if (role == null) {
+        if (role == null || roleInherit == null) {
             //should never come to here
             sender.sendMessage("Role could not be found");
             return;
         }
-        DBUtil.getINSTANCE().getPermissionHandler().setPermission(roleID, permission);
+        DBUtil.getINSTANCE().getPermissionHandler().addInherit(roleID, inheritID);
 
-        sender.sendMessage("Add permission: " + permission + " to role: " + role.getAsMention());
+        sender.sendMessage("Add inhert: " + roleInherit.getAsMention() + " to role: " + role.getAsMention());
     }
+
 }

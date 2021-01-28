@@ -1,5 +1,6 @@
 package de.staticred.dbv2.commands.mixcommands.permissionmixcommand;
 
+import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands.*;
 import de.staticred.dbv2.commands.util.MixCommand;
 import de.staticred.dbv2.player.CommandSender;
 import de.staticred.dbv2.player.DBUPlayer;
@@ -55,19 +56,24 @@ public class PermissionMixCommand implements MixCommand {
         switch (args[0].toUpperCase()) {
 
             case "ADD": {
-                break;
+                new AddSubcommand().execute(sender, args);
+                return;
             }
             case "LIST": {
-                break;
+                new ListSubCommand().execute(sender, args);
+                return;
             }
             case "REMOVE": {
-                break;
+                new RemoveSubCommand().execute(sender, args);
+                return;
             }
             case "ADDINHERIT": {
-                break;
+                new AddInheritSubCommand().execute(sender, args);
+                return;
             }
             case "REMOVEINHERIT": {
-                break;
+                new RemoveInheritSubCommand().execute(sender, args);
+                return;
             }
         }
 

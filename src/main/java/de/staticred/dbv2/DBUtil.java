@@ -4,6 +4,7 @@ import de.staticred.dbv2.addon.Addon;
 import de.staticred.dbv2.addon.AddonHelper;
 import de.staticred.dbv2.commands.discordcommands.InfoDiscordCommand;
 import de.staticred.dbv2.commands.mccommands.InfoDBUCommand;
+import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.PermissionMixCommand;
 import de.staticred.dbv2.commands.util.CommandManager;
 import de.staticred.dbv2.events.discord.MessageEvent;
 import de.staticred.dbv2.files.FileConstants;
@@ -164,6 +165,8 @@ public class DBUtil {
 
 
         this.dataBaseConnector = new DataBaseConnector(FileConstants.CONFIG_FILE_MANAGER.getConfigObject());
+        dataBaseConnector.setLogger(logger);
+        dataBaseConnector.init();
 
         this.permissionHandler = new PermissionHandler(false);
 
@@ -174,7 +177,7 @@ public class DBUtil {
 
         commandManager.registerDiscordCommand(new InfoDiscordCommand());
         commandManager.registerDCLCommand(new InfoDBUCommand());
-
+        commandManager.registerMixCommand(new PermissionMixCommand());
 
         try {
             BotHelper.startBot(FileConstants.CONFIG_FILE_MANAGER.getConfigObject().getString("Token"));

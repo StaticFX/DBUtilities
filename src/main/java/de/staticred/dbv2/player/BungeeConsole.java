@@ -3,6 +3,8 @@ package de.staticred.dbv2.player;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import java.util.UUID;
+
 /**
  * Bungee console
  *
@@ -30,5 +32,15 @@ public class BungeeConsole implements DBUPlayer {
     @Override
     public boolean hasPermission(String permission) {
         return sender.hasPermission(permission);
+    }
+
+    @Override
+    public UUID getUUID() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return "console";
     }
 }

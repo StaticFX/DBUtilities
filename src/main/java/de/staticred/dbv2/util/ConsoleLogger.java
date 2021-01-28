@@ -17,6 +17,6 @@ public class ConsoleLogger implements Logger {
 
     @Override
     public void postMessage(String message) {
-        System.out.println("[" + DBUtil.PLUGIN_NAME + "]" + message);
+        System.out.println("[" + DBUtil.PLUGIN_NAME + "] " + message);
     }
 }

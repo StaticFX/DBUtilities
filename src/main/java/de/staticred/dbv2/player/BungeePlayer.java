@@ -3,6 +3,8 @@ package de.staticred.dbv2.player;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.util.UUID;
+
 /**
  * BungeeCord Player
  *
@@ -36,5 +38,15 @@ public class BungeePlayer implements DBUPlayer {
     @Override
     public boolean hasPermission(String permission) {
         return bungeeCordPlayer.hasPermission(permission);
+    }
+
+    @Override
+    public UUID getUUID() {
+        return bungeeCordPlayer.getUniqueId();
+    }
+
+    @Override
+    public String getName() {
+        return bungeeCordPlayer.getName();
     }
 }

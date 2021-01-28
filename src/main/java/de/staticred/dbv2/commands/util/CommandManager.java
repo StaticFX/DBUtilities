@@ -1,5 +1,6 @@
 package de.staticred.dbv2.commands.util;
 
+import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
@@ -20,6 +21,7 @@ public class CommandManager {
 
     private final ArrayList<DiscordCommand> discordCommands;
     private final ArrayList<DBUCommand> dbuCommands;
+    private final ArrayList<MixCommand> mixCommands;
 
 
     /**
@@ -28,6 +30,7 @@ public class CommandManager {
     public CommandManager() {
         discordCommands = new ArrayList<>();
         dbuCommands = new ArrayList<>();
+        mixCommands = new ArrayList<>();
     }
 
     /**
@@ -53,6 +56,15 @@ public class CommandManager {
         dbuCommands.add(command);
     }
 
+    public void registerMixCommand(MixCommand command) {
+        if (mixCommands.stream().anyMatch(mixCommand -> mixCommand.getName().equalsIgnoreCase(command.getName())))
+            return;
+
+        mixCommands.add(command);
+    }
+
+
+
 
 
     public void handleDiscordInput(Member member, TextChannel tc, String in) {
@@ -64,9 +76,22 @@ public class CommandManager {
         for (DiscordCommand dcCommand : discordCommands) {
             if (dcCommand.getName().equalsIgnoreCase(command) && dcCommand.getPrefix().equals(prefix)) {
                 dcCommand.execute(new MemberSender(tc, member), tc, args);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getNickname() + " executed command :" + command);
                 break;
             }
         }
+        System.out.println(command);
+
+
+        for (MixCommand mixCommand : mixCommands) {
+            System.out.println(mixCommand.getName());
+            if (mixCommand.getName().equalsIgnoreCase(command) && mixCommand.getPrefix().equals(prefix)) {
+                mixCommand.execute(new MemberSender(tc, member),args);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getNickname() + " executed command :" + command);
+                break;
+            }
+        }
+
     }
 
     public void handleMCInput(DBUPlayer player, String in) {
@@ -76,6 +101,15 @@ public class CommandManager {
         for (DBUCommand dbuCommand : dbuCommands) {
             if (dbuCommand.getName().equalsIgnoreCase(command)) {
                 dbuCommand.execute(player, args);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
+                break;
+            }
+        }
+
+        for (MixCommand mixCommand : mixCommands) {
+            if (mixCommand.getName().equalsIgnoreCase(command)) {
+                mixCommand.execute(player, args);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
                 break;
             }
         }
@@ -84,7 +118,8 @@ public class CommandManager {
     @SuppressWarnings("checkstyle:ParameterAssignment")
     public boolean doesCommandExist(String in) {
         String cmd = getCommand(in);
-        return dbuCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd));
+        return dbuCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd))
+                || mixCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd));
     }
 
 

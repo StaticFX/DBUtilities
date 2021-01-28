@@ -6,17 +6,17 @@ import de.staticred.dbv2.util.BotHelper;
 import net.dv8tion.jda.api.entities.Role;
 
 /**
- * Adds permission to a group
+ * Removes permission from a group
  *
  */
-public class AddSubcommand {
+public class RemoveSubCommand {
 
-    private final static String PERMISSION = "db.cmd.mix.dbperms.add";
+    private final static String PERMISSION = "db.cmd.mix.dbperms.remove";
 
     /**
      * constructor.
      */
-    public AddSubcommand() {
+    public RemoveSubCommand() {
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -26,7 +26,7 @@ public class AddSubcommand {
         }
 
         if (args.length != 3) {
-            sender.sendMessage("Use: dbperms add <role> <permission>");
+            sender.sendMessage("Use: dbperms remove <role> <permission>");
             return;
         }
 
@@ -50,8 +50,9 @@ public class AddSubcommand {
             sender.sendMessage("Role could not be found");
             return;
         }
-        DBUtil.getINSTANCE().getPermissionHandler().setPermission(roleID, permission);
+        DBUtil.getINSTANCE().getPermissionHandler().removePermission(roleID, permission);
 
-        sender.sendMessage("Add permission: " + permission + " to role: " + role.getAsMention());
+        sender.sendMessage("Removed permission: " + permission + " to role: " + role.getAsMention());
     }
+
 }

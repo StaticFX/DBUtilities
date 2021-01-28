@@ -3,6 +3,8 @@ package de.staticred.dbv2.player;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
+import java.util.UUID;
+
 /**
  * Console on the bukkit side
  *
@@ -29,5 +31,15 @@ public class BukkitConsole implements DBUPlayer {
     @Override
     public boolean hasPermission(String permission) {
         return true;
+    }
+
+    @Override
+    public UUID getUUID() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return "console";
     }
 }

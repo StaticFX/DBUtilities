@@ -116,13 +116,14 @@ public class DataBaseConnector {
 
         logMessage("Opening Connection");
 
+        logMessage("Executing SQL Update: " + string);
+
         PreparedStatement ps = connection.prepareStatement(string);
         for (int i = 0; i < obj.length; i++) {
             ps.setObject(i + 1, obj[i]);
         }
         ps.executeUpdate();
 
-        logMessage("Executing SQL Update: " + string);
 
         ps.close();
         connection.close();

@@ -5,4 +5,5 @@ SQL_HOST: "localhost"
 SQL_PORT: 3306
 SQL_DATABASE: "DBUtil"
 SQL_USE_SLL: true
+Token: ""
 VERSION: "2.0.0 Beta b5"

@@ -34,7 +34,7 @@ public class AddonHelper {
      * @return list off all addons
      */
     public static List<Addon> loadAddons(File directory) {
-        if (directory.isDirectory())
+        if (!directory.isDirectory())
             throw new IllegalArgumentException("File must be directory");
 
         List<Addon> addons = new ArrayList<>();

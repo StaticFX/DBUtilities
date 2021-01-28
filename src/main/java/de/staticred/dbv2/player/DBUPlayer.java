@@ -1,6 +1,8 @@
 package de.staticred.dbv2.player;
 
 
+import java.util.UUID;
+
 /**
  *
  * Interface used for players.
@@ -16,4 +18,10 @@ public interface DBUPlayer extends CommandSender {
      * @param reason why
      */
     void kick(String reason);
+
+
+    UUID getUUID();
+
+    String getName();
+
 }

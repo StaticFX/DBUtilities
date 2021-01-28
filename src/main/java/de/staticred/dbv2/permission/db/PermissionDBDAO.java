@@ -25,8 +25,8 @@ import java.util.Map;
  */
 public class PermissionDBDAO implements DAO, PermissionDAO {
 
-    public final static String DISCORD_PERMISSION = "discord.permission";
-    public final static String DISCORD_PERMISSION_INHERIT = "discord.permission.inherit";
+    public final static String DISCORD_PERMISSION = "dcpermissions";
+    public final static String DISCORD_PERMISSION_INHERIT = "dcinherits";
 
     public final static String DISCORD_ROLE = "discord_role";
     public final static String DISCORD_PERMISSION_VAL = "discord_permission";
@@ -49,8 +49,8 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
     @Override
     public boolean startDAO() {
         try {
-            connector.executeUpdate("CREATE TABLE IF NOT EXISTS "+ DISCORD_PERMISSION + " ("+ DISCORD_ROLE + ", " + DISCORD_PERMISSION_VAL + " VARCHAR(255), "+ PERMISSION_ENABLED + " BOOLEAN)");
-            connector.executeUpdate("CREATE TABLE IF NOT EXISTS "+ DISCORD_PERMISSION_INHERIT + " (" + DISCORD_ROLE + ", " + DISCORD_ROLE_INHERIT + "  LONG)");
+            connector.executeUpdate("CREATE TABLE IF NOT EXISTS " + DISCORD_PERMISSION + " ("+ DISCORD_ROLE + " LONG, " + DISCORD_PERMISSION_VAL + " VARCHAR(255), "+ PERMISSION_ENABLED + " BOOLEAN)");
+            connector.executeUpdate("CREATE TABLE IF NOT EXISTS " + DISCORD_PERMISSION_INHERIT + " (" + DISCORD_ROLE + " LONG, " + DISCORD_ROLE_INHERIT + " LONG)");
         } catch (SQLException throwables) {
             DBUtil.getINSTANCE().getLogger().postError("Can't init database for unknown reason.");
             throwables.printStackTrace();
@@ -108,6 +108,10 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
         connector.executeUpdate("INSERT INTO "+ DISCORD_PERMISSION + " ("+ DISCORD_ROLE + ", " + DISCORD_PERMISSION_VAL + ", "+ PERMISSION_ENABLED +") VALUES(?, ?, ?)", role, permission, true);
     }
 
+    public void removePermission(long role, String permission) throws SQLException {
+        connector.executeUpdate("REMOVE from "+ DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ?" + " AND WHERE " + DISCORD_PERMISSION_VAL + " = ?", role, permission);
+    }
+
     /**
      * adds an group it will inherit from
      *
@@ -130,7 +134,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
 
         PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM " + DISCORD_PERMISSION_INHERIT  + " WHERE " + DISCORD_ROLE + " = ? AND WHERE " + DISCORD_ROLE_INHERIT + " = ?");
         ps.setLong(1, role);
-        ps.setLong(1, inherit);
+        ps.setLong(2, inherit);
 
         ResultSet rs = ps.executeQuery();
 
@@ -153,7 +157,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
 
         PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ? AND WHERE " + DISCORD_PERMISSION_VAL + " = ?");
         ps.setLong(1, role);
-        ps.setString(1, permission);
+        ps.setString(2, permission);
 
         ResultSet rs = ps.executeQuery();
 
@@ -239,7 +243,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
     private Map<String, Boolean> getPermissions(long role) throws SQLException {
         Connection con = connector.getNewConnection();
 
-        PreparedStatement ps = con.prepareStatement("SELECT " + DISCORD_PERMISSION_INHERIT + " from " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT " + DISCORD_PERMISSION_VAL + " from " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ?");
         ps.setLong(1, role);
 
         HashMap<String, Boolean> map = new HashMap<>();
@@ -247,7 +251,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            map.put(rs.getString(DISCORD_PERMISSION), rs.getBoolean(PERMISSION_ENABLED));
+            map.put(rs.getString(DISCORD_PERMISSION_VAL), rs.getBoolean(PERMISSION_ENABLED));
         }
 
         rs.close();

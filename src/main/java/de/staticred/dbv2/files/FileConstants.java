@@ -2,7 +2,6 @@ package de.staticred.dbv2.files;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.files.filehandlers.ConfigFileManager;
-import de.staticred.dbv2.permission.db.PermissionDAO;
 import de.staticred.dbv2.permission.filemanager.PermissionFileDAO;
 
 import java.io.File;

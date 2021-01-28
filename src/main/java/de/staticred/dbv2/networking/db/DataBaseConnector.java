@@ -130,6 +130,21 @@ public class DataBaseConnector {
     }
 
     /**
+     * Will open and return a new connection pool which can be used,
+     * the pool should always be closed, otherwise the pool can overflow
+     * But if a connection retuns in an unclosed state it will time out
+     * @return new connection, null if all pools are full
+     */
+    public Connection getNewConnection() {
+        try {
+            return source.getConnection();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * closes the connection
      */
     public void shutDown() {
@@ -137,8 +152,11 @@ public class DataBaseConnector {
     }
 
 
-
-    private void logMessage(String message) {
+    /**
+     * logs a message to the set logger
+     * @param message to log
+     */
+    public void logMessage(String message) {
         if (logger != null)
             logger.postMessage(message);
     }

@@ -1,6 +1,6 @@
 package de.staticred.dbv2.permission;
 
-import de.staticred.dbv2.permission.db.PermissionDAO;
+import de.staticred.dbv2.permission.db.PermissionDBDAO;
 import net.dv8tion.jda.api.entities.Member;
 
 /**
@@ -14,14 +14,14 @@ public class PermissionHandler {
     /**
      * DAO to access the data
      */
-    private final PermissionDAO dao;
+    private final PermissionDBDAO dao;
 
 
     /**
      * Constructor
      * @param dao db object to write to
      */
-    public PermissionHandler(PermissionDAO dao) {
+    public PermissionHandler(PermissionDBDAO dao) {
         this.dao = dao;
     }
 
@@ -31,9 +31,7 @@ public class PermissionHandler {
      * @return true if has
      */
     public boolean hasPermission(Member member, String permission) {
-
-
-
+        return true;
     }
 
 

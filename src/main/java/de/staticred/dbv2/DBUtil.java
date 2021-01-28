@@ -190,6 +190,7 @@ public class DBUtil {
 
     private void loadFiles() throws IOException {
         fileHelper.registerManager(FileConstants.CONFIG_FILE_MANAGER);
+        fileHelper.registerManager(FileConstants.PERMISSION_FILE_MANAGER);
         fileHelper.load();
     }
 

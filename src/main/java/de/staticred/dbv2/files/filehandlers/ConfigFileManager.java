@@ -2,6 +2,7 @@ package de.staticred.dbv2.files.filehandlers;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.files.ConfigObject;
+import de.staticred.dbv2.files.FileConstants;
 import de.staticred.dbv2.files.util.FileBackUpHelper;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.exceptions.InvalidConfigurationException;
@@ -25,7 +26,7 @@ public class ConfigFileManager implements FileManager {
     /**
      * indicates the config.yml file
      */
-    private File config;
+    private final File config;
 
     /**
      * DAO working for YAML files
@@ -47,7 +48,7 @@ public class ConfigFileManager implements FileManager {
     public boolean startDAO() throws IOException {
         if (!isFilePresent()) {
             isValidFile = false;
-            throw new IOException("Can't create file at needed location");
+            throw new IOException("Can't create file at required location");
         }
 
         dao = new YamlFile(config);
@@ -82,10 +83,10 @@ public class ConfigFileManager implements FileManager {
 
             //directories exist
             //now create the file
-            try (InputStream in = getClass().getClassLoader().getResourceAsStream("files/config.yml")) {
+            try (InputStream in = getClass().getClassLoader().getResourceAsStream(FileConstants.RESOURCE_LOCATION + getName())) {
                 if (in == null) {
                     isValidFile = false;
-                    throw new IOException("Can't read config.yml from resource package");
+                    throw new IOException("Can't read " + getName() + " from resource package");
                 }
 
                 Files.copy(in, config.toPath());
@@ -115,7 +116,7 @@ public class ConfigFileManager implements FileManager {
             throw new IllegalArgumentException("Can't read file");
 
         if (!isValidFile)
-            throw  new IllegalStateException("config.yml is not valid");
+            throw  new IllegalStateException(getName() + " is not valid");
 
         //file is valid
         YamlFile newestFile = new YamlFile(updateAble);

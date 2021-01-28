@@ -1,31 +1,26 @@
 package de.staticred.dbv2.commands.util;
 
-import de.staticred.dbv2.player.MemberSender;
+import de.staticred.dbv2.player.CommandSender;
+import de.staticred.dbv2.player.DBUPlayer;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.util.Collection;
-
-
 /**
- * Models an executable command via. Discord
+ * Models an executable command via. Discord and MC
  *
- * DiscordCommandManager will process incomming messages via. discord and reroutes it to the
- * correct command
- *
+ * Both Discord and MC will check for any mixed commands, and execute them
  *
  * @author Devin
  * @version 1.0.0
  */
-public interface DiscordCommand {
-
+public interface MixCommand {
     /**
      * @return name of the command
      */
     String getName();
 
     /**
+     * only required for the discord part, mc will ignore it
      * @return prefix of the command
      */
     String getPrefix();
@@ -34,11 +29,9 @@ public interface DiscordCommand {
 
     /**
      * execute method of every discord command
-     * @param member who executed the command
-     * @param tc the command was send in
+     * @param sender who send the command
      * @param args of the command
      */
-    void execute(MemberSender member, TextChannel tc, String[] args);
-
+    void execute(CommandSender sender, String[] args);
 
 }

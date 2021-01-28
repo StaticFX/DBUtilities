@@ -1,6 +1,7 @@
 package de.staticred.dbv2.commands.util;
 
 import de.staticred.dbv2.player.DBUPlayer;
+import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -62,7 +63,7 @@ public class CommandManager {
 
         for (DiscordCommand dcCommand : discordCommands) {
             if (dcCommand.getName().equalsIgnoreCase(command) && dcCommand.getPrefix().equals(prefix)) {
-                dcCommand.execute(member, tc, args);
+                dcCommand.execute(new MemberSender(tc, member), tc, args);
                 break;
             }
         }

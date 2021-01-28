@@ -9,6 +9,8 @@ import de.staticred.dbv2.events.discord.MessageEvent;
 import de.staticred.dbv2.files.FileConstants;
 import de.staticred.dbv2.files.util.FileHelper;
 import de.staticred.dbv2.info.DataBaseInfo;
+import de.staticred.dbv2.networking.db.DataBaseConnector;
+import de.staticred.dbv2.permission.PermissionHandler;
 import de.staticred.dbv2.util.BotHelper;
 import de.staticred.dbv2.util.Logger;
 import de.staticred.dbv2.util.Mode;
@@ -67,6 +69,11 @@ public class DBUtil {
      */
     private final FileHelper fileHelper;
 
+    /**
+     * connector used to connect to the database
+     */
+    private final DataBaseConnector dataBaseConnector;
+
 
     /*TODO - Add independent command execution (neverthenless bukkit or bungeecord)
            - Add independent events (neverthenless bukkit or bungeecord)
@@ -123,12 +130,18 @@ public class DBUtil {
     private final CommandManager commandManager;
 
     /**
+     * PermissionHandler
+     * @see PermissionHandler
+     */
+    private final PermissionHandler permissionHandler;
+
+    /**
      * Main Constructor of DBVerifier 2.0
      * Call this method to start up the plugin.
      * @param mode mode of the plugin
      * @param logger to log on
      */
-    public DBUtil(Mode mode, Logger logger) {
+    public DBUtil(Mode mode, Logger logger) throws IOException {
         this.mode = mode;
         INSTANCE = this;
         this.logger = logger;
@@ -146,15 +159,13 @@ public class DBUtil {
         logger.postMessage("Loading files...");
         logger.postDebug("Found " + PLUGIN_NAME + " in: " + getDataFolder().getAbsolutePath());
 
-        try {
-            loadFiles();
-        } catch (IOException e) {
-            logger.postMessage("Error while loading files");
-            e.printStackTrace();
-            return;
-        }
+
+        loadFiles();
 
 
+        this.dataBaseConnector = new DataBaseConnector(FileConstants.CONFIG_FILE_MANAGER.getConfigObject());
+
+        this.permissionHandler = new PermissionHandler(false);
 
         logger.postMessage("Loading Addons");
         addons = AddonHelper.loadAddons(this.addonDirectory);
@@ -171,9 +182,6 @@ public class DBUtil {
             logger.postError("Cant start bot. Please recheck your token in the config.yml");
             return;
         }
-
-
-
 
         BotHelper.registerEvent(new MessageEvent());
 
@@ -223,5 +231,13 @@ public class DBUtil {
 
     public Collection<Addon> getAddons() {
         return addons;
+    }
+
+    public DataBaseConnector getDataBaseConnector() {
+        return dataBaseConnector;
+    }
+
+    public PermissionHandler getPermissionHandler() {
+        return permissionHandler;
     }
 }

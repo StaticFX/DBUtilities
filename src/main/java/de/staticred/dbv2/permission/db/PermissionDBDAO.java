@@ -3,6 +3,7 @@ package de.staticred.dbv2.permission.db;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.networking.DAO;
 import de.staticred.dbv2.networking.db.DataBaseConnector;
+import de.staticred.dbv2.permission.PermissionDAO;
 import de.staticred.dbv2.util.BotHelper;
 import net.dv8tion.jda.api.entities.Role;
 
@@ -12,16 +13,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * DAO to access all the permisison data from the database
- *
+ * DAO to access all the permission data from the database
  *
  * @author Devin
  * @version 1.0.0
  */
-public class PermissionDBDAO implements DAO {
+public class PermissionDBDAO implements DAO, PermissionDAO {
+
+    public final static String DISCORD_PERMISSION = "discord.permission";
+    public final static String DISCORD_PERMISSION_INHERIT = "discord.permission.inherit";
+
+    public final static String DISCORD_ROLE = "discord_role";
+    public final static String DISCORD_PERMISSION_VAL = "discord_permission";
+    public final static String PERMISSION_ENABLED = "permission_enabled";
+    public final static String DISCORD_ROLE_INHERIT = "discord_role_inherit";
 
     /**
      * Connection to the databse
@@ -29,26 +39,18 @@ public class PermissionDBDAO implements DAO {
     private final DataBaseConnector connector;
 
     /**
-     * Whether the program should use sql or not
-     */
-    private final boolean useSQL;
-
-    /**
      * Constructor.
      * @param connector connection to the db
-     * @param useSQL Whether the program should use sql or not
      */
-    public PermissionDBDAO(DataBaseConnector connector, boolean useSQL) {
+    public PermissionDBDAO(DataBaseConnector connector) {
         this.connector = connector;
-        this.useSQL = useSQL;
     }
 
     @Override
     public boolean startDAO() {
         try {
-            connector.executeUpdate("CREATE TABLE IF NOT EXISTS discord.permission (discord_role LONG, discord_permission VARCHAR(255), permission_enabled BOOLEAN)");
-            connector.executeUpdate("CREATE TABLE IF NOT EXISTS discord.permission.inherit (discord_role LONG, discord_role_inherit LONG)");
-
+            connector.executeUpdate("CREATE TABLE IF NOT EXISTS "+ DISCORD_PERMISSION + " ("+ DISCORD_ROLE + ", " + DISCORD_PERMISSION_VAL + " VARCHAR(255), "+ PERMISSION_ENABLED + " BOOLEAN)");
+            connector.executeUpdate("CREATE TABLE IF NOT EXISTS "+ DISCORD_PERMISSION_INHERIT + " (" + DISCORD_ROLE + ", " + DISCORD_ROLE_INHERIT + "  LONG)");
         } catch (SQLException throwables) {
             DBUtil.getINSTANCE().getLogger().postError("Can't init database for unknown reason.");
             throwables.printStackTrace();
@@ -70,12 +72,12 @@ public class PermissionDBDAO implements DAO {
 
         connector.logMessage("");
 
-        PreparedStatement ps = con.prepareStatement("SELECT discord_role FROM discord.permission");
+        PreparedStatement ps = con.prepareStatement("SELECT " + DISCORD_PERMISSION_VAL + " FROM " + DISCORD_PERMISSION);
 
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            long id = rs.getLong("discord_role");
+            long id = rs.getLong(DISCORD_ROLE);
 
             Role role = BotHelper.jda.getRoleById(id);
 
@@ -103,7 +105,7 @@ public class PermissionDBDAO implements DAO {
         if (hasPermissionEntry(role, permission))
             return;
 
-        connector.executeUpdate("INSERT INTO discord.permission (discord_role, discord_permission, permission_enabled) VALUES(?, ?, ?)", role, permission, true);
+        connector.executeUpdate("INSERT INTO "+ DISCORD_PERMISSION + " ("+ DISCORD_ROLE + ", " + DISCORD_PERMISSION_VAL + ", "+ PERMISSION_ENABLED +") VALUES(?, ?, ?)", role, permission, true);
     }
 
     /**
@@ -118,7 +120,7 @@ public class PermissionDBDAO implements DAO {
         if (hasInheritEntry(role, inherit))
             return;
 
-        connector.executeUpdate("INSERT INTO discord.permission.inherit (discord_role, discord.permission.inherit) VALUES(?, ?)", role, inherit);
+        connector.executeUpdate("INSERT INTO " + DISCORD_PERMISSION_INHERIT + " (" + DISCORD_ROLE + ", " + DISCORD_ROLE_INHERIT + ") VALUES(?, ?)", role, inherit);
     }
 
     private boolean hasInheritEntry(long role, long inherit) throws SQLException {
@@ -126,7 +128,7 @@ public class PermissionDBDAO implements DAO {
 
         connector.logMessage("Checking if role " + role + " has inherit entry.");
 
-        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM discord.permission.inherit WHERE discord_role = ? AND WHERE discord_role_inherit = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM " + DISCORD_PERMISSION_INHERIT  + " WHERE " + DISCORD_ROLE + " = ? AND WHERE " + DISCORD_ROLE_INHERIT + " = ?");
         ps.setLong(1, role);
         ps.setLong(1, inherit);
 
@@ -144,13 +146,12 @@ public class PermissionDBDAO implements DAO {
     }
 
 
-
     private boolean hasPermissionEntry(long role, String permission) throws SQLException {
         Connection con = connector.getNewConnection();
 
         connector.logMessage("Checking if role " + role + " has permission entry.");
 
-        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM discord.permission WHERE discord_role = ? AND WHERE discord_permission = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ? AND WHERE " + DISCORD_PERMISSION_VAL + " = ?");
         ps.setLong(1, role);
         ps.setString(1, permission);
 
@@ -169,37 +170,102 @@ public class PermissionDBDAO implements DAO {
 
 
     /**
-     * checks if a role has permission
+     * Returns from which roles this role inherits
+     * @param role to check on
+     * @return list containing all roles its inheriting from
+     */
+    public List<Role> getInheritingRoles(long role) throws SQLException {
+        Connection con = connector.getNewConnection();
+
+        PreparedStatement ps = con.prepareStatement("SELECT " + DISCORD_ROLE_INHERIT + " FROM " + DISCORD_PERMISSION_INHERIT  + " WHERE " + DISCORD_ROLE + " = ?");
+        ps.setLong(1, role);
+
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Role> list = new ArrayList<>();
+
+        while (rs.next()) {
+
+            long inheritRole = rs.getLong("" + DISCORD_ROLE_INHERIT + "");
+
+            Role inheritDCRole = BotHelper.jda.getRoleById(inheritRole);
+
+            if (inheritDCRole == null) {
+                removeInherit(role, inheritRole);
+            } else {
+                list.add(inheritDCRole);
+            }
+        }
+
+        ps.close();
+        rs.close();
+        con.close();
+
+        return list;
+
+    }
+
+    /**
+     * removes the inherit role from a certain role
+     * @param role the inherit will be removed from
+     * @param inherit role
+     */
+    public void removeInherit(long role, long inherit) throws SQLException {
+        connector.executeUpdate("DELETE FROM " + DISCORD_PERMISSION_INHERIT  + " WHERE " + DISCORD_ROLE + " = ? AND WHERE " + DISCORD_ROLE_INHERIT + " = ?", role, inherit);
+    }
+
+
+    /**
+     * Returns all assigned permission connected to that group
+     * @param role to get the permission from
+     * @param deep when true it will also return the permission of the inherit groups
+     * @return list containing the permission
+     */
+    public Map<String, Boolean> getPermissions(long role, boolean deep) throws SQLException {
+        HashMap<String, Boolean> map = new HashMap<>();
+
+        if (deep) {
+            for (Role inheritRole : getInheritingRoles(role)) {
+                map.putAll(getPermissions(inheritRole.getIdLong()));
+            }
+        }
+
+        map.putAll(getPermissions(role));
+
+        return map;
+    }
+
+
+    private Map<String, Boolean> getPermissions(long role) throws SQLException {
+        Connection con = connector.getNewConnection();
+
+        PreparedStatement ps = con.prepareStatement("SELECT " + DISCORD_PERMISSION_INHERIT + " from " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ?");
+        ps.setLong(1, role);
+
+        HashMap<String, Boolean> map = new HashMap<>();
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            map.put(rs.getString(DISCORD_PERMISSION), rs.getBoolean(PERMISSION_ENABLED));
+        }
+
+        rs.close();
+        ps.close();
+        con.close();
+        return map;
+    }
+
+
+    /**
+     * checks if the given role has permission or its roles its inheriting from
      * @param role role
      * @param permission to check on
      * @return true if he has the permissison
      */
     public boolean hasPermission(long role, String permission) throws SQLException {
-        Connection con = connector.getNewConnection();
-
-        connector.logMessage("Checking if role " + role + " has permission.");
-
-        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM discord.permission WHERE discord_role = ? AND WHERE discord_permission = ? AND WHERE permission_enabled = TRUE");
-        ps.setLong(1, role);
-        ps.setString(1, permission);
-
-        ResultSet rs = ps.executeQuery();
-
-        int total = rs.getInt("total");
-
-        con.close();
-        ps.close();
-        rs.close();
-
-        connector.logMessage("Has permission: " + (total > 0));
-
-        return total > 0;
+        return getPermissions(role, true).containsKey(permission) && getPermissions(role, true).get(permission);
     }
-
-
-
-
-
 
     /**
      * Removes a role and all its content from the database
@@ -207,13 +273,8 @@ public class PermissionDBDAO implements DAO {
      * @throws SQLException
      */
     public void removeRole(long id) throws SQLException {
-        connector.executeUpdate("DELETE FROM discord.permission WHERE discord_role = ?", id);
+        connector.executeUpdate("DELETE FROM " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ?", id);
     }
-
-
-
-
-
 
     @Override
     public boolean saveData() throws IOException {

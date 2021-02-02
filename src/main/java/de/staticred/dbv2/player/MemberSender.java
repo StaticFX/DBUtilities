@@ -1,8 +1,12 @@
 package de.staticred.dbv2.player;
 
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.discord.util.Embed;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.awt.*;
 
 public class MemberSender implements CommandSender {
 
@@ -28,12 +32,24 @@ public class MemberSender implements CommandSender {
 
     @Override
     public void sendMessage(String message) {
-        tc.sendMessage(message).queue();
+        Embed embed = new Embed(message, DBUtil.PLUGIN_NAME, true, Color.ORANGE, member.getUser().getAvatarUrl());
+        sendEmbed(embed.build());
     }
 
     @Override
     public boolean hasPermission(String permission) {
         return DBUtil.getINSTANCE().getPermissionHandler().hasPermission(member, permission);
+    }
+
+    /**
+     * Sends a embed in the channel
+     *
+     * @see de.staticred.dbv2.discord.util.Embed
+     *
+     * @param embed to send
+     */
+    public void sendEmbed(MessageEmbed embed) {
+        tc.sendMessage(embed).queue();
     }
 
     public Member getMember() {

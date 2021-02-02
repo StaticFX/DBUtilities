@@ -2,6 +2,7 @@ package de.staticred.dbv2.commands.util;
 
 import de.staticred.dbv2.player.CommandSender;
 import de.staticred.dbv2.player.DBUPlayer;
+import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -32,6 +33,9 @@ public interface MixCommand {
      * @param sender who send the command
      * @param args of the command
      */
-    void execute(CommandSender sender, String[] args);
+    void executeDC(MemberSender sender, String[] args);
+
+    void executeMC(DBUPlayer sender, String[] args);
+
 
 }

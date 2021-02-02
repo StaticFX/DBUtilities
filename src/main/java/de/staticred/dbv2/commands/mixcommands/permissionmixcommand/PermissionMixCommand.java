@@ -2,10 +2,14 @@ package de.staticred.dbv2.commands.mixcommands.permissionmixcommand;
 
 import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands.*;
 import de.staticred.dbv2.commands.util.MixCommand;
+import de.staticred.dbv2.discord.util.Embed;
 import de.staticred.dbv2.player.CommandSender;
 import de.staticred.dbv2.player.DBUPlayer;
+import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
+
+import java.awt.*;
 
 
 /**
@@ -39,15 +43,19 @@ public class PermissionMixCommand implements MixCommand {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public void executeDC(MemberSender sender, String[] args) {
+
+        StringBuilder sb = new StringBuilder();
 
         if (args.length < 1) {
-            sender.sendMessage("- DBUtil Permission System -");
-            sender.sendMessage("dbperms add <role> <permission> - adds permission");
-            sender.sendMessage("dbperms list <role> - displays the permission");
-            sender.sendMessage("dbperms remove <role> <permission> - removes the permission");
-            sender.sendMessage("dbperms addInherit <role> <role> - adds inherit role");
-            sender.sendMessage("dbperms removeInherit <role> <role> - removes inherit role");
+            Embed embed;
+            embed = new Embed("dbperms add <role> <permission> - adds permission\n" +
+                    "dbperms list <role> - displays the permission\n" +
+                    "dbperms remove <role> <permission> - removes the permission\n" +
+                    "dbperms addInherit <role> <role> - adds inherit role\n" +
+                    "dbperms removeInherit <role> <role> - removes inherit role\n"
+                    , "DBUtil Permission System", true, Color.ORANGE, sender.getMember().getUser().getAvatarUrl());
+            sender.sendEmbed(embed.build());
             return;
         }
 
@@ -77,12 +85,18 @@ public class PermissionMixCommand implements MixCommand {
             }
         }
 
-        sender.sendMessage("- DBUtil Permission System -");
-        sender.sendMessage("dbperms add <role> <permission> - adds permission");
-        sender.sendMessage("dbperms list <role> - displays the permission");
-        sender.sendMessage("dbperms remove <role> <permission> - removes the permission");
-        sender.sendMessage("dbperms addInherit <role> <role> - adds inherit role");
-        sender.sendMessage("dbperms removeInherit <role> <role> - removes inherit role");
+        sb.append("dbperms add <role> <permission> - adds permission\n");
+        sb.append("dbperms list <role> - displays the permission\n");
+        sb.append("dbperms remove <role> <permission> - removes the permission\n");
+        sb.append("dbperms addInherit <role> <role> - adds inherit role\n");
+        sb.append("dbperms removeInherit <role> <role> - removes inherit role\n");
+        Embed embed = new Embed(sb.toString(), "DBUtil Permission System", true, Color.ORANGE, sender.getMember().getUser().getAvatarUrl());
+        sender.sendEmbed(embed.build());
+    }
+
+
+    @Override
+    public void executeMC(DBUPlayer sender, String[] args) {
 
     }
 }

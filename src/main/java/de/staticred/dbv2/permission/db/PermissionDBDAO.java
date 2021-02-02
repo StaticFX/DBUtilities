@@ -132,13 +132,16 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
 
         connector.logMessage("Checking if role " + role + " has inherit entry.");
 
-        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM " + DISCORD_PERMISSION_INHERIT  + " WHERE " + DISCORD_ROLE + " = ? AND WHERE " + DISCORD_ROLE_INHERIT + " = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM " + DISCORD_PERMISSION_INHERIT  + " WHERE " + DISCORD_ROLE + " = ? AND " + DISCORD_ROLE_INHERIT + " = ?");
         ps.setLong(1, role);
         ps.setLong(2, inherit);
 
         ResultSet rs = ps.executeQuery();
 
-        int total = rs.getInt("total");
+        int total = 0;
+
+        if (rs.next())
+            rs.getInt("total");
 
         con.close();
         ps.close();
@@ -155,13 +158,15 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
 
         connector.logMessage("Checking if role " + role + " has permission entry.");
 
-        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ? AND WHERE " + DISCORD_PERMISSION_VAL + " = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS total FROM " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ? AND " + DISCORD_PERMISSION_VAL + " = ?");
         ps.setLong(1, role);
         ps.setString(2, permission);
 
         ResultSet rs = ps.executeQuery();
 
-        int total = rs.getInt("total");
+        int total = 0;
+        if (rs.next())
+             total = rs.getInt("total");
 
         con.close();
         ps.close();
@@ -215,7 +220,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
      * @param inherit role
      */
     public void removeInherit(long role, long inherit) throws SQLException {
-        connector.executeUpdate("DELETE FROM " + DISCORD_PERMISSION_INHERIT  + " WHERE " + DISCORD_ROLE + " = ? AND WHERE " + DISCORD_ROLE_INHERIT + " = ?", role, inherit);
+        connector.executeUpdate("DELETE FROM " + DISCORD_PERMISSION_INHERIT  + " WHERE " + DISCORD_ROLE + " = ? AND " + DISCORD_ROLE_INHERIT + " = ?", role, inherit);
     }
 
 
@@ -243,7 +248,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
     private Map<String, Boolean> getPermissions(long role) throws SQLException {
         Connection con = connector.getNewConnection();
 
-        PreparedStatement ps = con.prepareStatement("SELECT " + DISCORD_PERMISSION_VAL + " from " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM " + DISCORD_PERMISSION + " WHERE " + DISCORD_ROLE + " = ?");
         ps.setLong(1, role);
 
         HashMap<String, Boolean> map = new HashMap<>();

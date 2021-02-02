@@ -6,7 +6,7 @@ import de.staticred.dbv2.commands.discordcommands.InfoDiscordCommand;
 import de.staticred.dbv2.commands.mccommands.InfoDBUCommand;
 import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.PermissionMixCommand;
 import de.staticred.dbv2.commands.util.CommandManager;
-import de.staticred.dbv2.events.discord.MessageEvent;
+import de.staticred.dbv2.discord.events.MessageEvent;
 import de.staticred.dbv2.files.FileConstants;
 import de.staticred.dbv2.files.util.FileHelper;
 import de.staticred.dbv2.info.DataBaseInfo;
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -63,6 +62,11 @@ public class DBUtil {
      * Version of the plugin
      */
     public static final String VERSION = "2.0.0 Beta b5";
+
+    /**
+     * time pattern to use globally
+     */
+    public static final String TIME_PATTERN = "kk:ss dd/MM/yyyy";
 
 
     /**

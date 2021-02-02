@@ -1,4 +1,4 @@
-package de.staticred.dbv2.events.discord;
+package de.staticred.dbv2.discord.events;
 
 import de.staticred.dbv2.DBUtil;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;

@@ -68,6 +68,10 @@ public class CommandManager {
 
 
     public void handleDiscordInput(Member member, TextChannel tc, String in) {
+
+        if (member.getUser().isBot())
+            return;
+
         String prefix = in.substring(0, 1);
         in = in.substring(1);
         String command = getCommand(in);
@@ -76,18 +80,16 @@ public class CommandManager {
         for (DiscordCommand dcCommand : discordCommands) {
             if (dcCommand.getName().equalsIgnoreCase(command) && dcCommand.getPrefix().equals(prefix)) {
                 dcCommand.execute(new MemberSender(tc, member), tc, args);
-                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getNickname() + " executed command :" + command);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command :" + command);
                 break;
             }
         }
-        System.out.println(command);
 
 
         for (MixCommand mixCommand : mixCommands) {
-            System.out.println(mixCommand.getName());
             if (mixCommand.getName().equalsIgnoreCase(command) && mixCommand.getPrefix().equals(prefix)) {
-                mixCommand.execute(new MemberSender(tc, member),args);
-                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getNickname() + " executed command :" + command);
+                mixCommand.executeDC(new MemberSender(tc, member),args);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command :" + command);
                 break;
             }
         }
@@ -108,7 +110,7 @@ public class CommandManager {
 
         for (MixCommand mixCommand : mixCommands) {
             if (mixCommand.getName().equalsIgnoreCase(command)) {
-                mixCommand.execute(player, args);
+                mixCommand.executeMC(player, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
                 break;
             }

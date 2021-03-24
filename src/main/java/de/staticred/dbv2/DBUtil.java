@@ -2,11 +2,14 @@ package de.staticred.dbv2;
 
 import de.staticred.dbv2.addon.Addon;
 import de.staticred.dbv2.addon.AddonHelper;
+import de.staticred.dbv2.commands.discordcommands.HelpDiscordCommand;
 import de.staticred.dbv2.commands.discordcommands.InfoDiscordCommand;
 import de.staticred.dbv2.commands.mccommands.InfoDBUCommand;
 import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.PermissionMixCommand;
 import de.staticred.dbv2.commands.util.CommandManager;
+import de.staticred.dbv2.constants.DBUtilConstants;
 import de.staticred.dbv2.discord.events.MessageEvent;
+import de.staticred.dbv2.events.util.EventManager;
 import de.staticred.dbv2.files.FileConstants;
 import de.staticred.dbv2.files.util.FileHelper;
 import de.staticred.dbv2.info.DataBaseInfo;
@@ -15,6 +18,7 @@ import de.staticred.dbv2.permission.PermissionHandler;
 import de.staticred.dbv2.util.BotHelper;
 import de.staticred.dbv2.util.Logger;
 import de.staticred.dbv2.util.Mode;
+import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
@@ -22,7 +26,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * DBUtil 2.0
@@ -57,11 +64,16 @@ public class DBUtil {
      */
     public static final String PLUGIN_NAME = "DBUtilities";
 
+    /**
+     * Unique ID of the plugin registered at BStats.org
+     *
+     */
+    public static final int PLUGIN_ID = 10253;
 
     /**
      * Version of the plugin
      */
-    public static final String VERSION = "2.0.0 Beta b5";
+    public static final String VERSION = "2.0.0 Beta b7";
 
     /**
      * time pattern to use globally
@@ -77,22 +89,22 @@ public class DBUtil {
     /**
      * connector used to connect to the database
      */
-    private final DataBaseConnector dataBaseConnector;
+    private @Nullable DataBaseConnector dataBaseConnector;
 
 
-    /*TODO - Add independent command execution (neverthenless bukkit or bungeecord)
+    /*TODO
            - Add independent events (neverthenless bukkit or bungeecord)
            - Add FileSystem (config.yml, messagefiles think about new system)
            - Add FileSystem updater - Done
            - Add DataBase (with updater from VESE)
            - Add Methods to download database data and store them and also restore them
-           - Add AutoBackUp
+           - Add AutoBackUp Done
            - Add LinkingFeatures (MC -> DC, DC -> MC)
            - Add all Old command from DBV 1.0
            - Readd metric system (with new stats aswell)
            - Add updater
            - Add Debugger with javaDocs
-           - Find a way to communicate between bukkit and bungeecord without bridging
+           - Find a way to communicate between bukkit and bungeecord without bridging / redis
 
 
      */
@@ -118,16 +130,10 @@ public class DBUtil {
     private final File dataFolder;
 
     /**
-     * Directory where there addons are
-     */
-    private final File addonDirectory;
-
-    /**
      * Nullable
      * Collection containing all loaded addons
      */
-    private Collection<Addon> addons;
-
+    private final Set<Addon> addons;
 
     /**
      * indicates the command manager
@@ -138,62 +144,108 @@ public class DBUtil {
      * PermissionHandler
      * @see PermissionHandler
      */
-    private final PermissionHandler permissionHandler;
+    @Nullable
+    private PermissionHandler permissionHandler;
+
+    /**
+     * EventManager
+     * @see EventManager
+     */
+    private final EventManager eventManager;
 
     /**
      * Main Constructor of DBVerifier 2.0
      * Call this method to start up the plugin.
+     * @param eventManager eventManager
      * @param mode mode of the plugin
      * @param logger to log on
      */
-    public DBUtil(Mode mode, Logger logger) throws IOException {
+    public DBUtil(EventManager eventManager, Mode mode, Logger logger) throws IOException {
+        this.eventManager = eventManager;
         this.mode = mode;
         INSTANCE = this;
         this.logger = logger;
         this.fileHelper = new FileHelper();
         this.commandManager = new CommandManager();
+        addons = new HashSet<>();
+
         try {
             this.dataFolder = getLocation();
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("Can't load UTF-8 Decoder for unknown reason");
         }
-        this.addonDirectory = AddonHelper.loadAddonDirectory(dataFolder);
+
+        File addonDirectory = AddonHelper.loadAddonDirectory(dataFolder);
 
         //letting the logger now we are online
         logger.postMessage("Starting " + PLUGIN_NAME + " " + VERSION + " " + mode.toString());
         logger.postMessage("Loading files...");
         logger.postDebug("Found " + PLUGIN_NAME + " in: " + getDataFolder().getAbsolutePath());
 
-
         loadFiles();
+        startBot();
 
+        if (!BotHelper.connected)
+            return;
 
-        this.dataBaseConnector = new DataBaseConnector(FileConstants.CONFIG_FILE_MANAGER.getConfigObject());
-        dataBaseConnector.setLogger(logger);
-        dataBaseConnector.init();
+        if (FileConstants.CONFIG_FILE_MANAGER.useSQL()) {
+            loadDB();
+            if (!dataBaseInfo.isConnected()) {
+                logger.postMessage("§c" + DBUtilConstants.ASCII_ART);
+                logger.postMessage("Can't connect to database, not starting plugin.");
+            }
+        }
 
-        this.permissionHandler = new PermissionHandler(false);
+        this.permissionHandler = new PermissionHandler(FileConstants.CONFIG_FILE_MANAGER.useSQL());
 
         logger.postMessage("Loading Addons");
-        addons = AddonHelper.loadAddons(this.addonDirectory);
-        logger.postMessage("Successfully loaded " + addons.size() + " addons");
+        addons.addAll(AddonHelper.loadAddons(addonDirectory));
+        logger.postMessage("Finished loaded " + addons.size() + " addons");
 
+        registerCommands();
+        eventManager.init();
+        registerDiscordEvents();
 
-        commandManager.registerDiscordCommand(new InfoDiscordCommand());
-        commandManager.registerDCLCommand(new InfoDBUCommand());
-        commandManager.registerMixCommand(new PermissionMixCommand());
+        logger.postMessageRaw(DBUtilConstants.ASCII_ART);
+    }
 
+    private void loadDB() {
+        boolean connected = true;
+
+        dataBaseConnector = new DataBaseConnector(FileConstants.CONFIG_FILE_MANAGER.getConfigObject());
+        dataBaseConnector.setLogger(logger);
+
+        try {
+            dataBaseConnector.init();
+        } catch (Exception e) {
+            //Should throw an SQLException if not connected to database properly
+            connected = false;
+        }
+
+        this.dataBaseInfo = new DataBaseInfo(connected);
+    }
+
+    private void startBot() {
         try {
             BotHelper.startBot(FileConstants.CONFIG_FILE_MANAGER.getConfigObject().getString("Token"));
         } catch (LoginException e) {
+            logger.postMessage("§c" + DBUtilConstants.ASCII_ART);
             logger.postError("Cant start bot. Please recheck your token in the config.yml");
+            BotHelper.connected = false;
             return;
         }
+        BotHelper.connected = true;
+    }
 
+    private void registerDiscordEvents() {
         BotHelper.registerEvent(new MessageEvent());
+    }
 
-
-        this.dataBaseInfo = new DataBaseInfo(false);
+    private void registerCommands() {
+        commandManager.registerDiscordCommand(new InfoDiscordCommand());
+        commandManager.registerDCLCommand(new InfoDBUCommand());
+        commandManager.registerMixCommand(new PermissionMixCommand());
+        commandManager.registerDiscordCommand(new HelpDiscordCommand());
     }
 
     private File getLocation() throws UnsupportedEncodingException {
@@ -246,5 +298,9 @@ public class DBUtil {
 
     public PermissionHandler getPermissionHandler() {
         return permissionHandler;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
     }
 }

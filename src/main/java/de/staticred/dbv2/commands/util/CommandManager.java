@@ -6,8 +6,7 @@ import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Models a class which handles commands from every instance of the plugin
@@ -80,7 +79,7 @@ public class CommandManager {
         for (DiscordCommand dcCommand : discordCommands) {
             if (dcCommand.getName().equalsIgnoreCase(command) && dcCommand.getPrefix().equals(prefix)) {
                 dcCommand.execute(new MemberSender(tc, member), tc, args);
-                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command :" + command);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
                 break;
             }
         }
@@ -89,7 +88,7 @@ public class CommandManager {
         for (MixCommand mixCommand : mixCommands) {
             if (mixCommand.getName().equalsIgnoreCase(command) && mixCommand.getPrefix().equals(prefix)) {
                 mixCommand.executeDC(new MemberSender(tc, member),args);
-                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command :" + command);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
                 break;
             }
         }
@@ -123,6 +122,21 @@ public class CommandManager {
         return dbuCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd))
                 || mixCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd));
     }
+
+    public List<DiscordCommand> getCopyOfRegisteredDiscordCommands() {
+        return new ArrayList<>(discordCommands);
+    }
+
+    public List<DBUCommand> getCopyOfRegisteredMCCommands() {
+        return new ArrayList<>(dbuCommands);
+
+    }
+
+    public List<MixCommand> getCopyOfRegisteredMixCommands() {
+        return new ArrayList<>(mixCommands);
+
+    }
+
 
 
 

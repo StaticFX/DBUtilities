@@ -44,7 +44,7 @@ public class Embed {
         if (useAuthorTag) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DBUtil.TIME_PATTERN);
             String time = dateFormat.format(new Date(System.currentTimeMillis()));
-            builder.setDescription("**" + time + "** send by " + DBUtil.PLUGIN_NAME);
+            builder.setFooter(time + " send by " + DBUtil.PLUGIN_NAME);
         }
     }
 

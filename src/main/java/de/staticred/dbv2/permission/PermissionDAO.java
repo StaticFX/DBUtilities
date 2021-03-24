@@ -1,7 +1,9 @@
 package de.staticred.dbv2.permission;
 
 import net.dv8tion.jda.api.entities.Role;
+import org.simpleyaml.configuration.file.YamlFile;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,7 @@ public interface PermissionDAO {
     /**
      * start the internal services to access the db
      */
-    boolean startDAO();
+    boolean startDAO() throws IOException;
 
     /**
      * Adds permission to the given role
@@ -83,4 +85,21 @@ public interface PermissionDAO {
      */
     public void removeInherit(long role, long inherit) throws SQLException;
 
+    /**
+     * Removes a role
+     * @param role to remove
+     * @throws SQLException
+     */
+    public void removeRole(long role) throws SQLException;
+
+    /**
+     * Adds empty role
+     * @param idLong to add
+     */
+    void addRole(long idLong);
+
+    /**
+     * @return dao as yamlfile
+     */
+    YamlFile asYaml();
 }

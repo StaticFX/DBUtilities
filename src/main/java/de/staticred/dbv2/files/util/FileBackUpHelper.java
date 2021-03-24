@@ -35,9 +35,13 @@ public class FileBackUpHelper {
 
         if (backUp.exists())
             return;
+        else {
+            backUp.getParentFile().mkdirs();
+            backUp.createNewFile();
+        }
 
         backUp.getParentFile().mkdirs();
-        writeJsonToFile(object.fileToString(), backUp);
+        writeJsonToFile(object.toString(), backUp);
     }
 
 

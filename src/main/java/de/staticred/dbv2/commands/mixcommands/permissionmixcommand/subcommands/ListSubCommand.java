@@ -56,16 +56,22 @@ public class ListSubCommand {
 
         Map<String, Boolean> permissions = DBUtil.getINSTANCE().getPermissionHandler().getPermission(roleID, false);
 
-        sender.sendMessage("Permission found for: " + roleID);
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Permission found for: " + role.getAsMention() + "\n");
+
 
         for (String permission : permissions.keySet()) {
-            sender.sendMessage("Permission: " + permission + " enabled: " + permissions.get(permission));
+            sb.append("Permission: " + permission + " enabled: " + permissions.get(permission) + "\n");
         }
 
-        sender.sendMessage("Inheriting from: ");
+        sb.append("Inheriting from: ");
 
         for (Role inheriting : inheritRoles) {
-            sender.sendMessage(inheriting.getAsMention());
+            sb.append(inheriting.getAsMention() + "\n");
         }
+
+        sender.sendMessage(sb.toString());
+
     }
 }

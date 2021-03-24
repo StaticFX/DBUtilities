@@ -21,6 +21,8 @@ public class BotHelper {
      */
     public static JDA jda;
 
+    public static boolean connected;
+
     /**
      * constructor.
      */

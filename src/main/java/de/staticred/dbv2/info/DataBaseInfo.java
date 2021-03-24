@@ -21,4 +21,11 @@ public class DataBaseInfo {
     public DataBaseInfo(boolean connected) {
         this.connected = connected;
     }
+
+    /**
+     * @return if the connector is connected to the database
+     */
+    public boolean isConnected() {
+        return connected;
+    }
 }

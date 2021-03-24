@@ -4,6 +4,7 @@ import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.CommandSender;
 import de.staticred.dbv2.util.BotHelper;
 import net.dv8tion.jda.api.entities.Role;
+import org.bukkit.event.Event;
 
 /**
  * Adds inherit to the role
@@ -31,6 +32,9 @@ public class AddInheritSubCommand {
             sender.sendMessage("Use: dbperms addinherit <role> <role>");
             return;
         }
+
+
+
 
         String roleString = args[1].substring(3, args[1].length() - 1);
 

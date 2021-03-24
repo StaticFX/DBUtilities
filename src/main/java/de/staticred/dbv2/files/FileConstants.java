@@ -16,6 +16,7 @@ import java.io.File;
  */
 public class FileConstants {
 
+    public static final String USQ_SQL = "UseSQL";
     public static final String SQL_USER = "SQL_USER";
     public static final String SQL_PORT = "SQL_PORT";
     public static final String SQL_PASSWORD = "SQL_PASSWORD";

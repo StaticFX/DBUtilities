@@ -1,11 +1,14 @@
 package de.staticred.dbv2.permission;
 
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.files.util.FileBackUpHelper;
 import de.staticred.dbv2.permission.db.PermissionDBDAO;
 import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +36,7 @@ public class PermissionHandler {
      * Constructor
      * @param useSQL whether to use sql or the file system
      */
-    public PermissionHandler(boolean useSQL) {
+    public PermissionHandler(boolean useSQL) throws IOException {
         this.useSQL = useSQL;
         this.dao = new PermissionDBDAO(DBUtil.getINSTANCE().getDataBaseConnector());
         dao.startDAO();
@@ -102,6 +105,30 @@ public class PermissionHandler {
             dao.removeInherit(id, inherit);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+    }
+
+
+    public void removeRole(long id) {
+        try {
+            dao.removeRole(id);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void addRole(long idLong) {
+        dao.addRole(idLong);
+    }
+
+    /**
+     * Will store all the content into a file
+     */
+    public void writeToFile() {
+        try {
+            FileBackUpHelper.createBackFor("permissison-backup.yml", Long.toString(System.currentTimeMillis()), dao.asYaml());
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 }

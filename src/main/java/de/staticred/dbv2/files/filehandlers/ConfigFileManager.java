@@ -163,23 +163,17 @@ public class ConfigFileManager implements FileManager {
 
         dao.remove("VERSION");
 
-        System.out.println(newYamlFile.getString("VERSION"));
 
         for (String key : dao.getKeys(false)) {
-            System.out.println(key);
             if (!newYamlFile.contains(key)) {
                 dao.set(key, null);
-                System.out.println("removed key");
             }
         }
 
-        System.out.println(newYamlFile.getKeys(false).size());
 
         for (String key : newYamlFile.getKeys(false)) {
-            System.out.println(key);
             if (!dao.contains(key)) {
                 dao.set(key, newYamlFile.get(key));
-                System.out.println("added key");
             }
         }
 
@@ -205,5 +199,12 @@ public class ConfigFileManager implements FileManager {
         saveData();
     }
 
+
+    /**
+     * @return config value USQ_SQL
+     */
+    public boolean useSQL() {
+        return dao.getBoolean(FileConstants.USQ_SQL);
+    }
 
 }

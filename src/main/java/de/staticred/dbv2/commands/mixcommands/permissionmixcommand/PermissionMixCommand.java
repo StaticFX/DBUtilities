@@ -53,7 +53,8 @@ public class PermissionMixCommand implements MixCommand {
                     "dbperms list <role> - displays the permission\n" +
                     "dbperms remove <role> <permission> - removes the permission\n" +
                     "dbperms addInherit <role> <role> - adds inherit role\n" +
-                    "dbperms removeInherit <role> <role> - removes inherit role\n"
+                    "dbperms removeInherit <role> <role> - removes inherit role\n" +
+                    "dbperms tofile - saves current permissiondata as file\n"
                     , "DBUtil Permission System", true, Color.ORANGE, sender.getMember().getUser().getAvatarUrl());
             sender.sendEmbed(embed.build());
             return;
@@ -83,6 +84,10 @@ public class PermissionMixCommand implements MixCommand {
                 new RemoveInheritSubCommand().execute(sender, args);
                 return;
             }
+            case "TOFILE": {
+                new ToFileSubCommand().execute(sender, args);
+                return;
+            }
         }
 
         sb.append("dbperms add <role> <permission> - adds permission\n");
@@ -90,6 +95,7 @@ public class PermissionMixCommand implements MixCommand {
         sb.append("dbperms remove <role> <permission> - removes the permission\n");
         sb.append("dbperms addInherit <role> <role> - adds inherit role\n");
         sb.append("dbperms removeInherit <role> <role> - removes inherit role\n");
+        sb.append("dbperms tofile - saves current permissiondata as file\n");
         Embed embed = new Embed(sb.toString(), "DBUtil Permission System", true, Color.ORANGE, sender.getMember().getUser().getAvatarUrl());
         sender.sendEmbed(embed.build());
     }

@@ -2,6 +2,7 @@ package de.staticred.dbv2.bungeecord.events;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.Side;
+import de.staticred.dbv2.events.MessageEvent;
 import de.staticred.dbv2.player.BungeeConsole;
 import de.staticred.dbv2.player.BungeePlayer;
 import net.md_5.bungee.api.CommandSender;
@@ -41,6 +42,15 @@ public class CommandEvent implements Listener {
                         DBUtil.getINSTANCE().getCommandManager().handleMCInput(bungeePlayer, message);
                     }
                 }
+            } else {
+                //not a command message
+                MessageEvent messageEvent = new MessageEvent(new BungeePlayer((ProxiedPlayer) event.getSender()), event.getMessage(), false, Side.Proxy.BUNGEECORD);
+
+                DBUtil.getINSTANCE().getEventManager().fireEvent(messageEvent);
+
+                if (messageEvent.isCanceled())
+                    event.setCancelled(true);
+
             }
         } else {
             //not a player send the message

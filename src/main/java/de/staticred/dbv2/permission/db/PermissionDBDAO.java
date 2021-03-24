@@ -6,6 +6,7 @@ import de.staticred.dbv2.networking.db.DataBaseConnector;
 import de.staticred.dbv2.permission.PermissionDAO;
 import de.staticred.dbv2.util.BotHelper;
 import net.dv8tion.jda.api.entities.Role;
+import org.simpleyaml.configuration.file.YamlFile;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -63,7 +64,6 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
     /**
      * returns all roles and removes roles if they're not on the guild anymore
      * @return all roles
-     * @throws SQLException
      */
     public List<Role> getRoles() throws SQLException {
         Connection con = connector.getNewConnection();
@@ -72,7 +72,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
 
         connector.logMessage("");
 
-        PreparedStatement ps = con.prepareStatement("SELECT " + DISCORD_PERMISSION_VAL + " FROM " + DISCORD_PERMISSION);
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM " + DISCORD_PERMISSION);
 
         ResultSet rs = ps.executeQuery();
 
@@ -141,7 +141,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
         int total = 0;
 
         if (rs.next())
-            rs.getInt("total");
+            total = rs.getInt("total");
 
         con.close();
         ps.close();
@@ -175,6 +175,9 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
         connector.logMessage("Has permission entry: " + (total > 0));
 
         return total > 0;
+    }
+
+    public void addRole(long id) {
     }
 
 
@@ -288,5 +291,36 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
     @Override
     public boolean saveData() throws IOException {
         return false;
+    }
+
+    @Override
+    public YamlFile asYaml() {
+        YamlFile conf = new YamlFile();
+
+        try {
+            for (Role role : getRoles()) {
+                List<String> permissions = new ArrayList<String>();
+                List<Boolean> enabled = new ArrayList<Boolean>();
+                List<String> inheritList = new ArrayList<String>();
+
+                Map<String, Boolean> permissionMap = getPermissions(role.getIdLong());
+
+                for (String permission : permissionMap.keySet()) {
+                    permissions.add(permission);
+                    enabled.add(permissionMap.get(permission));
+                }
+
+                for (Role inherit : getInheritingRoles(role.getIdLong())) {
+                    inheritList.add(inherit.getId());
+                }
+                conf.set(role.getId() + ".permission", permissions);
+                conf.set(role.getId() + ".inherit", inheritList);
+                conf.set(role.getId() + ".enabled", enabled);
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return conf;
     }
 }

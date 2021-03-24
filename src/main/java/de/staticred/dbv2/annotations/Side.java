@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Side {
 
-    public enum Proxy {
+    enum Proxy {
         /**
          * Bukkit side
          */

@@ -36,7 +36,6 @@ public class InfoDiscordCommand implements DiscordCommand {
 
     @Override
     public void execute(MemberSender member, TextChannel tc, String[] args) {
-        tc.sendMessage("Running " + DBUtil.PLUGIN_NAME + " version: " + DBUtil.VERSION).queue();
-        tc.sendMessage("Developed by StaticRed").queue();
+        member.sendMessage("Running " + DBUtil.PLUGIN_NAME + " version: " + DBUtil.VERSION + "\nDeveloped by StaticRed");
     }
 }

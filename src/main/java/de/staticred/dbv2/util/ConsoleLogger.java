@@ -15,6 +15,12 @@ public class ConsoleLogger implements Logger {
         postMessage("§e§lDEBUG: " + debug);
     }
 
+
+    @Override
+    public void postMessageRaw(String message) {
+        System.out.println(message);
+    }
+
     @Override
     public void postMessage(String message) {
         System.out.println("[" + DBUtil.PLUGIN_NAME + "] " + message);

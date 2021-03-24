@@ -26,5 +26,11 @@ public interface Logger {
      */
     void postMessage(String message);
 
+    /**
+     * Posts a message the console without prefix
+     * @param message message
+     */
+    void postMessageRaw(String message);
+
 
 }

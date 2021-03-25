@@ -1,7 +1,7 @@
-#Will determine if DBUtilities will use an databse connection for storing its data, or an file system
+#Will determine if DBUtilities will use an database connection for storing its data, or an file system
 UseSQL: true
 
-#you're sql server settings
+#your sql server settings
 SQL_USER: "root"
 SQL_PASSWORD: ""
 SQL_HOST: "localhost"

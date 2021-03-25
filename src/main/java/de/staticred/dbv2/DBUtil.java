@@ -292,10 +292,12 @@ public class DBUtil {
         return addons;
     }
 
+    @Nullable
     public DataBaseConnector getDataBaseConnector() {
         return dataBaseConnector;
     }
 
+    @Nullable
     public PermissionHandler getPermissionHandler() {
         return permissionHandler;
     }

@@ -102,4 +102,12 @@ public interface PermissionDAO {
      * @return dao as yamlfile
      */
     YamlFile asYaml();
+
+    /**
+     * sets a permission to disabled
+     * @param id of the role
+     * @param permission the permission
+     * @param state state of the permission
+     */
+    void setEnabledState(long id, String permission, boolean state) throws SQLException;
 }

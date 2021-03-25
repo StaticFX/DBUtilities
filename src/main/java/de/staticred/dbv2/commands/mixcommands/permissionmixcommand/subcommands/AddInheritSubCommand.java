@@ -29,12 +29,9 @@ public class AddInheritSubCommand {
         }
 
         if (args.length != 3) {
-            sender.sendMessage("Use: dbperms addinherit <role> <role>");
+            sender.sendMessage("Use: dbperms addinherit <role> <fromRole>");
             return;
         }
-
-
-
 
         String roleString = args[1].substring(3, args[1].length() - 1);
 
@@ -61,7 +58,7 @@ public class AddInheritSubCommand {
         }
         DBUtil.getINSTANCE().getPermissionHandler().addInherit(roleID, inheritID);
 
-        sender.sendMessage("Add inhert: " + roleInherit.getAsMention() + " to role: " + role.getAsMention());
+        sender.sendMessage("Role " + role.getAsMention() + " inherits now from " + roleInherit.getAsMention());
     }
 
 }

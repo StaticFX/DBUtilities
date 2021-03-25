@@ -1,10 +1,12 @@
 package de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands;
 
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.discord.util.Embed;
 import de.staticred.dbv2.player.CommandSender;
 import de.staticred.dbv2.util.BotHelper;
 import net.dv8tion.jda.api.entities.Role;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 
@@ -58,17 +60,26 @@ public class ListSubCommand {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Permission found for: " + role.getAsMention() + "\n");
 
+        sb.append("**Information about: **").append(role.getAsMention()).append("\n");
 
+        sb.append(System.lineSeparator());
+        sb.append("Permissions: ").append(System.lineSeparator());
         for (String permission : permissions.keySet()) {
-            sb.append("Permission: " + permission + " enabled: " + permissions.get(permission) + "\n");
-        }
 
-        sb.append("Inheriting from: ");
+            boolean state = permissions.get(permission);
+
+            if (state)
+                sb.append("  **").append(state).append("**  --> ").append(permission).append(System.lineSeparator());
+            else
+                sb.append("  **").append(state).append("** --> ").append(permission).append(System.lineSeparator());
+
+        }
+        sb.append(System.lineSeparator());
+        sb.append("Inheriting from: ").append(System.lineSeparator());
 
         for (Role inheriting : inheritRoles) {
-            sb.append(inheriting.getAsMention() + "\n");
+            sb.append("  -").append(inheriting.getAsMention()).append("\n");
         }
 
         sender.sendMessage(sb.toString());

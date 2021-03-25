@@ -9,12 +9,12 @@ import java.io.File;
  * @author Devin Fritz
  * @version 1.0.0
  */
-public class ToFileSubCommand {
+public class BackUpSubCommand {
 
     private final static String PERMISSION = "db.cmd.mix.dbperms.tofile";
 
 
-    public ToFileSubCommand() {
+    public BackUpSubCommand() {
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -24,12 +24,12 @@ public class ToFileSubCommand {
         }
 
         if (args.length != 1) {
-            sender.sendMessage("Use: dbperms tofile");
+            sender.sendMessage("Use: dbperms backup");
             return;
         }
 
         DBUtil.getINSTANCE().getPermissionHandler().writeToFile();
 
-        sender.sendMessage("Done");
+        sender.sendMessage("**Done**");
     }
 }

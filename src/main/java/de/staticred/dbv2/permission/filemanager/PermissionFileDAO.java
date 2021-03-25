@@ -253,6 +253,27 @@ public class PermissionFileDAO implements FileManager, PermissionDAO {
         saveData();
     }
 
+
+    @Override
+    public void setEnabledState(long id, String permission, boolean state) {
+        List<String> enabled = conf.getStringList(id + ".enabled");
+        List<String> permissions = conf.getStringList(id + ".permission");
+
+        if (!permissions.contains(permission))
+            permissions.add(permission);
+
+        if (state) {
+            if (!enabled.contains(permission))
+                enabled.add(permission);
+        } else {
+            enabled.remove(permission);
+        }
+
+        conf.set(id + ".permission", permissions);
+        conf.set(id + ".enabled", enabled);
+        saveData();
+    }
+
     @Override
     public YamlFile asYaml() {
         return conf;

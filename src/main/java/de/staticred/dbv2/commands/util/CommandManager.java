@@ -68,6 +68,11 @@ public class CommandManager {
 
     public void handleDiscordInput(Member member, TextChannel tc, String in) {
 
+        if (member == null)
+            return;
+        if (member.getUser() == null)
+            return;
+
         if (member.getUser().isBot())
             return;
 

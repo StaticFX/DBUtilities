@@ -28,7 +28,7 @@ public class RemoveInheritSubCommand {
         }
 
         if (args.length != 3) {
-            sender.sendMessage("Use: dbperms removeinherit <role> <role>");
+            sender.sendMessage("Use: dbperms removeinherit <role> <fromRole>");
             return;
         }
 
@@ -55,9 +55,9 @@ public class RemoveInheritSubCommand {
             sender.sendMessage("Role could not be found");
             return;
         }
-        DBUtil.getINSTANCE().getPermissionHandler().addInherit(roleID, inheritID);
+        DBUtil.getINSTANCE().getPermissionHandler().removeInherit(roleID, inheritID);
 
-        sender.sendMessage("Add inhert: " + roleInherit.getAsMention() + " to role: " + role.getAsMention());
+        sender.sendMessage("Removed inherit " + roleInherit.getAsMention() + " from role " + role.getAsMention());
     }
 
 }

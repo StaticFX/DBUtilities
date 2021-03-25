@@ -50,8 +50,9 @@ public class AddSubcommand {
             sender.sendMessage("Role could not be found");
             return;
         }
+
         DBUtil.getINSTANCE().getPermissionHandler().setPermission(roleID, permission);
 
-        sender.sendMessage("Add permission: " + permission + " to role: " + role.getAsMention());
+        sender.sendMessage("Add permission **" + permission + "** to role " + role.getAsMention());
     }
 }

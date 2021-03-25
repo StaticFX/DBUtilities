@@ -16,7 +16,7 @@ public class BungeePlayer implements DBUPlayer {
     private final ProxiedPlayer bungeeCordPlayer;
 
     /**
-     * Constructor to constructe an Player object based on a ProxiedPlayer
+     * Constructor to construct a Player object based on a ProxiedPlayer
      * @see ProxiedPlayer
      * @param bungeeCordPlayer based on
      */

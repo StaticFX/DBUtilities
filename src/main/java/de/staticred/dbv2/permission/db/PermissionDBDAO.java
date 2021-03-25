@@ -289,6 +289,17 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
     }
 
     @Override
+    public void setEnabledState(long id, String permission, boolean state) throws SQLException {
+
+        if (!hasPermissionEntry(id, permission)) {
+            setPermission(id, permission, state);
+            return;
+        }
+
+        connector.executeUpdate("UPDATE " + DISCORD_PERMISSION + " SET " + PERMISSION_ENABLED + " = ? WHERE " + DISCORD_ROLE + " = ? AND " + DISCORD_PERMISSION_VAL + " = ?", state, id, permission);
+    }
+
+    @Override
     public boolean saveData() throws IOException {
         return false;
     }
@@ -300,14 +311,16 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
         try {
             for (Role role : getRoles()) {
                 List<String> permissions = new ArrayList<String>();
-                List<Boolean> enabled = new ArrayList<Boolean>();
+                List<String> enabled = new ArrayList<String>();
                 List<String> inheritList = new ArrayList<String>();
 
                 Map<String, Boolean> permissionMap = getPermissions(role.getIdLong());
 
                 for (String permission : permissionMap.keySet()) {
                     permissions.add(permission);
-                    enabled.add(permissionMap.get(permission));
+                    if (permissionMap.get(permission)) {
+                        enabled.add(permission);
+                    }
                 }
 
                 for (Role inherit : getInheritingRoles(role.getIdLong())) {

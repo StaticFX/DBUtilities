@@ -40,6 +40,10 @@ public class BukkitPlayer implements DBUPlayer {
         return bukkitPlayer.hasPermission(permission);
     }
 
+    @Override
+    public void sendMessageRaw(String message) {
+        sendMessage(message);
+    }
 
     @Override
     public UUID getUUID() {

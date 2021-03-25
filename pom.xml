@@ -51,6 +51,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <minimizeJar>true</minimizeJar>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -123,9 +124,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>net.dv8tion</groupId>
+            <groupId>com.github.dv8fromtheworld</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.0_227</version>
+            <version>feature~slash-commands-v3.7.1-g79dc33e-599</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

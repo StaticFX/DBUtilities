@@ -30,6 +30,11 @@ public class BungeeConsole implements DBUPlayer {
     }
 
     @Override
+    public void sendMessageRaw(String message) {
+        sendMessage(message);
+    }
+
+    @Override
     public boolean hasPermission(String permission) {
         return sender.hasPermission(permission);
     }

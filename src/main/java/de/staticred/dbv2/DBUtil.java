@@ -9,6 +9,9 @@ import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.PermissionMix
 import de.staticred.dbv2.commands.util.CommandManager;
 import de.staticred.dbv2.constants.DBUtilConstants;
 import de.staticred.dbv2.discord.events.MessageEvent;
+import de.staticred.dbv2.discord.events.RoleCreateEvent;
+import de.staticred.dbv2.discord.events.RoleDeleteEvent;
+import de.staticred.dbv2.discord.events.SlashCommandEvent;
 import de.staticred.dbv2.events.util.EventManager;
 import de.staticred.dbv2.files.FileConstants;
 import de.staticred.dbv2.files.util.FileHelper;
@@ -239,6 +242,9 @@ public class DBUtil {
 
     private void registerDiscordEvents() {
         BotHelper.registerEvent(new MessageEvent());
+        BotHelper.registerEvent(new RoleCreateEvent());
+        BotHelper.registerEvent(new RoleDeleteEvent());
+        BotHelper.registerEvent(new SlashCommandEvent());
     }
 
     private void registerCommands() {

@@ -19,7 +19,7 @@ public interface DBUPlayer extends CommandSender {
      */
     void kick(String reason);
 
-    void sendMessageRas(String message);
+    void sendMessageRaw(String message);
 
     UUID getUUID();
 

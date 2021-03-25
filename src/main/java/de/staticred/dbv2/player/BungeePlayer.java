@@ -31,6 +31,11 @@ public class BungeePlayer implements DBUPlayer {
     }
 
     @Override
+    public void sendMessageRaw(String message) {
+        sendMessage(message);
+    }
+
+    @Override
     public void kick(String reason) {
         bungeeCordPlayer.disconnect(new TextComponent(reason));
     }

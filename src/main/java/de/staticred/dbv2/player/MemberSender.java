@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
 
-public class MemberSender implements CommandSender {
+public class MemberSender implements DiscordSender {
 
     /**
      * TextChannel the message will be send to
@@ -49,6 +49,7 @@ public class MemberSender implements CommandSender {
      * @param embed to send
      */
     public void sendEmbed(MessageEmbed embed) {
+        System.out.println("here3");
         tc.sendMessage(embed).queue();
     }
 
@@ -56,7 +57,8 @@ public class MemberSender implements CommandSender {
         return member;
     }
 
-    public TextChannel getTc() {
+    @Override
+    public TextChannel getTextChannel() {
         return tc;
     }
 }

@@ -4,6 +4,7 @@ import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.permission.PermissionHandler;
 import de.staticred.dbv2.player.CommandSender;
 import de.staticred.dbv2.util.BotHelper;
+import de.staticred.dbv2.util.RoleBuilder;
 import net.dv8tion.jda.api.entities.Role;
 
 /**
@@ -28,7 +29,7 @@ public class SetSubCommand {
             return;
         }
 
-        String roleString = args[1].substring(3, args[1].length() - 1);
+        String roleString = args[1];
 
         String permission = args[2];
 
@@ -43,7 +44,7 @@ public class SetSubCommand {
             return;
         }
 
-        Role role = BotHelper.jda.getRoleById(roleID);
+        Role role = RoleBuilder.buildRoleFromMessage(roleString);
 
         if (role == null) {
             //should never come to here

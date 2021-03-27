@@ -3,6 +3,7 @@ package de.staticred.dbv2.commands.util;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.player.MemberSender;
+import de.staticred.dbv2.player.SlashCommandSender;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -55,6 +56,12 @@ public class CommandManager {
         dbuCommands.add(command);
     }
 
+
+    /**
+     * Register mix command.
+     *
+     * @param command the command
+     */
     public void registerMixCommand(MixCommand command) {
         if (mixCommands.stream().anyMatch(mixCommand -> mixCommand.getName().equalsIgnoreCase(command.getName())))
             return;
@@ -62,11 +69,51 @@ public class CommandManager {
         mixCommands.add(command);
     }
 
+    /**
+     * Handles discord input via. slashcommand
+     * @param in string
+     * @param sender sender
+     * @param tc textchannel
+     */
+    public void handleDiscordInputSlashCommand(String in, SlashCommandSender sender, TextChannel tc) {
+        if (in.isEmpty())
+            return;
+        String command = getCommand(in);
+        String[] args = getArgs(in);
+        System.out.println(command);
+        System.out.println(Arrays.toString(args));
+
+        for (DiscordCommand dcCommand : discordCommands) {
+            if (dcCommand.getName().equalsIgnoreCase(command)) {
+                dcCommand.execute(sender, tc, args);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + sender.getMember().getEffectiveName() + " executed command: " + command);
+                return;
+            }
+        }
 
 
+        for (MixCommand mixCommand : mixCommands) {
+            if (mixCommand.getName().equalsIgnoreCase(command)) {
+                mixCommand.executeDC(sender, args);
+                DBUtil.getINSTANCE().getLogger().postMessage("User " + sender.getMember().getEffectiveName() + " executed command: " + command);
+                return;
 
+            }
 
+        }
+        sender.sendMessage("Command not found");
+    }
+
+    /**
+     * Handles discord input via. chat
+     * @param in string
+     * @param member sender
+     * @param tc textchannel
+     */
     public void handleDiscordInput(Member member, TextChannel tc, String in) {
+
+        if (in.isEmpty())
+            return;
 
         if (member == null)
             return;
@@ -100,7 +147,15 @@ public class CommandManager {
 
     }
 
+    /**
+     * Handles mc input via. chat
+     * @param in string
+     * @param player sender
+     */
     public void handleMCInput(DBUPlayer player, String in) {
+        if (in.isEmpty())
+            return;
+
         String command = getCommand(in);
         String[] args = getArgs(in);
 
@@ -128,22 +183,35 @@ public class CommandManager {
                 || mixCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd));
     }
 
+
+    /**
+     * Gets copy of registered discord commands.
+     *
+     * @return the copy of registered discord commands
+     */
     public List<DiscordCommand> getCopyOfRegisteredDiscordCommands() {
         return new ArrayList<>(discordCommands);
     }
 
+    /**
+     * Gets copy of registered mc commands.
+     *
+     * @return the copy of registered mc commands
+     */
     public List<DBUCommand> getCopyOfRegisteredMCCommands() {
         return new ArrayList<>(dbuCommands);
 
     }
 
+    /**
+     * Gets copy of registered mix commands.
+     *
+     * @return the copy of registered mix commands
+     */
     public List<MixCommand> getCopyOfRegisteredMixCommands() {
         return new ArrayList<>(mixCommands);
 
     }
-
-
-
 
     private String getCommand(String in) {
         String[] args = in.split(" ");

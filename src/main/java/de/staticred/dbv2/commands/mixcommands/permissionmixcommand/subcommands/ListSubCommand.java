@@ -4,6 +4,7 @@ import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.discord.util.Embed;
 import de.staticred.dbv2.player.CommandSender;
 import de.staticred.dbv2.util.BotHelper;
+import de.staticred.dbv2.util.RoleBuilder;
 import net.dv8tion.jda.api.entities.Role;
 
 import java.awt.Color;
@@ -35,7 +36,7 @@ public class ListSubCommand {
             return;
         }
 
-        String roleString = args[1].substring(3, args[1].length() - 1);
+        String roleString = args[1];
 
         long roleID;
 
@@ -45,7 +46,7 @@ public class ListSubCommand {
             sender.sendMessage("Can't convert given id into long");
             return;
         }
-        Role role = BotHelper.jda.getRoleById(roleID);
+        Role role = RoleBuilder.buildRoleFromMessage(roleString);
 
         if (role == null) {
             //should never come to here

@@ -4,6 +4,7 @@ package de.staticred.dbv2.util;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Command;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandUpdateAction;
@@ -43,7 +44,6 @@ public class BotHelper {
         if (jda.getGuilds().size() > 1)
             throw new IllegalStateException("The bot can't be on more than one guild at once");
 
-        registerDefaultCommands();
     }
 
     /**
@@ -55,15 +55,27 @@ public class BotHelper {
     }
 
     public static void registerDefaultCommands() {
-        CommandUpdateAction commands = jda.updateCommands();
 
-        commands.addCommands(
-                new CommandUpdateAction.CommandData("dbset", "Changes enabled state of permission node")
-                        .addOption(new CommandUpdateAction.OptionData(Command.OptionType.STRING, "permission", "permission to set the state from")
-                                .setRequired(true)) // This command requires a parameter
-                        .addOption(new CommandUpdateAction.OptionData(Command.OptionType.BOOLEAN, "state", "set to true or false")
-                            .setRequired(true))
-        ).queue();
+        Guild mainGuild = jda.getGuilds().get(0);
+
+        CommandUpdateAction commands = mainGuild.updateCommands();
+
+        CommandUpdateAction.CommandData dbpermsCMD = new CommandUpdateAction.CommandData("db", "manage discordbot permissions");
+
+        CommandUpdateAction.SubcommandData add = new CommandUpdateAction.SubcommandData("add", "adds permission to a role")
+                .addOption(new CommandUpdateAction.OptionData(Command.OptionType.ROLE, "role", "role to add the permission to").setRequired(true))
+                .addOption(new CommandUpdateAction.OptionData(Command.OptionType.STRING, "permission", "permission to add to the role").setRequired(true));
+        CommandUpdateAction.SubcommandData list = new CommandUpdateAction.SubcommandData("list", "lists data about a role")
+                .addOption(new CommandUpdateAction.OptionData(Command.OptionType.ROLE, "role", "role to list the data").setRequired(true));
+
+        CommandUpdateAction.SubcommandGroupData subCommandGroups = new CommandUpdateAction.SubcommandGroupData("perms", "subcommand");
+        subCommandGroups.addSubcommand(add).addSubcommand(list);
+
+
+
+        dbpermsCMD.addOption(subCommandGroups);
+
+        commands.addCommands(dbpermsCMD).queue();
 
         commands.queue();
     }

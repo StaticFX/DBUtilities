@@ -14,6 +14,13 @@ public class MessageEvent extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+
+        if (event.getMember().getUser() == null)
+            return;
+
+        if (event.getMember().getUser().isBot())
+            return;
+
         DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage().getContentRaw());
     }
 

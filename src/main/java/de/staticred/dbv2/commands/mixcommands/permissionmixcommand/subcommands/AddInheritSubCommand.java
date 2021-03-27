@@ -3,6 +3,7 @@ package de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.CommandSender;
 import de.staticred.dbv2.util.BotHelper;
+import de.staticred.dbv2.util.RoleBuilder;
 import net.dv8tion.jda.api.entities.Role;
 import org.bukkit.event.Event;
 
@@ -35,7 +36,7 @@ public class AddInheritSubCommand {
 
         String roleString = args[1].substring(3, args[1].length() - 1);
 
-        String roleInheritString = args[2].substring(3, args[2].length() - 1);
+        String roleInheritString = args[2];
 
         long roleID;
         long inheritID;
@@ -48,8 +49,10 @@ public class AddInheritSubCommand {
             return;
         }
 
-        Role role = BotHelper.jda.getRoleById(roleID);
-        Role roleInherit = BotHelper.jda.getRoleById(inheritID);
+        Role role = RoleBuilder.buildRoleFromMessage(roleString);
+
+        Role roleInherit = RoleBuilder.buildRoleFromMessage(roleInheritString);
+
 
         if (role == null || roleInherit == null) {
             //should never come to here

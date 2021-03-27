@@ -4,6 +4,7 @@ import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands.*
 import de.staticred.dbv2.commands.util.MixCommand;
 import de.staticred.dbv2.discord.util.Embed;
 import de.staticred.dbv2.player.DBUPlayer;
+import de.staticred.dbv2.player.DiscordSender;
 import de.staticred.dbv2.player.MemberSender;
 
 import java.awt.*;
@@ -40,7 +41,7 @@ public class PermissionMixCommand implements MixCommand {
     }
 
     @Override
-    public void executeDC(MemberSender sender, String[] args) {
+    public void executeDC(DiscordSender sender, String[] args) {
 
         StringBuilder sb = new StringBuilder();
 

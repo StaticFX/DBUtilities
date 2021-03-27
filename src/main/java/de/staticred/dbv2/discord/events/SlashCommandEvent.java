@@ -1,7 +1,7 @@
 package de.staticred.dbv2.discord.events;
 
-import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands.SetSubCommand;
-import de.staticred.dbv2.player.MemberSender;
+import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.player.SlashCommandSender;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
@@ -14,23 +14,35 @@ public class SlashCommandEvent extends ListenerAdapter {
 
     @Override
     public void onSlashCommand(net.dv8tion.jda.api.events.interaction.SlashCommandEvent event) {
-
         // Only accept commands from guilds
         if (event.getGuild() == null)
             return;
-        event.acknowledge(true).queue();
-        switch (event.getName())
-        {
-            case "dbset": {
+        if (event.getMember() == null)
+            return;
 
-                String permission = event.getOption("permission").getAsString();
-                boolean state = event.getOption("state").getAsBoolean();
+        String cmd = event.getName();
 
-                new SetSubCommand().execute(new MemberSender(event.getTextChannel(), event.getMember()), new String[]{permission, String.valueOf(state)});
-            }
-            default:
-                event.reply("I can't handle that command right now :(").setEphemeral(true).queue();
+        if (event.getSubcommandGroup() != null) {
+            //no subcommands
+            cmd = cmd + event.getSubcommandGroup();
+            cmd = cmd + " " + event.getSubcommandName();
         }
+
+        cmd = cmd + " ";
+
+        StringBuilder sb = new StringBuilder(cmd);
+
+        for (net.dv8tion.jda.api.events.interaction.SlashCommandEvent.OptionData data : event.getOptions()) {
+            sb.append(data.getAsString()).append(" ");
+        }
+
+
+        sb.deleteCharAt(sb.length() - 1);
+        System.out.println(sb.toString());
+
+        SlashCommandSender sender = new SlashCommandSender(event);
+
+        DBUtil.getINSTANCE().getCommandManager().handleDiscordInputSlashCommand(sb.toString(), sender, event.getTextChannel());
 
     }
 

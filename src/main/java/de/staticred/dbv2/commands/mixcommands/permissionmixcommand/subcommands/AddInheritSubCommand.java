@@ -34,7 +34,7 @@ public class AddInheritSubCommand {
             return;
         }
 
-        String roleString = args[1].substring(3, args[1].length() - 1);
+        String roleString = args[1];
 
         String roleInheritString = args[2];
 

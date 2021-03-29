@@ -53,7 +53,7 @@ public class RemoveSubCommand {
         }
         DBUtil.getINSTANCE().getPermissionHandler().removePermission(roleID, permission);
 
-        sender.sendMessage("Removed permission:**" + permission + "** from role " + role.getAsMention());
+        sender.sendMessage("Removed permission **" + permission + "** from role " + role.getAsMention());
     }
 
 }

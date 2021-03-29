@@ -2,6 +2,7 @@ package de.staticred.dbv2.discord.events;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.SlashCommandSender;
+import net.dv8tion.jda.api.entities.Command;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
@@ -33,6 +34,13 @@ public class SlashCommandEvent extends ListenerAdapter {
         StringBuilder sb = new StringBuilder(cmd);
 
         for (net.dv8tion.jda.api.events.interaction.SlashCommandEvent.OptionData data : event.getOptions()) {
+
+            if (data.getType() == Command.OptionType.BOOLEAN) {
+                boolean b = data.getAsBoolean();
+                sb.append(b).append(" ");
+                continue;
+            }
+
             sb.append(data.getAsString()).append(" ");
         }
 
@@ -45,5 +53,4 @@ public class SlashCommandEvent extends ListenerAdapter {
         DBUtil.getINSTANCE().getCommandManager().handleDiscordInputSlashCommand(sb.toString(), sender, event.getTextChannel());
 
     }
-
 }

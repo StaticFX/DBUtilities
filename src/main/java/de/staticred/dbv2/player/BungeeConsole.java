@@ -16,6 +16,11 @@ public class BungeeConsole implements DBUPlayer {
     private final CommandSender sender;
 
 
+    /**
+     * Instantiates a new Bungee console.
+     *
+     * @param sender the sender
+     */
     public BungeeConsole(CommandSender sender) {
         this.sender = sender;
     }

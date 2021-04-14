@@ -105,13 +105,16 @@ public class PermissionMixCommand implements MixCommand {
 
     @Override
     public void executeMC(DBUPlayer sender, String[] args) {
-        sender.sendMessage("dbperms add <role> <permission> - adds permission\n");
-        sender.sendMessage("dbperms list <role> - displays the permission\n");
-        sender.sendMessage("dbperms remove <role> <permission> - removes the permission\n");
-        sender.sendMessage("dbperms addInherit <role> <role> - adds inherit role\n");
-        sender.sendMessage("dbperms removeInherit <role> <role> - removes inherit role\n");
-        sender.sendMessage("dbperms set <role> <permission> <state> - set enabled state\n");
-        sender.sendMessage("dbperms backup - saves current permissiondata as file in the backup folder\n");
+        if (args.length < 1) {
+            sender.sendMessage("dbperms add <role> <permission> - adds permission\n");
+            sender.sendMessage("dbperms list <role> - displays the permission\n");
+            sender.sendMessage("dbperms remove <role> <permission> - removes the permission\n");
+            sender.sendMessage("dbperms addInherit <role> <role> - adds inherit role\n");
+            sender.sendMessage("dbperms removeInherit <role> <role> - removes inherit role\n");
+            sender.sendMessage("dbperms set <role> <permission> <state> - set enabled state\n");
+            sender.sendMessage("dbperms backup - saves current permissiondata as file in the backup folder\n");
+            return;
+        }
 
         switch (args[0].toUpperCase()) {
 

@@ -48,26 +48,24 @@ public abstract class Addon {
      */
     private final CommandManager commandManager;
 
-
     /**
-     * Configuration file for addon.yml file
+     * Addon information
      */
-    private final YamlFile addonInfoFile;
-
+    private final AddonInfo addonInfo;
 
     /**
      * constructor.
-     * @param name of the addon
+     * @param info addoninfo
      * @param dataFolder datafolder
      * @param logger main folder
      * @param commandManager commandManager
      */
-    public Addon(String name, File dataFolder, Logger logger, CommandManager commandManager, YamlFile addonInfoFile, Mode mode) {
-        this.name = name;
+    public Addon(AddonInfo info, File dataFolder, Logger logger, CommandManager commandManager, Mode mode) {
+        this.addonInfo = info;
+        this.name = info.getName();
         this.dataFolder = dataFolder;
         this.logger = logger;
         this.commandManager = commandManager;
-        this.addonInfoFile = addonInfoFile;
     }
 
     /**
@@ -84,28 +82,48 @@ public abstract class Addon {
     public abstract void onEnd();
 
 
+    /**
+     * Gets data folder.
+     *
+     * @return the data folder
+     */
     public File getDataFolder() {
         return dataFolder;
     }
 
-
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets logger.
+     *
+     * @return the logger
+     */
     public Logger getLogger() {
         return logger;
     }
 
+    /**
+     * Gets command manager.
+     *
+     * @return the command manager
+     */
     public CommandManager getCommandManager() {
         return commandManager;
     }
 
-    public YamlFile getAddonInfoFile() {
-        return addonInfoFile;
+    /**
+     * Gets addon info.
+     *
+     * @return the addon info
+     */
+    public AddonInfo getAddonInfo() {
+        return addonInfo;
     }
-
-
-
-
 }

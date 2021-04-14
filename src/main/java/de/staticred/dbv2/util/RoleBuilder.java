@@ -1,6 +1,7 @@
 package de.staticred.dbv2.util;
 
 import net.dv8tion.jda.api.entities.Role;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Devin Fritz
@@ -13,15 +14,21 @@ public class RoleBuilder {
      * @param string the string
      * @return role if found
      */
-    public static Role buildRoleFromMessage(String string) {
+    public static @Nullable Role buildRoleFromMessage(String string) {
         if (string.startsWith("<"))
             return getRoleByMention(string);
+
+        if (string.isEmpty())
+            return null;
 
         long roleID;
         try {
             roleID = Long.parseLong(string);
         } catch (NumberFormatException e) {
-            return null;
+            //role is not a number, maybe its a role name?
+            Role role = BotHelper.jda.getRolesByName(string, true).get(0);
+
+            return role;
         }
 
         return BotHelper.jda.getRoleById(roleID);

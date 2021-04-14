@@ -27,7 +27,6 @@ public class DBVerifierPlugin extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new CommandEvent(), this);
 
-        Metrics metrics = new Metrics(this, DBUtil.PLUGIN_ID);
     }
 
     public static DBVerifierPlugin getInstance() {

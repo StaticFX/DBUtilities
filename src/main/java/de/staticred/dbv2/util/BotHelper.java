@@ -51,7 +51,6 @@ public class BotHelper {
         jda = JDABuilder.create(token, GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_BANS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_PRESENCES).build();
         if (jda.getGuilds().size() > 1)
             throw new IllegalStateException("The bot can't be on more than one guild at once");
-        guild = jda.getGuilds().get(0);
     }
 
     /**

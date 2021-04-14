@@ -151,7 +151,6 @@ public class ConfigFileManager implements FileManager {
     public boolean updateFile(File updateAble) throws IOException {
         YamlFile newYamlFile = new YamlFile(updateAble);
 
-
         try {
             newYamlFile.load();
         } catch (InvalidConfigurationException e) {

@@ -1,7 +1,6 @@
 package de.staticred.dbv2.discord.events;
 
 import de.staticred.dbv2.DBUtil;
-import de.staticred.dbv2.permission.PermissionHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**

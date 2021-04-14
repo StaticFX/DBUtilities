@@ -12,8 +12,6 @@ public class BukkitMessageEvent implements Listener {
 
     @EventHandler
     public void onMessage(AsyncPlayerChatEvent event) {
-
-
         MessageEvent messageEvent = new MessageEvent(new BukkitPlayer(event.getPlayer()), event.getMessage(), false, Side.Proxy.BUKKIT);
 
         DBUtil.getINSTANCE().getEventManager().fireEvent(messageEvent);

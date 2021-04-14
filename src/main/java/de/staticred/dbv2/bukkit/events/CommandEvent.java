@@ -24,12 +24,10 @@ public class CommandEvent implements Listener {
 
         cmd = cmd.substring(1);
 
-        System.out.println("Command in from bukkit: " + cmd);
-
         if (DBUtil.getINSTANCE().getCommandManager().doesCommandExist(cmd)) {
-            DBUtil.getINSTANCE().getCommandManager().handleMCInput(new BukkitPlayer(event.getPlayer()), cmd);
-            System.out.println("here");
             event.setCancelled(true);
+            DBUtil.getINSTANCE().getCommandManager().handleMCInput(new BukkitPlayer(event.getPlayer()), cmd);
+            return;
         }
     }
 
@@ -38,8 +36,9 @@ public class CommandEvent implements Listener {
     public void onConsoleCMD(ServerCommandEvent event) {
         String cmd = event.getCommand();
         if (DBUtil.getINSTANCE().getCommandManager().doesCommandExist(cmd)) {
-            DBUtil.getINSTANCE().getCommandManager().handleMCInput(new BukkitConsole(event.getSender()), cmd);
             event.setCancelled(true);
+            DBUtil.getINSTANCE().getCommandManager().handleMCInput(new BukkitConsole(event.getSender()), cmd);
+            return;
         }
     }
 

@@ -18,11 +18,9 @@ import java.util.*;
  */
 public class CommandManager {
 
-
     private final ArrayList<DiscordCommand> discordCommands;
     private final ArrayList<DBUCommand> dbuCommands;
     private final ArrayList<MixCommand> mixCommands;
-
 
     /**
      * Constructor.

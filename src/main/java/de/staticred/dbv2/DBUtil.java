@@ -1,7 +1,7 @@
 package de.staticred.dbv2;
 
 import de.staticred.dbv2.addon.Addon;
-import de.staticred.dbv2.addon.AddonHelper;
+import de.staticred.dbv2.addon.AddonManager;
 import de.staticred.dbv2.commands.discordcommands.HelpDiscordCommand;
 import de.staticred.dbv2.commands.discordcommands.InfoDiscordCommand;
 import de.staticred.dbv2.commands.mccommands.InfoDBUCommand;
@@ -16,6 +16,7 @@ import de.staticred.dbv2.discord.events.SlashCommandEvent;
 import de.staticred.dbv2.events.util.EventManager;
 import de.staticred.dbv2.files.FileConstants;
 import de.staticred.dbv2.files.util.FileHelper;
+import de.staticred.dbv2.files.util.TempFileManager;
 import de.staticred.dbv2.info.DataBaseInfo;
 import de.staticred.dbv2.networking.db.DataBaseConnector;
 import de.staticred.dbv2.permission.PermissionHandler;
@@ -30,7 +31,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -101,13 +101,9 @@ public class DBUtil {
            - Add FileSystem (config.yml, messagefiles think about new system)
            - Add FileSystem updater - Done
            - Add DataBase (with updater from VESE)
-           - Add Methods to download database data and store them and also restore them
-           - Add AutoBackUp Done
            - Add LinkingFeatures (MC -> DC, DC -> MC)
            - Add all Old command from DBV 1.0
            - Readd metric system (with new stats aswell)
-           - Add updater
-           - Add Debugger with javaDocs
            - Find a way to communicate between bukkit and bungeecord without bridging / redis
 
 
@@ -152,6 +148,11 @@ public class DBUtil {
     private PermissionHandler permissionHandler;
 
     /**
+     * indicates the tempFileManager used for everything
+     */
+    private TempFileManager tempFileManager;
+
+    /**
      * EventManager
      * @see EventManager
      */
@@ -165,6 +166,8 @@ public class DBUtil {
      * @param logger to log on
      */
     public DBUtil(EventManager eventManager, Mode mode, Logger logger) throws IOException {
+        long startTime = System.currentTimeMillis();
+        tempFileManager = new TempFileManager(getLocation());
         this.eventManager = eventManager;
         this.mode = mode;
         INSTANCE = this;
@@ -179,7 +182,7 @@ public class DBUtil {
             throw new IllegalStateException("Can't load UTF-8 Decoder for unknown reason");
         }
 
-        File addonDirectory = AddonHelper.loadAddonDirectory(dataFolder);
+        AddonManager addonManager = new AddonManager(this, getDataFolder());
 
         //letting the logger now we are online
         logger.postMessage("Starting " + PLUGIN_NAME + " " + VERSION + " " + mode.toString());
@@ -203,7 +206,7 @@ public class DBUtil {
         this.permissionHandler = new PermissionHandler(FileConstants.CONFIG_FILE_MANAGER.useSQL());
 
         logger.postMessage("Loading Addons");
-        addons.addAll(AddonHelper.loadAddons(addonDirectory));
+        addons.addAll(addonManager.loadAddons());
         logger.postMessage("Finished loaded " + addons.size() + " addons");
 
         registerCommands();
@@ -211,6 +214,8 @@ public class DBUtil {
         registerDiscordEvents();
 
         logger.postMessageRaw(DBUtilConstants.ASCII_ART);
+        long endTime = System.currentTimeMillis() - startTime;
+        logger.postMessage("Successfully start in @" + endTime + "ms");
     }
 
     private void loadDB() {
@@ -274,6 +279,10 @@ public class DBUtil {
      */
     public static DBUtil getINSTANCE() {
         return INSTANCE;
+    }
+
+    public TempFileManager getTempFileManager() {
+        return tempFileManager;
     }
 
     public DataBaseInfo getDataBaseInfo() {

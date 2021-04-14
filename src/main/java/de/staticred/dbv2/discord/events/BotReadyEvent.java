@@ -13,6 +13,9 @@ public class BotReadyEvent extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
         BotHelper.registerDefaultCommands();
+
+        if (BotHelper.jda.getGuilds().size() != 0)
+            BotHelper.guild = BotHelper.jda.getGuilds().get(0);
     }
 
 }

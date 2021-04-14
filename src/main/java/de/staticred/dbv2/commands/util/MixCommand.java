@@ -29,6 +29,8 @@ public interface MixCommand {
 
     String getPermission();
 
+
+
     /**
      * execute method of every discord command
      * @param sender who send the command

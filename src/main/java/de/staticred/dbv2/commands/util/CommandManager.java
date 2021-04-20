@@ -1,12 +1,15 @@
 package de.staticred.dbv2.commands.util;
 
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.constants.FileConstants;
+import de.staticred.dbv2.files.filehandlers.CommandFileHandler;
 import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.player.MemberSender;
 import de.staticred.dbv2.player.SlashCommandSender;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -21,6 +24,7 @@ public class CommandManager {
     private final ArrayList<DiscordCommand> discordCommands;
     private final ArrayList<DBUCommand> dbuCommands;
     private final ArrayList<MixCommand> mixCommands;
+    private CommandFileHandler commandFileHandler;
 
     /**
      * Constructor.
@@ -29,6 +33,28 @@ public class CommandManager {
         discordCommands = new ArrayList<>();
         dbuCommands = new ArrayList<>();
         mixCommands = new ArrayList<>();
+    }
+
+    public void load() {
+        commandFileHandler = new CommandFileHandler(new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath(), FileConstants.COMMANDS_LOCATION));
+
+        for (DiscordCommand discordCommand : discordCommands) {
+            if (!commandFileHandler.hasCommand(discordCommand.getName()))
+                commandFileHandler.addCommand(discordCommand);
+        }
+
+        for (DBUCommand dbuCommand : dbuCommands) {
+            if (!commandFileHandler.hasCommand(dbuCommand.getName()))
+                commandFileHandler.addCommand(dbuCommand);
+        }
+
+        for (MixCommand mixCommand : mixCommands) {
+            if (!commandFileHandler.hasCommand(mixCommand.getName()))
+                commandFileHandler.addCommand(mixCommand);
+        }
+
+
+
     }
 
     /**
@@ -115,19 +141,24 @@ public class CommandManager {
 
         if (member == null)
             return;
-        if (member.getUser() == null)
-            return;
 
         if (member.getUser().isBot())
             return;
 
-        String prefix = in.substring(0, 1);
+
+
+
         in = in.substring(1);
         String command = getCommand(in);
         String[] args = getArgs(in);
 
         for (DiscordCommand dcCommand : discordCommands) {
-            if (dcCommand.getName().equalsIgnoreCase(command) && dcCommand.getPrefix().equals(prefix)) {
+            String commandPrefix = commandFileHandler.getPrefixFor(dcCommand.getName());
+            String prefix = in.substring(0, commandPrefix.length());
+
+
+            List<String> aliases = commandFileHandler.getAliasesFor(dcCommand.getName());
+            if ((dcCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) && commandPrefix.equals(prefix)) {
                 dcCommand.execute(new MemberSender(tc, member), tc, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
                 break;
@@ -136,7 +167,10 @@ public class CommandManager {
 
 
         for (MixCommand mixCommand : mixCommands) {
-            if (mixCommand.getName().equalsIgnoreCase(command) && mixCommand.getPrefix().equals(prefix)) {
+            String commandPrefix = commandFileHandler.getPrefixFor(mixCommand.getName());
+            String prefix = in.substring(0, commandPrefix.length());
+            List<String> aliases = commandFileHandler.getAliasesFor(mixCommand.getName());
+            if ((mixCommand.getName().equalsIgnoreCase(command) || aliases.contains(command) ) && commandPrefix.equals(prefix)) {
                 mixCommand.executeDC(new MemberSender(tc, member),args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
                 break;
@@ -158,7 +192,8 @@ public class CommandManager {
         String[] args = getArgs(in);
 
         for (DBUCommand dbuCommand : dbuCommands) {
-            if (dbuCommand.getName().equalsIgnoreCase(command)) {
+            List<String> aliases = commandFileHandler.getAliasesFor(dbuCommand.getName());
+            if (dbuCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) {
                 dbuCommand.execute(player, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
                 break;
@@ -166,7 +201,8 @@ public class CommandManager {
         }
 
         for (MixCommand mixCommand : mixCommands) {
-            if (mixCommand.getName().equalsIgnoreCase(command)) {
+            List<String> aliases = commandFileHandler.getAliasesFor(mixCommand.getName());
+            if (mixCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) {
                 mixCommand.executeMC(player, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
                 break;

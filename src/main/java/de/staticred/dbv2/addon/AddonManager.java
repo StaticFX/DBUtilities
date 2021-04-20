@@ -1,23 +1,16 @@
 package de.staticred.dbv2.addon;
 
 import de.staticred.dbv2.DBUtil;
-import de.staticred.dbv2.files.util.TempFileManager;
-import de.staticred.dbv2.util.Logger;
-import org.simpleyaml.configuration.file.YamlConfiguration;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.exceptions.InvalidConfigurationException;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,24 +70,10 @@ public class AddonManager {
                     continue;
                 }
 
-                TempFileManager fileManager = DBUtil.getINSTANCE().getTempFileManager();
-
-                File tempFile = new File(DBUtil.getINSTANCE().getDataFolder() + "/temp", "addon" + file.getName() + ".yml");
-                tempFile.getParentFile().mkdirs();
-
-                try {
-                    Files.copy(stream, tempFile.toPath());
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                    continue;
-                }
-
-
-
                 YamlFile yamlConfig;
                 try {
-                    yamlConfig = new YamlFile(tempFile);
-                    yamlConfig.load();
+                    yamlConfig = new YamlFile();
+                    yamlConfig.load(stream);
                 } catch (InvalidConfigurationException | IOException e) {
                     DBUtil.getINSTANCE().getLogger().postError("Can't load addon.yml for addon: " + file.getName());
                     e.printStackTrace();
@@ -105,9 +84,6 @@ public class AddonManager {
                 String name = yamlConfig.getString("name");
                 String author = yamlConfig.getString("author");
                 String version = yamlConfig.getString("version");
-
-                tempFile.delete();
-
 
                 if (version == null)
                     version = "N/A";

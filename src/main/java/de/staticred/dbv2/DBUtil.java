@@ -14,12 +14,14 @@ import de.staticred.dbv2.discord.events.RoleCreateEvent;
 import de.staticred.dbv2.discord.events.RoleDeleteEvent;
 import de.staticred.dbv2.discord.events.SlashCommandEvent;
 import de.staticred.dbv2.events.util.EventManager;
-import de.staticred.dbv2.files.FileConstants;
+import de.staticred.dbv2.files.filehandlers.CommandFileHandler;
+import de.staticred.dbv2.files.filehandlers.ConfigFileManager;
+import de.staticred.dbv2.files.filehandlers.MCMessagesFileHandler;
 import de.staticred.dbv2.files.util.FileHelper;
-import de.staticred.dbv2.files.util.TempFileManager;
 import de.staticred.dbv2.info.DataBaseInfo;
 import de.staticred.dbv2.networking.db.DataBaseConnector;
 import de.staticred.dbv2.permission.PermissionHandler;
+import de.staticred.dbv2.permission.filemanager.PermissionFileDAO;
 import de.staticred.dbv2.util.BotHelper;
 import de.staticred.dbv2.util.Logger;
 import de.staticred.dbv2.util.Mode;
@@ -82,7 +84,7 @@ public class DBUtil {
     /**
      * time pattern to use globally
      */
-    public static final String TIME_PATTERN = "kk:ss dd/MM/yyyy";
+    public static final String TIME_PATTERN = "HH:mm dd/MM/yyyy";
 
 
     /**
@@ -105,7 +107,6 @@ public class DBUtil {
            - Add all Old command from DBV 1.0
            - Readd metric system (with new stats aswell)
            - Find a way to communicate between bukkit and bungeecord without bridging / redis
-
 
      */
 
@@ -140,17 +141,20 @@ public class DBUtil {
      */
     private final CommandManager commandManager;
 
+    private ConfigFileManager configFileManager;
+
+    private MCMessagesFileHandler mcMessagesFileHandler;
+
+    private CommandFileHandler commandFileHandler;
+
+    private PermissionFileDAO permissionFileDAO;
+
     /**
      * PermissionHandler
      * @see PermissionHandler
      */
     @Nullable
     private PermissionHandler permissionHandler;
-
-    /**
-     * indicates the tempFileManager used for everything
-     */
-    private TempFileManager tempFileManager;
 
     /**
      * EventManager
@@ -167,7 +171,6 @@ public class DBUtil {
      */
     public DBUtil(EventManager eventManager, Mode mode, Logger logger) throws IOException {
         long startTime = System.currentTimeMillis();
-        tempFileManager = new TempFileManager(getLocation());
         this.eventManager = eventManager;
         this.mode = mode;
         INSTANCE = this;
@@ -189,13 +192,16 @@ public class DBUtil {
         logger.postMessage("Loading files...");
         logger.postDebug("Found " + PLUGIN_NAME + " in: " + getDataFolder().getAbsolutePath());
 
+
         loadFiles();
+
         startBot();
 
         if (!BotHelper.connected)
             return;
 
-        if (FileConstants.CONFIG_FILE_MANAGER.useSQL()) {
+
+        if (configFileManager.useSQL()) {
             loadDB();
             if (!dataBaseInfo.isConnected()) {
                 logger.postMessage("§c" + DBUtilConstants.ASCII_ART);
@@ -203,7 +209,7 @@ public class DBUtil {
             }
         }
 
-        this.permissionHandler = new PermissionHandler(FileConstants.CONFIG_FILE_MANAGER.useSQL());
+        this.permissionHandler = new PermissionHandler(configFileManager.useSQL());
 
         logger.postMessage("Loading Addons");
         addons.addAll(addonManager.loadAddons());
@@ -213,6 +219,8 @@ public class DBUtil {
         eventManager.init();
         registerDiscordEvents();
 
+        commandManager.load();
+
         logger.postMessageRaw(DBUtilConstants.ASCII_ART);
         long endTime = System.currentTimeMillis() - startTime;
         logger.postMessage("Successfully start in @" + endTime + "ms");
@@ -221,7 +229,7 @@ public class DBUtil {
     private void loadDB() {
         boolean connected = true;
 
-        dataBaseConnector = new DataBaseConnector(FileConstants.CONFIG_FILE_MANAGER.getConfigObject());
+        dataBaseConnector = new DataBaseConnector(configFileManager.getConfigObject());
         dataBaseConnector.setLogger(logger);
 
         try {
@@ -236,7 +244,7 @@ public class DBUtil {
 
     private void startBot() {
         try {
-            BotHelper.startBot(FileConstants.CONFIG_FILE_MANAGER.getConfigObject().getString("Token"));
+            BotHelper.startBot(configFileManager.getConfigObject().getString("Token"));
         } catch (LoginException e) {
             logger.postMessage("§c" + DBUtilConstants.ASCII_ART);
             logger.postError("Cant start bot. Please recheck your token in the config.yml");
@@ -269,8 +277,14 @@ public class DBUtil {
     }
 
     private void loadFiles() throws IOException {
-        fileHelper.registerManager(FileConstants.CONFIG_FILE_MANAGER);
-        fileHelper.registerManager(FileConstants.PERMISSION_FILE_MANAGER);
+        configFileManager = new ConfigFileManager(new File(getDataFolder().getAbsoluteFile(), "config.yml"), DBUtil.getINSTANCE().getFileHelper().getFileFromResource("config.yml"));
+        fileHelper.registerManager(configFileManager);
+        mcMessagesFileHandler = new MCMessagesFileHandler(new File(getDataFolder().getAbsoluteFile() + "/messages", "mc.yml"));
+        fileHelper.registerManager(mcMessagesFileHandler);
+        commandFileHandler = new CommandFileHandler(new File(getDataFolder().getAbsoluteFile(), "commands.yml"));
+        fileHelper.registerManager(commandFileHandler);
+        permissionFileDAO = new PermissionFileDAO(new File(getDataFolder().getAbsoluteFile(), "permissions.yml"));
+        fileHelper.registerManager(permissionFileDAO);
         fileHelper.load();
     }
 
@@ -279,10 +293,6 @@ public class DBUtil {
      */
     public static DBUtil getINSTANCE() {
         return INSTANCE;
-    }
-
-    public TempFileManager getTempFileManager() {
-        return tempFileManager;
     }
 
     public DataBaseInfo getDataBaseInfo() {
@@ -314,9 +324,17 @@ public class DBUtil {
         return dataBaseConnector;
     }
 
+    public FileHelper getFileHelper() {
+        return fileHelper;
+    }
+
     @Nullable
     public PermissionHandler getPermissionHandler() {
         return permissionHandler;
+    }
+
+    public MCMessagesFileHandler getMcMessagesFileHandler() {
+        return mcMessagesFileHandler;
     }
 
     public EventManager getEventManager() {

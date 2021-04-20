@@ -1,7 +1,7 @@
 package de.staticred.dbv2.files.util;
 
-import de.staticred.dbv2.files.FileConstants;
-import de.staticred.dbv2.files.filehandlers.FileManager;
+import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.constants.FileConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class FileHelper {
     /**
      * Collection containing all managers
      */
-    private Collection<FileManager> managers;
+    private Collection<DBUtilFile> managers;
 
     /**
      * Constructor
@@ -35,7 +35,7 @@ public class FileHelper {
      * @param manager to remove
      * @return true if successfully
      */
-    public boolean unregisterManager(FileManager manager) {
+    public boolean unregisterManager(DBUtilFile manager) {
         return managers.remove(manager);
     }
 
@@ -43,29 +43,20 @@ public class FileHelper {
      * registers a manager
      * @param manager to be registered
      */
-    public void registerManager(FileManager manager) {
+    public void registerManager(DBUtilFile manager) {
         managers.add(manager);
     }
-
 
     /**
      * loads all the managers and also updates them
      */
-    public void load() throws IOException {
-
-        for (FileManager manager : managers) {
-            manager.startDAO();
-            File newestFile = getFileFromResource(manager.getName());
-
-            if (manager.isUpdatable(newestFile)) {
-                manager.updateFile(newestFile);
-            }
-
-            newestFile.delete();
+    public void load() {
+        for (DBUtilFile manager : managers) {
+            manager.load();
         }
 
-        //all files have been loaded and updated can delete now the temp folder
-        FileConstants.TEMP_DIRECTORY.delete();
+        File file = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath(), "temp");
+        file.delete();
     }
 
     /**
@@ -74,14 +65,17 @@ public class FileHelper {
      * @return file
      * @throws IOException if file not found
      */
-    private File getFileFromResource(String name) throws IOException {
-        File file = new File(FileConstants.TEMP_DIRECTORY, name);
+    public File getFileFromResource(String name) {
+        File file = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath() + "/temp", name);
         file.getParentFile().mkdirs();
-        try (InputStream in = FileManager.class.getClassLoader().getResourceAsStream("files/" + name)) {
+        try (InputStream in = DBUtilFile.class.getClassLoader().getResourceAsStream("files/" + name)) {
             if (in == null)
                 throw new IOException("Can't load config.yml from default resource package");
 
             Files.copy(in, file.toPath());
+        } catch (IOException exception) {
+            DBUtil.getINSTANCE().getLogger().postError("Cant load file from resource package: ");
+            exception.printStackTrace();
         }
         return file;
     }

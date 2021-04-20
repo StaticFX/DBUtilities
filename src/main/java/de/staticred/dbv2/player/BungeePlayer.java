@@ -1,5 +1,6 @@
 package de.staticred.dbv2.player;
 
+import de.staticred.dbv2.DBUtil;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -24,10 +25,9 @@ public class BungeePlayer implements DBUPlayer {
         this.bungeeCordPlayer = bungeeCordPlayer;
     }
 
-
     @Override
     public void sendMessage(String message) {
-        bungeeCordPlayer.sendMessage(new TextComponent(message));
+        bungeeCordPlayer.sendMessage(new TextComponent(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message));
     }
 
     @Override

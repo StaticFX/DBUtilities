@@ -1,112 +1,92 @@
 package de.staticred.dbv2.files.filehandlers;
 
+import de.staticred.dbv2.commands.util.DBUCommand;
+import de.staticred.dbv2.commands.util.DiscordCommand;
+import de.staticred.dbv2.commands.util.MixCommand;
 import de.staticred.dbv2.files.ConfigObject;
-import de.staticred.dbv2.files.FileConstants;
+import de.staticred.dbv2.files.util.DBUtilFile;
 import org.simpleyaml.configuration.file.YamlFile;
-import org.simpleyaml.exceptions.InvalidConfigurationException;
-import sun.security.krb5.Confounder;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Devin Fritz
  * @version 1.0.0
  */
-public class CommandFileHandler implements FileManager {
+public class CommandFileHandler extends DBUtilFile {
 
     /**
      * The constant NAME.
      */
     public static final String NAME = "commands.yml";
 
-    /**
-     * indicates the config.yml file
-     */
-    private final File config;
-
-    /**
-     * DAO working for YAML files
-     */
-    private YamlFile dao;
-
     private boolean isValidFile;
 
-    public CommandFileHandler(File config) {
-        this.config = config;
+    public CommandFileHandler(File commands) {
+        super(commands);
     }
 
-    @SuppressWarnings("checkstyle:InnerAssignment")
-    @Override
-    public boolean startDAO() throws IOException {
-        if (!isFilePresent()) {
-            isValidFile = false;
-            throw new IOException("Can't create file at required location");
-        }
-
-        dao = new YamlFile(config);
-        try {
-            dao.load();
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        //file does exist
-        return isValidFile = true;
+    /**
+     * Adds a command to the file system if not exist
+     * @param command to add
+     */
+    public void addCommand(DBUCommand command) {
+        addCommand(command.getName(), "N/A", "MC", command.getPermission(), new ArrayList<>());
     }
 
-    @Override
-    public boolean saveData() {
-        try {
-            dao.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    /**
+     * Adds a command to the file system if not exist
+     * @param command to add
+     */
+    public void addCommand(DiscordCommand command) {
+        addCommand(command.getName(), command.getPrefix(), "DC", command.getPermission(), new ArrayList<>());
     }
 
-    @Override
-    public boolean isFilePresent() {
-        if (!config.exists()) {
-            //file does not exist
-
-            config.getParentFile().mkdirs();
-
-            //directories exist
-            //now create the file
-            try (InputStream in = getClass().getClassLoader().getResourceAsStream(FileConstants.RESOURCE_LOCATION + getName())) {
-                if (in == null) {
-                    isValidFile = false;
-                    throw new IOException("Can't read " + getName() + " from resource package");
-                }
-
-                Files.copy(in, config.toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-        }
-        return isValidFile = true;
+    /**
+     * Adds a command to the file system if not exist
+     * @param command to add
+     */
+    public void addCommand(MixCommand command) {
+        addCommand(command.getName(), command.getPrefix(), "MIX", command.getPermission(), new ArrayList<>());
     }
 
-    @Override
-    public boolean isValidFile() {
-        return isValidFile;
+    public void addCommand(String name, String prefix, String type, String permission, List<String> aliases) {
+        if (hasCommand(name))
+            return;
+
+        configuration.set(name + ".name", name);
+        configuration.set(name + ".type", type);
+        configuration.set(name + ".prefix", prefix);
+        configuration.set(name + ".aliases", aliases);
+
+        saveData();
     }
 
-    @Override
-    public boolean isUpdatable(File updateAble) throws IllegalStateException, IllegalArgumentException, IOException {
-        return false;
+
+    /**
+     * @param command to get the prefix from
+     * @return set prefix of the command
+     */
+    public String getPrefixFor(String command) {
+        return configuration.getString(command + ".prefix");
     }
 
-    @Override
-    public boolean updateFile(File newFile) throws IOException {
-        return false;
+    /**
+     * @param command to get the aliases from
+     * @return set aliases from the command
+     */
+    public List<String> getAliasesFor(String command) {
+        return configuration.getStringList(command + ".aliases");
+    }
+
+    /**
+     * @param command to check
+     * @return true if file contains command
+     */
+    public boolean hasCommand(String command) {
+        return configuration.contains(command);
     }
 
     @Override
@@ -114,15 +94,15 @@ public class CommandFileHandler implements FileManager {
         return NAME;
     }
 
-    @Override
     public ConfigObject getConfigObject() {
-        return new ConfigObject(dao);
+        return new ConfigObject(configuration);
     }
 
-
-
     @Override
+    public void afterLoad() {
+    }
+
     public void set(String key, Object value) {
-        dao.set(key, value);
+        configuration.set(key, value);
     }
 }

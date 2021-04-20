@@ -214,7 +214,7 @@ public class PermissionHandler {
      */
     public void writeToFile() {
         try {
-            FileBackUpHelper.createBackFor("permissison-backup.yml", Long.toString(System.currentTimeMillis()), dao.asYaml());
+            FileBackUpHelper.createBackUpFor("permissison-backup.yml", Long.toString(System.currentTimeMillis()), dao.asYaml());
         } catch (IOException exception) {
             exception.printStackTrace();
         }

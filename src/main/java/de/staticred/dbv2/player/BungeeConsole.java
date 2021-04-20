@@ -1,5 +1,6 @@
 package de.staticred.dbv2.player;
 
+import de.staticred.dbv2.DBUtil;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -15,7 +16,6 @@ public class BungeeConsole implements DBUPlayer {
 
     private final CommandSender sender;
 
-
     /**
      * Instantiates a new Bungee console.
      *
@@ -27,7 +27,7 @@ public class BungeeConsole implements DBUPlayer {
 
     @Override
     public void sendMessage(String message) {
-        sender.sendMessage(new TextComponent(message));
+        sender.sendMessage(new TextComponent(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message));
     }
 
     @Override

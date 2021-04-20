@@ -1,5 +1,6 @@
 package de.staticred.dbv2.player;
 
+import de.staticred.dbv2.DBUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
@@ -21,7 +22,7 @@ public class BukkitConsole implements DBUPlayer {
 
     @Override
     public void sendMessage(String message) {
-        sender.sendMessage(message);
+        sender.sendMessage(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message);
     }
 
     @Override

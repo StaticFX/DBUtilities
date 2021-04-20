@@ -3,7 +3,7 @@ package de.staticred.dbv2.networking.db;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import de.staticred.dbv2.files.ConfigObject;
-import de.staticred.dbv2.files.FileConstants;
+import de.staticred.dbv2.constants.FileConstants;
 import de.staticred.dbv2.util.Logger;
 
 import java.sql.Connection;
@@ -94,7 +94,6 @@ public class DataBaseConnector {
             this.config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false");
         }
     }
-
 
 
     public void setLogger(Logger logger) {

@@ -16,8 +16,7 @@ public enum  Mode {
     BUNGEECORD,
 
     /**
-     * Running addon mode
-     * For the FUTURE
+     * Plugin executed via. velocity
      */
-    //ADDON
+    VELOCITY;
 }

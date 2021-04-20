@@ -1,5 +1,6 @@
 package de.staticred.dbv2.player;
 
+import de.staticred.dbv2.DBUtil;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.entity.Player;
 
@@ -27,7 +28,7 @@ public class BukkitPlayer implements DBUPlayer {
 
     @Override
     public void sendMessage(String message) {
-        bukkitPlayer.sendMessage(message);
+        bukkitPlayer.sendMessage(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message);
     }
 
     @Override

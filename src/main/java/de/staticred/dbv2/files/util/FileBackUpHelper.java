@@ -30,7 +30,7 @@ public class FileBackUpHelper {
      * @param version of the file
      * @param object content of the file
      */
-    public static void createBackFor(String name, String version, YamlFile object) throws IOException {
+    public static void createBackUpFor(String name, String version, YamlFile object) throws IOException {
         File backUp = new File(DBUtil.getINSTANCE().getDataFolder() + "/backups/files", version + "-" + name);
 
         if (backUp.exists())

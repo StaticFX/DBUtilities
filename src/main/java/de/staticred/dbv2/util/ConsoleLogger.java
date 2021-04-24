@@ -7,14 +7,13 @@ public class ConsoleLogger implements Logger {
 
     @Override
     public void postError(String error) {
-        postMessage("§c§lERROR: §f" + error);
+        postMessage("[ERROR] " + error);
     }
 
     @Override
     public void postDebug(String debug) {
-        postMessage("§e§lDEBUG: " + debug);
+        postMessage("[DEBUG] " + debug);
     }
-
 
     @Override
     public void postMessageRaw(String message) {

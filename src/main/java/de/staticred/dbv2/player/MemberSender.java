@@ -49,7 +49,6 @@ public class MemberSender implements DiscordSender {
      * @param embed to send
      */
     public void sendEmbed(MessageEmbed embed) {
-        System.out.println("here3");
         tc.sendMessage(embed).queue();
     }
 

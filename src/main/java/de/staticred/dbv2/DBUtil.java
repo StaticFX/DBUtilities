@@ -23,6 +23,7 @@ import de.staticred.dbv2.networking.db.DataBaseConnector;
 import de.staticred.dbv2.permission.PermissionHandler;
 import de.staticred.dbv2.permission.filemanager.PermissionFileDAO;
 import de.staticred.dbv2.util.BotHelper;
+import de.staticred.dbv2.util.FileLogger;
 import de.staticred.dbv2.util.Logger;
 import de.staticred.dbv2.util.Mode;
 import org.jetbrains.annotations.Nullable;
@@ -99,9 +100,6 @@ public class DBUtil {
 
 
     /*TODO
-           - Add independent events (neverthenless bukkit or bungeecord)
-           - Add FileSystem (config.yml, messagefiles think about new system)
-           - Add FileSystem updater - Done
            - Add DataBase (with updater from VESE)
            - Add LinkingFeatures (MC -> DC, DC -> MC)
            - Add all Old command from DBV 1.0
@@ -211,9 +209,14 @@ public class DBUtil {
 
         this.permissionHandler = new PermissionHandler(configFileManager.useSQL());
 
+
+        if (configFileManager.writeDatabaseToLog()) {
+            dataBaseConnector.setLogger(new FileLogger(new File(getDataFolder() + "/dblogs")));
+        }
+
         logger.postMessage("Loading Addons");
         addons.addAll(addonManager.loadAddons());
-        logger.postMessage("Finished loaded " + addons.size() + " addons");
+        logger.postMessage("Finished loading " + addons.size() + " addons");
 
         registerCommands();
         eventManager.init();
@@ -223,14 +226,13 @@ public class DBUtil {
 
         logger.postMessageRaw(DBUtilConstants.ASCII_ART);
         long endTime = System.currentTimeMillis() - startTime;
-        logger.postMessage("Successfully start in @" + endTime + "ms");
+        logger.postMessage("Successfully started in @" + endTime + "ms");
     }
 
     private void loadDB() {
         boolean connected = true;
 
         dataBaseConnector = new DataBaseConnector(configFileManager.getConfigObject());
-        dataBaseConnector.setLogger(logger);
 
         try {
             dataBaseConnector.init();

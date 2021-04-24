@@ -23,6 +23,7 @@ public class FileConstants {
     public static final String SQL_DATABASE = "SQL_DATABASE";
     public static final String SQL_USE_SSL = "SQL_USE_SSL";
     public static final String SQL_HOST = "SQL_HOST";
+    public static final String LOG_DB_TO_FILE = "logDBToFile";
 
     public static final String PREFIX = "prefix";
 

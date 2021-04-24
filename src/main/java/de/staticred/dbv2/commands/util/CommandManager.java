@@ -104,8 +104,6 @@ public class CommandManager {
             return;
         String command = getCommand(in);
         String[] args = getArgs(in);
-        System.out.println(command);
-        System.out.println(Arrays.toString(args));
 
         for (DiscordCommand dcCommand : discordCommands) {
             if (dcCommand.getName().equalsIgnoreCase(command)) {
@@ -135,7 +133,6 @@ public class CommandManager {
      * @param tc textchannel
      */
     public void handleDiscordInput(Member member, TextChannel tc, String in) {
-
         if (in.isEmpty())
             return;
 
@@ -146,17 +143,12 @@ public class CommandManager {
             return;
 
 
-
-
-        in = in.substring(1);
-        String command = getCommand(in);
-        String[] args = getArgs(in);
+        String command = getCommand(in.substring(1));
+        String[] args = getArgs(in.substring(1));
 
         for (DiscordCommand dcCommand : discordCommands) {
             String commandPrefix = commandFileHandler.getPrefixFor(dcCommand.getName());
             String prefix = in.substring(0, commandPrefix.length());
-
-
             List<String> aliases = commandFileHandler.getAliasesFor(dcCommand.getName());
             if ((dcCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) && commandPrefix.equals(prefix)) {
                 dcCommand.execute(new MemberSender(tc, member), tc, args);
@@ -210,7 +202,7 @@ public class CommandManager {
         }
     }
 
-    @SuppressWarnings("checkstyle:ParameterAssignment")
+    @SuppressWarnings("che`1`ckstyle:ParameterAssignment")
     public boolean doesCommandExist(String in) {
         String cmd = getCommand(in);
         return dbuCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd))

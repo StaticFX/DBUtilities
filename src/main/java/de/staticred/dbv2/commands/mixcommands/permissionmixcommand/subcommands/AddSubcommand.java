@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.Role;
  * Adds permission to a group
  *
  */
-public class AddSubcommand {
+public class    AddSubcommand {
 
     private final static String PERMISSION = "db.cmd.mix.dbperms.add";
 

@@ -136,6 +136,9 @@ public class DataBaseConnector {
      * @return new connection, null if all pools are full
      */
     public Connection getNewConnection() {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+
+        logMessage("New connection opened by outer method " + (stackTraceElements[3].getMethodName()));
         try {
             return source.getConnection();
         } catch (SQLException throwables) {
@@ -160,6 +163,5 @@ public class DataBaseConnector {
         if (logger != null)
             logger.postMessage(message);
     }
-
 
 }

@@ -35,6 +35,10 @@ public class ConfigFileManager extends Updatable {
         saveData();
     }
 
+    public boolean writeDatabaseToLog() {
+        return configuration.getBoolean(FileConstants.LOG_DB_TO_FILE);
+    }
+
     /**
      * @return config value USQ_SQL
      */

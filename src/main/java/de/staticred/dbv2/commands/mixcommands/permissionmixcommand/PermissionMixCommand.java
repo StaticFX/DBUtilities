@@ -20,7 +20,6 @@ public class PermissionMixCommand implements MixCommand {
 
     public static final String NAME = "dbperms";
 
-    public static final String PREFIX = "!";
 
     public static final String PERMISSION = "dbu.cmd.mix.dbperms";
 
@@ -32,7 +31,7 @@ public class PermissionMixCommand implements MixCommand {
 
     @Override
     public String getPrefix() {
-        return PREFIX;
+        return null;
     }
 
     @Override

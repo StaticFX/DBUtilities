@@ -1,13 +1,10 @@
 package de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands;
 
 import de.staticred.dbv2.DBUtil;
-import de.staticred.dbv2.discord.util.Embed;
 import de.staticred.dbv2.player.CommandSender;
-import de.staticred.dbv2.util.BotHelper;
 import de.staticred.dbv2.util.RoleBuilder;
 import net.dv8tion.jda.api.entities.Role;
 
-import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 
@@ -38,21 +35,14 @@ public class ListSubCommand {
 
         String roleString = args[1];
 
-        long roleID;
-
-        try {
-            roleID = Long.parseLong(roleString);
-        } catch (NumberFormatException e) {
-            sender.sendMessage("Can't convert given id into long");
-            return;
-        }
         Role role = RoleBuilder.buildRoleFromMessage(roleString);
 
         if (role == null) {
-            //should never come to here
             sender.sendMessage("Role could not be found");
             return;
         }
+
+        long roleID = role.getIdLong();
 
 
         List<Role> inheritRoles = DBUtil.getINSTANCE().getPermissionHandler().getInheritRoles(roleID);
@@ -60,7 +50,6 @@ public class ListSubCommand {
         Map<String, Boolean> permissions = DBUtil.getINSTANCE().getPermissionHandler().getPermission(roleID, false);
 
         StringBuilder sb = new StringBuilder();
-
 
         sb.append("**Information about: **").append(role.getAsMention()).append("\n");
 

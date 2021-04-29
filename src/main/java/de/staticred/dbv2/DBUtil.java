@@ -229,6 +229,15 @@ public class DBUtil {
         logger.postMessage("Successfully started in @" + endTime + "ms");
     }
 
+
+    /**
+     * Disables DBUtil
+     * Will automatically shutdown all processes running in the background
+     */
+    public void shutDown() {
+        dataBaseConnector.shutDown();
+    }
+
     private void loadDB() {
         boolean connected = true;
 
@@ -342,4 +351,5 @@ public class DBUtil {
     public EventManager getEventManager() {
         return eventManager;
     }
+
 }

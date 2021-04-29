@@ -100,9 +100,6 @@ public class DataBaseConnector {
         this.logger = logger;
     }
 
-
-
-
     /**
      * Will init/start the datasource
      */

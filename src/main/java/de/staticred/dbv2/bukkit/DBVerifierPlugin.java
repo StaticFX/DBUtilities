@@ -15,18 +15,27 @@ public class DBVerifierPlugin extends JavaPlugin {
 
     private static DBVerifierPlugin INSTANCE;
 
+    private DBUtil dbUtil;
+
     @Override
     public void onEnable() {
+
         try {
-            new DBUtil(new BukkitEventManager(), Mode.BUKKIT, new ConsoleLogger());
+            dbUtil = new DBUtil(new BukkitEventManager(), Mode.BUKKIT, new ConsoleLogger());
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+
 
         INSTANCE = this;
 
         getServer().getPluginManager().registerEvents(new CommandEvent(), this);
 
+    }
+
+    @Override
+    public void onDisable() {
+        dbUtil.shutDown();
     }
 
     public static DBVerifierPlugin getInstance() {

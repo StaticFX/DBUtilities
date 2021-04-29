@@ -20,7 +20,7 @@ public class FileLogger implements Logger {
 
     private final String date;
 
-    private final @Nullable File latest;
+    private @Nullable File latest;
 
     private final PrintWriter writer;
 
@@ -29,7 +29,7 @@ public class FileLogger implements Logger {
         this.directory = directory;
 
         if (!directory.exists()) {
-            directory.createNewFile();
+            directory.mkdir();
         }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DBUtil.TIME_PATTERN);
@@ -43,17 +43,19 @@ public class FileLogger implements Logger {
                 if (file.getName().equals("latest.log"))
                     latest = file;
             }
-            this.latest = latest;
+            if (latest != null)
+                this.latest = latest;
         }
 
         if (this.latest != null)
             renameLatestToDate();
 
         if (latest == null) {
-            latest.createNewFile();
+            this.latest = new File(directory, "latest.log");
+            this.latest.createNewFile();
         }
 
-        writer = new PrintWriter(latest);
+        writer = new PrintWriter(this.latest);
     }
 
 

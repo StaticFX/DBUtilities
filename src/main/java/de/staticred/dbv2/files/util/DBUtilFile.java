@@ -12,7 +12,7 @@ import java.nio.file.Files;
 /**
  * This file represents a user edit file inside of DBUtil
  * The user can edit this files, and you can read or write then to the file.
- * For File language it will use .xml
+ * For File language it will use .yml
  *
  * @author Devin Fritz
  * @version 1.0.0
@@ -23,12 +23,23 @@ public abstract class DBUtilFile {
     private final String name;
     protected YamlFile configuration;
 
+
+    /**
+     * Instantiates a new Db util file.
+     *
+     * @param current the current
+     */
     public DBUtilFile(File current) {
         this.file = current;
         this.name = file.getName();
         load();
     }
 
+    /**
+     * Loads the current file of this file
+     * This will create the file and all its parent directories if none exist
+     * As well it will also a load a YamlFile class and load its configuration
+     */
     public void load() {
         if (!file.exists()) {
             //file does not exist
@@ -59,6 +70,9 @@ public abstract class DBUtilFile {
         afterLoad();
     }
 
+    /**
+     * Saves current configuration to the file
+     */
     public void saveData() {
         try {
             configuration.save(file);
@@ -81,16 +95,37 @@ public abstract class DBUtilFile {
         }
     }
 
+    /**
+     * Called after loading the file
+     */
     public abstract void afterLoad();
 
+
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+
+    /**
+     * Gets file.
+     *
+     * @return the file
+     */
     public File getFile() {
         return file;
     }
 
+
+    /**
+     * Gets configuration.
+     *
+     * @return the configuration
+     */
     public YamlFile getConfiguration() {
         return configuration;
     }

@@ -57,7 +57,7 @@ public class PermissionDBDAO implements DAO, PermissionDAO {
             throwables.printStackTrace();
             return false;
         }
-        return false;
+        return true;
     }
 
 

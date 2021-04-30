@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,23 +33,20 @@ public class FileLogger implements Logger {
             directory.mkdir();
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DBUtil.TIME_PATTERN);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DBUtil.FILE_TIME_PATTERN);
         date = simpleDateFormat.format(new Date(System.currentTimeMillis()));
 
         if (directory.listFiles().length == 0)
             this.latest = null;
         else {
-            File latest = null;
             for (File file : directory.listFiles()) {
-                if (file.getName().equals("latest.log"))
-                    latest = file;
+                if (file.getName().equals("latest.log")) {
+                    this.latest = file;
+                    renameLatestToDate();
+                    break;
+                }
             }
-            if (latest != null)
-                this.latest = latest;
         }
-
-        if (this.latest != null)
-            renameLatestToDate();
 
         if (latest == null) {
             this.latest = new File(directory, "latest.log");
@@ -60,7 +58,8 @@ public class FileLogger implements Logger {
 
 
     private void renameLatestToDate() {
-        latest.renameTo(new File(latest.getAbsolutePath(), date + " - generatedLatest.log"));
+        File to = new File(latest.getParentFile() + "/" + date + ".log");
+        latest.renameTo(to);
     }
 
     public void disable() {
@@ -80,7 +79,7 @@ public class FileLogger implements Logger {
 
     @Override
     public void postMessageRaw(String message) {
-        System.out.println(message);
+        postMessage(message);
     }
 
     @Override

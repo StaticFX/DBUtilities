@@ -87,6 +87,11 @@ public class DBUtil {
      */
     public static final String TIME_PATTERN = "HH:mm dd/MM/yyyy";
 
+    /**
+     * Time pattern used in for filenames
+     */
+    public static final String FILE_TIME_PATTERN = "dd.MM.yyyy";
+
 
     /**
      * FileHelper to manage all the files
@@ -161,6 +166,11 @@ public class DBUtil {
     private final EventManager eventManager;
 
     /**
+     * Logger used for the database
+     */
+    private @Nullable FileLogger dataBaseLogger;
+
+    /**
      * Main Constructor of DBVerifier 2.0
      * Call this method to start up the plugin.
      * @param eventManager eventManager
@@ -211,7 +221,8 @@ public class DBUtil {
 
 
         if (configFileManager.writeDatabaseToLog()) {
-            dataBaseConnector.setLogger(new FileLogger(new File(getDataFolder() + "/dblogs")));
+            dataBaseLogger = new FileLogger(new File(getDataFolder() + "/dblogs"));
+            dataBaseConnector.setLogger(dataBaseLogger);
         }
 
         logger.postMessage("Loading Addons");
@@ -236,6 +247,8 @@ public class DBUtil {
      */
     public void shutDown() {
         dataBaseConnector.shutDown();
+        if (dataBaseLogger != null)
+            dataBaseLogger.disable();
     }
 
     private void loadDB() {

@@ -149,6 +149,7 @@ public class DataBaseConnector {
      */
     public void shutDown() {
         source.close();
+
     }
 
 

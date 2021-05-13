@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
 
 public class MemberSender implements DiscordSender {
 
@@ -49,7 +50,14 @@ public class MemberSender implements DiscordSender {
      * @param embed to send
      */
     public void sendEmbed(MessageEmbed embed) {
-        tc.sendMessage(embed).queue();
+        int deleteTime = DBUtil.getINSTANCE().getConfigFileManager().deleteTime();
+
+        if (deleteTime < -1)
+            tc.sendMessage(embed).queue();
+        else if (deleteTime == -1)
+            tc.sendMessage(embed).queue();
+         else
+            tc.sendMessage(embed).queue(message -> message.delete().queueAfter(deleteTime, TimeUnit.SECONDS));
     }
 
     public Member getMember() {

@@ -41,6 +41,11 @@ public class BungeePlayer implements DBUPlayer {
     }
 
     @Override
+    public boolean isConsole() {
+        return false;
+    }
+
+    @Override
     public boolean hasPermission(String permission) {
         return bungeeCordPlayer.hasPermission(permission);
     }

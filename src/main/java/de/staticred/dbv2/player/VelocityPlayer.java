@@ -37,6 +37,11 @@ public class VelocityPlayer implements DBUPlayer {
     }
 
     @Override
+    public boolean isConsole() {
+        return true;
+    }
+
+    @Override
     public UUID getUUID() {
         return player.getUniqueId();
     }

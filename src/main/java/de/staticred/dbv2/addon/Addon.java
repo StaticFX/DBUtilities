@@ -1,9 +1,12 @@
 package de.staticred.dbv2.addon;
 
 
+import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.commands.util.CommandManager;
+import de.staticred.dbv2.files.util.FileHelper;
 import de.staticred.dbv2.util.Logger;
 import de.staticred.dbv2.util.Mode;
+import de.staticred.dbv2.util.Proxy;
 import org.simpleyaml.configuration.file.YamlFile;
 
 import java.io.File;
@@ -116,6 +119,18 @@ public abstract class Addon {
      */
     public CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public DBUtil getDBUtil() {
+        return DBUtil.getINSTANCE();
+    }
+
+    public FileHelper getFileHelper() {
+        return DBUtil.getINSTANCE().getFileHelper();
+    }
+
+    public Proxy getProxy() {
+        return DBUtil.getINSTANCE().getProxy();
     }
 
     /**

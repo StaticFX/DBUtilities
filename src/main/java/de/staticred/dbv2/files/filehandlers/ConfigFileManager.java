@@ -1,12 +1,13 @@
 package de.staticred.dbv2.files.filehandlers;
 
-import de.staticred.dbv2.DBUtil;
-import de.staticred.dbv2.files.ConfigObject;
 import de.staticred.dbv2.constants.FileConstants;
+import de.staticred.dbv2.files.ConfigObject;
 import de.staticred.dbv2.files.util.Updatable;
-import org.simpleyaml.configuration.file.YamlFile;
+import net.dv8tion.jda.api.entities.Activity;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This fill will only the file config.yml
@@ -45,5 +46,54 @@ public class ConfigFileManager extends Updatable {
     public boolean useSQL() {
         return configuration.getBoolean(FileConstants.USQ_SQL);
     }
+
+    /**
+     * Debug boolean.
+     *
+     * @return the boolean
+     */
+    public boolean debug() {
+        return configuration.getBoolean(FileConstants.DEBUG);
+    }
+
+    public boolean useDiscordIDs() {
+        return configuration.getBoolean(FileConstants.USE_DISCORD_IDS);
+    }
+
+    public Activity getActivity() {
+        String stringType = configuration.getString(FileConstants.ACTIVITY_TYPE);
+
+        switch (stringType.toUpperCase()) {
+            case "PLAYING": {
+                return Activity.playing(getActivityDescription());
+            }
+            case "WATCHING": {
+                return Activity.watching(getActivityDescription());
+            }
+            case "COMPETING": {
+                return Activity.competing(getActivityDescription());
+            }
+            default: {
+                return Activity.playing("DBUtil by StaticRed");
+            }
+        }
+    }
+
+    public List<String> getChanelIDs() {
+        return configuration.getStringList(FileConstants.CHANNELID);
+    }
+
+    public boolean forceCleanChannel() {
+        return configuration.getBoolean(FileConstants.FORCE_CLEAN_CHANNEL);
+    }
+
+    public String getActivityDescription() {
+        return configuration.getString(FileConstants.ACTIVITY_DESCRIPTION);
+    }
+
+    public int deleteTime() {
+        return configuration.getInt(FileConstants.DELETE_TIME);
+    }
+
 
 }

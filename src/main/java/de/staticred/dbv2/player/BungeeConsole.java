@@ -35,6 +35,11 @@ public class BungeeConsole implements DBUPlayer {
     }
 
     @Override
+    public boolean isConsole() {
+        return true;
+    }
+
+    @Override
     public void sendMessageRaw(String message) {
         sendMessage(message);
     }

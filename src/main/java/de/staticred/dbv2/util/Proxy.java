@@ -1,5 +1,7 @@
 package de.staticred.dbv2.util;
 
+import de.staticred.dbv2.player.DBUPlayer;
+
 /**
  * This is a superclass of all kind of proxies
  *
@@ -10,4 +12,12 @@ package de.staticred.dbv2.util;
  */
 
 public interface Proxy {
+
+    /**
+     *
+     * @param name of the player
+     * @return player if found, null otherwise
+     */
+    DBUPlayer getOnlinePlayer(String name);
+
 }

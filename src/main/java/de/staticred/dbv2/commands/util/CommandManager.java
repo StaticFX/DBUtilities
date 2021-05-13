@@ -132,15 +132,16 @@ public class CommandManager {
      * @param member sender
      * @param tc textchannel
      */
-    public void handleDiscordInput(Member member, TextChannel tc, String in) {
+    public boolean handleDiscordInput(Member member, TextChannel tc, String in) {
         if (in.isEmpty())
-            return;
+            return true;
 
         if (member == null)
-            return;
+            return true;
 
         if (member.getUser().isBot())
-            return;
+            return true;
+        System.out.println("here1");
 
 
         String command = getCommand(in.substring(1));
@@ -153,7 +154,7 @@ public class CommandManager {
             if ((dcCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) && commandPrefix.equals(prefix)) {
                 dcCommand.execute(new MemberSender(tc, member), tc, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
-                break;
+                return true;
             }
         }
 
@@ -165,10 +166,10 @@ public class CommandManager {
             if ((mixCommand.getName().equalsIgnoreCase(command) || aliases.contains(command) ) && commandPrefix.equals(prefix)) {
                 mixCommand.executeDC(new MemberSender(tc, member),args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
-                break;
+                return true;
             }
         }
-
+        return false;
     }
 
     /**
@@ -187,7 +188,8 @@ public class CommandManager {
             List<String> aliases = commandFileHandler.getAliasesFor(dbuCommand.getName());
             if (dbuCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) {
                 dbuCommand.execute(player, args);
-                DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
+                if (!player.isConsole())
+                    DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
                 break;
             }
         }
@@ -196,7 +198,8 @@ public class CommandManager {
             List<String> aliases = commandFileHandler.getAliasesFor(mixCommand.getName());
             if (mixCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) {
                 mixCommand.executeMC(player, args);
-                DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
+                if (!player.isConsole())
+                    DBUtil.getINSTANCE().getLogger().postMessage("User " + player.getName() + " executed command :" + command);
                 break;
             }
         }
@@ -206,7 +209,8 @@ public class CommandManager {
     public boolean doesCommandExist(String in) {
         String cmd = getCommand(in);
         return dbuCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd))
-                || mixCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd));
+                || mixCommands.stream().anyMatch(dbuCommand -> dbuCommand.getName().equalsIgnoreCase(cmd))
+                || discordCommands.stream().anyMatch(discordCommand -> discordCommand.getName().equalsIgnoreCase(cmd));
     }
 
 

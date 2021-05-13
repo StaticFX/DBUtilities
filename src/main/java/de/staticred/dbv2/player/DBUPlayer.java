@@ -21,6 +21,8 @@ public interface DBUPlayer extends CommandSender {
 
     void sendMessageRaw(String message);
 
+    boolean isConsole();
+
     UUID getUUID();
 
     String getName();

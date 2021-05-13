@@ -1,6 +1,7 @@
 package de.staticred.dbv2.addon;
 
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.util.ConsoleLogger;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.exceptions.InvalidConfigurationException;
 
@@ -148,7 +149,7 @@ public class AddonManager {
         File dataFolder = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath() + "/addons/" + name);
 
         try {
-            addonClass = cls.getConstructors()[0].newInstance(info, dataFolder, DBUtil.getINSTANCE().getLogger(), DBUtil.getINSTANCE().getCommandManager(), DBUtil.getINSTANCE().getMode());
+            addonClass = cls.getConstructors()[0].newInstance(info, dataFolder, new ConsoleLogger(name), DBUtil.getINSTANCE().getCommandManager(), DBUtil.getINSTANCE().getMode());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             DBUtil.getINSTANCE().getLogger().postError("Cannot create addon class for unknown reason: " + jarFile.getName());
             e.printStackTrace();

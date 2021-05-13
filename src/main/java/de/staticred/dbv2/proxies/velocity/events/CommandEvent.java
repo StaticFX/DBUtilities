@@ -1,4 +1,4 @@
-package de.staticred.dbv2.velocity.events;
+package de.staticred.dbv2.proxies.velocity.events;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.command.CommandExecuteEvent;

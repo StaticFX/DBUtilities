@@ -63,14 +63,13 @@ public class FileHelper {
      * gets a file from the internal Plugin resources
      * @param name of the file
      * @return file
-     * @throws IOException if file not found
      */
     public File getFileFromResource(String name) {
         File file = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath() + "/temp", name);
         file.getParentFile().mkdirs();
         try (InputStream in = DBUtilFile.class.getClassLoader().getResourceAsStream("files/" + name)) {
             if (in == null)
-                throw new IOException("Can't load config.yml from default resource package");
+                throw new IOException("Can't load " + name + " from default resource package");
 
             Files.copy(in, file.toPath());
         } catch (IOException exception) {

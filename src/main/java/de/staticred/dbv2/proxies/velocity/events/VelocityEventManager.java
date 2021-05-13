@@ -1,11 +1,10 @@
-package de.staticred.dbv2.bukkit.events;
+package de.staticred.dbv2.proxies.velocity.events;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.EventHandler;
-import de.staticred.dbv2.bukkit.DBVerifierPlugin;
+import de.staticred.dbv2.proxies.velocity.DBVerifierPlugin;
 import de.staticred.dbv2.events.util.Event;
 import de.staticred.dbv2.events.util.EventManager;
-import de.staticred.dbv2.events.util.Listener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,13 +16,13 @@ import java.util.Set;
  * @author Devin Fritz
  * @version 1.0.0
  */
-public class BukkitEventManager implements EventManager {
+public class VelocityEventManager implements EventManager {
 
-    public Set<org.bukkit.event.Listener> events;
-    public Set<Listener> dbuEvents;
+    public Set<Object> events;
+    public Set<de.staticred.dbv2.events.util.Listener> dbuEvents;
 
 
-    public BukkitEventManager() {
+    public VelocityEventManager() {
         this.events = new HashSet<>();
         this.dbuEvents = new HashSet<>();
     }
@@ -32,7 +31,7 @@ public class BukkitEventManager implements EventManager {
      * registers an bukkit event
      * @param listener event
      */
-    public void registerEvent(org.bukkit.event.Listener listener) {
+    public void registerEvent(Object listener) {
         events.add(listener);
     }
 
@@ -40,7 +39,7 @@ public class BukkitEventManager implements EventManager {
      * registers an dbu event
      * @param listener event
      */
-    public void registerEvent(Listener listener) {
+    public void registerEvent(de.staticred.dbv2.events.util.Listener listener) {
         dbuEvents.add(listener);
     }
 
@@ -48,14 +47,14 @@ public class BukkitEventManager implements EventManager {
      * inits the registered events, useless to call, dbu will call it after all addons have been loaded
      */
     public void init() {
-        for (org.bukkit.event.Listener listener : events) {
-            DBVerifierPlugin.getInstance().getServer().getPluginManager().registerEvents(listener, DBVerifierPlugin.getInstance());
+        for (Object listener : events) {
+            DBVerifierPlugin.getInstance().getServer().getEventManager().register(DBVerifierPlugin.getInstance(), listener);
         }
     }
 
     @Override
     public void fireEvent(Event event) {
-        for(Listener listener : dbuEvents) {
+        for(de.staticred.dbv2.events.util.Listener listener : dbuEvents) {
             for(final Method method : listener.getClass().getMethods()) {
                 if(method.isAnnotationPresent(EventHandler.class)) {
                     if(method.getParameters().length != 1) {

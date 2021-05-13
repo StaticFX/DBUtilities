@@ -14,8 +14,39 @@ SQL_USE_SLL: true
 #Be sure only you know about you're bot-token, and never never show it to anyone else
 Token: ""
 
+#what type of activity the bot is doing
+#PLAYING
+#WATCHING
+#COMPETING
+botActivityType: "WATCHING"
+
+#Description of what the bot is doing
+botActitivyDescription: "DBUtil by StaticRed"
+
+#If the bot should use discord ids for roles
+#True: it will search roles with their ids
+#False: it will search roles with their names
+useDiscordIDsForRoles: true
+
 #If the DataBaseConnector will log to an file, can be usefully for debugging
 logDBToFile: true
+
+
+#channel id the bot will listen to for commands
+#leave empty for no channel
+listenToChannels:
+  - ""
+
+#will delete all messages not resulting in a reply from the bot
+forceCleanChannel: true
+
+#If the plugin should delete send discord messages after a time
+#Delay in seconds
+# -1 for no delete
+autoDeleteDiscordMessages: 10
+
+#If the plugin will output debug process
+debugMode: false
 
 #file version of the config.yml
 #dont change, but if changed, not a big problem, all you're configs will be backuped

@@ -1,4 +1,4 @@
-package de.staticred.dbv2.bukkit.events;
+package de.staticred.dbv2.proxies.bukkit.events;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.Side;

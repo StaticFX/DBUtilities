@@ -1,10 +1,13 @@
 package de.staticred.dbv2.util;
 
 
+import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.discord.events.BotReadyEvent;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Command;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandUpdateAction;
@@ -30,9 +33,15 @@ public class BotHelper {
     public static boolean connected;
 
     /**
-     * The guild the bot is sitting one
+     * The guild the bot is sitting on
      */
     public static Guild guild;
+
+
+    /**
+     * timestamp when the bot was started the last time
+     */
+    public static long botstartup;
 
     /**
      * constructor.
@@ -49,8 +58,9 @@ public class BotHelper {
      */
     public static void startBot(String token) throws LoginException {
         jda = JDABuilder.create(token, GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_BANS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_PRESENCES).build();
-        if (jda.getGuilds().size() > 1)
-            throw new IllegalStateException("The bot can't be on more than one guild at once");
+        jda.getPresence().setActivity(DBUtil.getINSTANCE().getConfigFileManager().getActivity());
+        botstartup = System.currentTimeMillis();
+        registerEvent(new BotReadyEvent());
     }
 
     /**
@@ -60,6 +70,21 @@ public class BotHelper {
     public static void registerEvent(ListenerAdapter event) {
         jda.addEventListener(event);
     }
+
+    /**
+     * Returns role behaving on the useDiscordIds rule
+     * @param role either id or name of the role
+     * @return role if found, else null
+     */
+    public static Role getRole(String role) {
+        if (role.isEmpty())
+            return null;
+
+        if (DBUtil.getINSTANCE().getConfigFileManager().useDiscordIDs())
+            return jda.getRoleById(role);
+        return jda.getRolesByName(role, true).get(0);
+    }
+
 
     /**
      * Registers a new command
@@ -117,7 +142,11 @@ public class BotHelper {
 
         jda.updateCommands().queue();
 
-        commands.addCommands(dbpermsCMD, infoCMD, helpCMD).queue();
+        commands.addCommands(dbpermsCMD).queue();
+        commands.addCommands(infoCMD).queue();
+        commands.addCommands(helpCMD).queue();
+
+
 
         commands.queue();
     }

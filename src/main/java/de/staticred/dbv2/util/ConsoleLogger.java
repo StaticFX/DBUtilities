@@ -4,6 +4,11 @@ import de.staticred.dbv2.DBUtil;
 
 public class ConsoleLogger implements Logger {
 
+    private final String prefix;
+
+    public ConsoleLogger(String prefix) {
+        this.prefix = prefix;
+    }
 
     @Override
     public void postError(String error) {
@@ -12,7 +17,9 @@ public class ConsoleLogger implements Logger {
 
     @Override
     public void postDebug(String debug) {
-        postMessage("[DEBUG] " + debug);
+        if (DBUtil.getINSTANCE().getConfigFileManager() != null)
+            if (DBUtil.getINSTANCE().getConfigFileManager().debug())
+                postMessage("[DEBUG] " + debug);
     }
 
     @Override
@@ -22,6 +29,6 @@ public class ConsoleLogger implements Logger {
 
     @Override
     public void postMessage(String message) {
-        System.out.println("[" + DBUtil.PLUGIN_NAME + "] " + message);
+        System.out.println("[" + prefix + "] " + message);
     }
 }

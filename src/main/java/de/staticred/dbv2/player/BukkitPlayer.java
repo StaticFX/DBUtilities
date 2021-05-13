@@ -42,6 +42,11 @@ public class BukkitPlayer implements DBUPlayer {
     }
 
     @Override
+    public boolean isConsole() {
+        return false;
+    }
+
+    @Override
     public void sendMessageRaw(String message) {
         sendMessage(message);
     }

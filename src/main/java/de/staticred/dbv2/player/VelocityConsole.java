@@ -39,6 +39,11 @@ public class VelocityConsole implements DBUPlayer {
     }
 
     @Override
+    public boolean isConsole() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return null;
     }

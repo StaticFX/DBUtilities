@@ -5,14 +5,13 @@ import de.staticred.dbv2.addon.AddonManager;
 import de.staticred.dbv2.commands.discordcommands.HelpDiscordCommand;
 import de.staticred.dbv2.commands.discordcommands.InfoDiscordCommand;
 import de.staticred.dbv2.commands.mccommands.InfoDBUCommand;
+import de.staticred.dbv2.commands.mixcommands.addonsmixcommand.AddonMixCommand;
+import de.staticred.dbv2.commands.mixcommands.addonsmixcommand.AddonsMixCommand;
+import de.staticred.dbv2.commands.mixcommands.botcommand.BotMixCommand;
 import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.PermissionMixCommand;
 import de.staticred.dbv2.commands.util.CommandManager;
 import de.staticred.dbv2.constants.DBUtilConstants;
-import de.staticred.dbv2.discord.events.BotReadyEvent;
-import de.staticred.dbv2.discord.events.MessageEvent;
-import de.staticred.dbv2.discord.events.RoleCreateEvent;
-import de.staticred.dbv2.discord.events.RoleDeleteEvent;
-import de.staticred.dbv2.discord.events.SlashCommandEvent;
+import de.staticred.dbv2.constants.FileConstants;
 import de.staticred.dbv2.events.util.EventManager;
 import de.staticred.dbv2.files.filehandlers.CommandFileHandler;
 import de.staticred.dbv2.files.filehandlers.ConfigFileManager;
@@ -26,6 +25,7 @@ import de.staticred.dbv2.util.BotHelper;
 import de.staticred.dbv2.util.FileLogger;
 import de.staticred.dbv2.util.Logger;
 import de.staticred.dbv2.util.Mode;
+import de.staticred.dbv2.util.Proxy;
 import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
@@ -92,7 +92,6 @@ public class DBUtil {
      */
     public static final String FILE_TIME_PATTERN = "dd.MM.yyyy";
 
-
     /**
      * FileHelper to manage all the files
      */
@@ -103,6 +102,7 @@ public class DBUtil {
      */
     private @Nullable DataBaseConnector dataBaseConnector;
 
+    private final Proxy proxy;
 
     /*TODO
            - Add DataBase (with updater from VESE)
@@ -170,6 +170,10 @@ public class DBUtil {
      */
     private @Nullable FileLogger dataBaseLogger;
 
+    private FileLogger errorLogger;
+
+    private AddonManager addonManager;
+
     /**
      * Main Constructor of DBVerifier 2.0
      * Call this method to start up the plugin.
@@ -177,8 +181,9 @@ public class DBUtil {
      * @param mode mode of the plugin
      * @param logger to log on
      */
-    public DBUtil(EventManager eventManager, Mode mode, Logger logger) throws IOException {
+    public DBUtil(Proxy proxy, EventManager eventManager, Mode mode, Logger logger) throws IOException {
         long startTime = System.currentTimeMillis();
+        this.proxy = proxy;
         this.eventManager = eventManager;
         this.mode = mode;
         INSTANCE = this;
@@ -193,15 +198,17 @@ public class DBUtil {
             throw new IllegalStateException("Can't load UTF-8 Decoder for unknown reason");
         }
 
-        AddonManager addonManager = new AddonManager(this, getDataFolder());
+        addonManager = new AddonManager(this, getDataFolder());
 
         //letting the logger now we are online
         logger.postMessage("Starting " + PLUGIN_NAME + " " + VERSION + " " + mode.toString());
         logger.postMessage("Loading files...");
-        logger.postDebug("Found " + PLUGIN_NAME + " in: " + getDataFolder().getAbsolutePath());
 
+        errorLogger = new FileLogger(new File(getDataFolder() + "/errors"));
 
         loadFiles();
+
+        logger.postDebug("Found " + PLUGIN_NAME + " in: " + getDataFolder().getAbsolutePath());
 
         startBot();
 
@@ -214,16 +221,16 @@ public class DBUtil {
             if (!dataBaseInfo.isConnected()) {
                 logger.postMessage("§c" + DBUtilConstants.ASCII_ART);
                 logger.postMessage("Can't connect to database, not starting plugin.");
+                return;
+            } else {
+                if (configFileManager.writeDatabaseToLog()) {
+                    dataBaseLogger = new FileLogger(new File(getDataFolder() + "/dblogs"));
+                    dataBaseConnector.setLogger(dataBaseLogger);
+                }
             }
         }
 
         this.permissionHandler = new PermissionHandler(configFileManager.useSQL());
-
-
-        if (configFileManager.writeDatabaseToLog()) {
-            dataBaseLogger = new FileLogger(new File(getDataFolder() + "/dblogs"));
-            dataBaseConnector.setLogger(dataBaseLogger);
-        }
 
         logger.postMessage("Loading Addons");
         addons.addAll(addonManager.loadAddons());
@@ -231,7 +238,6 @@ public class DBUtil {
 
         registerCommands();
         eventManager.init();
-        registerDiscordEvents();
 
         commandManager.load();
 
@@ -246,9 +252,12 @@ public class DBUtil {
      * Will automatically shutdown all processes running in the background
      */
     public void shutDown() {
+        addonManager.stopAddons();
         dataBaseConnector.shutDown();
         if (dataBaseLogger != null)
             dataBaseLogger.disable();
+        BotHelper.jda.shutdown();
+        errorLogger.disable();
     }
 
     private void loadDB() {
@@ -268,7 +277,7 @@ public class DBUtil {
 
     private void startBot() {
         try {
-            BotHelper.startBot(configFileManager.getConfigObject().getString("Token"));
+            BotHelper.startBot(configFileManager.getConfigObject().getString(FileConstants.TOKEN));
         } catch (LoginException e) {
             logger.postMessage("§c" + DBUtilConstants.ASCII_ART);
             logger.postError("Cant start bot. Please recheck your token in the config.yml");
@@ -278,19 +287,14 @@ public class DBUtil {
         BotHelper.connected = true;
     }
 
-    private void registerDiscordEvents() {
-        BotHelper.registerEvent(new MessageEvent());
-        BotHelper.registerEvent(new RoleCreateEvent());
-        BotHelper.registerEvent(new RoleDeleteEvent());
-        BotHelper.registerEvent(new SlashCommandEvent());
-        BotHelper.registerEvent(new BotReadyEvent());
-    }
-
     private void registerCommands() {
         commandManager.registerDiscordCommand(new InfoDiscordCommand());
         commandManager.registerDCLCommand(new InfoDBUCommand());
         commandManager.registerMixCommand(new PermissionMixCommand());
         commandManager.registerDiscordCommand(new HelpDiscordCommand());
+        commandManager.registerMixCommand(new AddonsMixCommand());
+        commandManager.registerMixCommand(new AddonMixCommand());
+        commandManager.registerMixCommand(new BotMixCommand());
     }
 
     private File getLocation() throws UnsupportedEncodingException {
@@ -300,7 +304,7 @@ public class DBUtil {
         return new File(path + "/" + PLUGIN_NAME);
     }
 
-    private void loadFiles() throws IOException {
+    private void loadFiles() {
         configFileManager = new ConfigFileManager(new File(getDataFolder().getAbsoluteFile(), "config.yml"), DBUtil.getINSTANCE().getFileHelper().getFileFromResource("config.yml"));
         fileHelper.registerManager(configFileManager);
         mcMessagesFileHandler = new MCMessagesFileHandler(new File(getDataFolder().getAbsoluteFile() + "/messages", "mc.yml"));
@@ -352,9 +356,17 @@ public class DBUtil {
         return fileHelper;
     }
 
+    public ConfigFileManager getConfigFileManager() {
+        return configFileManager;
+    }
+
     @Nullable
     public PermissionHandler getPermissionHandler() {
         return permissionHandler;
+    }
+
+    public FileLogger getErrorLogger() {
+        return errorLogger;
     }
 
     public MCMessagesFileHandler getMcMessagesFileHandler() {
@@ -365,4 +377,7 @@ public class DBUtil {
         return eventManager;
     }
 
+    public Proxy getProxy() {
+        return proxy;
+    }
 }

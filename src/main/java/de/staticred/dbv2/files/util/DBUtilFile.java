@@ -31,7 +31,7 @@ public abstract class DBUtilFile {
      */
     public DBUtilFile(File current) {
         this.file = current;
-        this.name = file.getName();
+        this.name = current.getName();
         load();
     }
 
@@ -46,9 +46,10 @@ public abstract class DBUtilFile {
 
             file.getParentFile().mkdirs();
 
+
             //directories exist
             //now create the file
-            try (InputStream in = getClass().getClassLoader().getResourceAsStream(FileConstants.RESOURCE_LOCATION + getName())) {
+            try (InputStream in = getClass().getClassLoader().getResourceAsStream(FileConstants.RESOURCE_LOCATION + file.getName())) {
                 if (in == null) {
                     throw new IOException("Can't read " + getName() + " from resource package");
                 }

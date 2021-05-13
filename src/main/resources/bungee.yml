@@ -1,4 +1,4 @@
 name: DBVerifier
 version: 2.0.0
 author: StaticRed
-main: de.staticred.dbv2.bungeecord.DBVerifierPlugin
+main: de.staticred.dbv2.proxies.bungeecord.DBVerifierPlugin

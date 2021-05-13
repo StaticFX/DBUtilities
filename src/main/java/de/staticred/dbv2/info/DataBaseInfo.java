@@ -12,7 +12,7 @@ public class DataBaseInfo {
     /**
      * if the database is connected
      */
-    private boolean connected;
+    private final boolean connected;
 
     /**
      * Constructor to create an DataBaseInfo

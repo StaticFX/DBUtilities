@@ -1,8 +1,8 @@
-package de.staticred.dbv2.bungeecord.events;
+package de.staticred.dbv2.proxies.bungeecord.events;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.EventHandler;
-import de.staticred.dbv2.bungeecord.DBVerifierPlugin;
+import de.staticred.dbv2.proxies.bungeecord.DBVerifierPlugin;
 import de.staticred.dbv2.events.util.Event;
 import de.staticred.dbv2.events.util.EventManager;
 import net.md_5.bungee.api.plugin.Listener;

@@ -15,6 +15,8 @@ public class MessageEvent extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
+        DBUtil.getINSTANCE().getLogger().postDebug("Message received by: " + event.getMessage().getContentRaw() + "in " + event.getChannel().getName());
+
         if (event.getMessage().getContentRaw().isEmpty())
             return;
 
@@ -23,6 +25,16 @@ public class MessageEvent extends ListenerAdapter {
 
         if (event.getMember().getUser().isBot())
             return;
+
+        if (!event.getMember().isOwner()) {
+            if (!DBUtil.getINSTANCE().getConfigFileManager().getChanelIDs().isEmpty()) {
+                if (!DBUtil.getINSTANCE().getConfigFileManager().getChanelIDs().contains(event.getChannel().getId())) {
+                    if (!DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage().getContentRaw()))
+                        event.getMessage().delete().queue();
+                    return;
+                }
+            }
+        }
 
         DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage().getContentRaw());
     }

@@ -32,9 +32,11 @@ public class FileConstants {
     public static final String ACTIVITY_TYPE = "botActivityType";
     public static final String ACTIVITY_DESCRIPTION = "botActitivyDescription";
     public static final String CHANNELID = "listenToChannels";
+    public static final String REMOVE_OWNER_MESSAGES = "removeOwnerMessages";
     public static final String FORCE_CLEAN_CHANNEL = "forceCleanChannel";
 
     public static final String PREFIX = "prefix";
+    public static final String INVALID_CHANNEL = "discord.invalidChannel";
 
 
     public static final String RESOURCE_LOCATION = "files/";

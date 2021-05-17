@@ -6,24 +6,28 @@ import de.staticred.dbv2.files.util.DBUtilFile;
 import java.io.File;
 
 /**
- * Manages all the messages in mc.yml
+ * Manages all the messages in messages.yml
  *
  * @author Devin Fritz
  * @version 1.0.0
  */
-public class MCMessagesFileHandler extends DBUtilFile {
+public class MessagesFileHandler extends DBUtilFile {
 
     /**
      * Instantiates a new Mc messages file handler.
      *
      * @param current the current
      */
-    public MCMessagesFileHandler(File current) {
+    public MessagesFileHandler(File current) {
         super(current);
     }
 
     public String getPrefix() {
         return convertToMcString(configuration.getString(FileConstants.PREFIX));
+    }
+
+    public String getInvalidChannel() {
+        return convertToMcString(configuration.getString(FileConstants.INVALID_CHANNEL));
     }
 
     private String convertToMcString(String convertable) {

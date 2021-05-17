@@ -1,5 +1,6 @@
-package de.staticred.dbv2.util;
+package de.staticred.dbv2.discord.util;
 
+import de.staticred.dbv2.discord.util.BotHelper;
 import net.dv8tion.jda.api.entities.Role;
 import org.jetbrains.annotations.Nullable;
 

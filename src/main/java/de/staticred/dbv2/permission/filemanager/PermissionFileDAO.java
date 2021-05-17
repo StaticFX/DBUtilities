@@ -2,7 +2,7 @@ package de.staticred.dbv2.permission.filemanager;
 
 import de.staticred.dbv2.files.util.DBUtilFile;
 import de.staticred.dbv2.permission.PermissionDAO;
-import de.staticred.dbv2.util.BotHelper;
+import de.staticred.dbv2.discord.util.BotHelper;
 import net.dv8tion.jda.api.entities.Role;
 import org.simpleyaml.configuration.file.YamlFile;
 

@@ -15,13 +15,13 @@ import de.staticred.dbv2.constants.FileConstants;
 import de.staticred.dbv2.events.util.EventManager;
 import de.staticred.dbv2.files.filehandlers.CommandFileHandler;
 import de.staticred.dbv2.files.filehandlers.ConfigFileManager;
-import de.staticred.dbv2.files.filehandlers.MCMessagesFileHandler;
+import de.staticred.dbv2.files.filehandlers.MessagesFileHandler;
 import de.staticred.dbv2.files.util.FileHelper;
 import de.staticred.dbv2.info.DataBaseInfo;
 import de.staticred.dbv2.networking.db.DataBaseConnector;
 import de.staticred.dbv2.permission.PermissionHandler;
 import de.staticred.dbv2.permission.filemanager.PermissionFileDAO;
-import de.staticred.dbv2.util.BotHelper;
+import de.staticred.dbv2.discord.util.BotHelper;
 import de.staticred.dbv2.util.FileLogger;
 import de.staticred.dbv2.util.Logger;
 import de.staticred.dbv2.util.Mode;
@@ -146,7 +146,7 @@ public class DBUtil {
 
     private ConfigFileManager configFileManager;
 
-    private MCMessagesFileHandler mcMessagesFileHandler;
+    private MessagesFileHandler mcMessagesFileHandler;
 
     private CommandFileHandler commandFileHandler;
 
@@ -307,7 +307,7 @@ public class DBUtil {
     private void loadFiles() {
         configFileManager = new ConfigFileManager(new File(getDataFolder().getAbsoluteFile(), "config.yml"), DBUtil.getINSTANCE().getFileHelper().getFileFromResource("config.yml"));
         fileHelper.registerManager(configFileManager);
-        mcMessagesFileHandler = new MCMessagesFileHandler(new File(getDataFolder().getAbsoluteFile() + "/messages", "mc.yml"));
+        mcMessagesFileHandler = new MessagesFileHandler(new File(getDataFolder().getAbsoluteFile() + "/messages", "messages.yml"));
         fileHelper.registerManager(mcMessagesFileHandler);
         commandFileHandler = new CommandFileHandler(new File(getDataFolder().getAbsoluteFile(), "commands.yml"));
         fileHelper.registerManager(commandFileHandler);
@@ -369,7 +369,7 @@ public class DBUtil {
         return errorLogger;
     }
 
-    public MCMessagesFileHandler getMcMessagesFileHandler() {
+    public MessagesFileHandler getMcMessagesFileHandler() {
         return mcMessagesFileHandler;
     }
 

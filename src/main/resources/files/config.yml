@@ -37,6 +37,11 @@ logDBToFile: true
 listenToChannels:
   - ""
 
+#if the bot should also remove messages from owner which would not give a result
+#only effective when foreCleanChannel is set to true
+removeOwnerMessages: true
+
+
 #will delete all messages not resulting in a reply from the bot
 forceCleanChannel: true
 

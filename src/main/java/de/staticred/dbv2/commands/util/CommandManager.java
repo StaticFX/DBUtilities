@@ -134,18 +134,17 @@ public class CommandManager {
      */
     public boolean handleDiscordInput(Member member, TextChannel tc, String in) {
         if (in.isEmpty())
-            return true;
+            return false;
 
         if (member == null)
-            return true;
+            return false;
 
         if (member.getUser().isBot())
-            return true;
-        System.out.println("here1");
+            return false;
 
 
-        String command = getCommand(in.substring(1));
-        String[] args = getArgs(in.substring(1));
+        String command = getCommand(in);
+        String[] args = getArgs(in);
 
         for (DiscordCommand dcCommand : discordCommands) {
             String commandPrefix = commandFileHandler.getPrefixFor(dcCommand.getName());
@@ -154,6 +153,7 @@ public class CommandManager {
             if ((dcCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) && commandPrefix.equals(prefix)) {
                 dcCommand.execute(new MemberSender(tc, member), tc, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
+                System.out.println("here5");
                 return true;
             }
         }
@@ -163,6 +163,8 @@ public class CommandManager {
             String commandPrefix = commandFileHandler.getPrefixFor(mixCommand.getName());
             String prefix = in.substring(0, commandPrefix.length());
             List<String> aliases = commandFileHandler.getAliasesFor(mixCommand.getName());
+            command = getCommand(in.substring(commandPrefix.length()));
+
             if ((mixCommand.getName().equalsIgnoreCase(command) || aliases.contains(command) ) && commandPrefix.equals(prefix)) {
                 mixCommand.executeDC(new MemberSender(tc, member),args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);

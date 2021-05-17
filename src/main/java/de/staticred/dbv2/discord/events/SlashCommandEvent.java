@@ -2,8 +2,9 @@ package de.staticred.dbv2.discord.events;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.SlashCommandSender;
-import net.dv8tion.jda.api.entities.Command;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 
 /**
  * Listens for slash commands on discord
@@ -33,9 +34,9 @@ public class SlashCommandEvent extends ListenerAdapter {
 
         StringBuilder sb = new StringBuilder(cmd);
 
-        for (net.dv8tion.jda.api.events.interaction.SlashCommandEvent.OptionData data : event.getOptions()) {
+        for (OptionMapping data : event.getOptions()) {
 
-            if (data.getType() == Command.OptionType.BOOLEAN) {
+            if (data.getType() == OptionType.BOOLEAN) {
                 boolean b = data.getAsBoolean();
                 sb.append(b).append(" ");
                 continue;

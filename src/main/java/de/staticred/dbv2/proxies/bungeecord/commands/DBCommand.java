@@ -1,4 +1,4 @@
-package de.staticred.dbv2.bungeecord.commands;
+package de.staticred.dbv2.proxies.bungeecord.commands;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.BungeeConsole;

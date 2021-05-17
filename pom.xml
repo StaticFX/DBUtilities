@@ -29,6 +29,11 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
+            <id>dv8tion</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -110,9 +115,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.dv8fromtheworld</groupId>
+            <groupId>com.github.DV8FromTheWorld</groupId>
             <artifactId>JDA</artifactId>
-            <version>feature~slash-commands-v3.7.1-g79dc33e-599</version>
+            <version>db92d7d669a639a225f5ee831a83bb36f30a4b13</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

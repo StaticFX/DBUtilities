@@ -37,7 +37,7 @@ public class SlashCommandSender implements DiscordSender {
 
     @Override
     public void sendEmbed(MessageEmbed embed) {
-        sender.reply(embed).queue();
+        sender.replyEmbeds(embed).queue();
     }
 
     @Override

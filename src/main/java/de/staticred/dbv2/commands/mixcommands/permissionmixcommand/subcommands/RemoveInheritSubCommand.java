@@ -2,8 +2,7 @@ package de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.CommandSender;
-import de.staticred.dbv2.util.BotHelper;
-import de.staticred.dbv2.util.RoleBuilder;
+import de.staticred.dbv2.discord.util.RoleBuilder;
 import net.dv8tion.jda.api.entities.Role;
 
 /**

@@ -87,6 +87,11 @@ public class ConfigFileManager extends Updatable {
         return configuration.getBoolean(FileConstants.FORCE_CLEAN_CHANNEL);
     }
 
+    public boolean removeOwnerMessages() {
+        return configuration.getBoolean(FileConstants.REMOVE_OWNER_MESSAGES);
+    }
+
+
     public String getActivityDescription() {
         return configuration.getString(FileConstants.ACTIVITY_DESCRIPTION);
     }

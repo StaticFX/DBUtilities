@@ -2,6 +2,8 @@ package de.staticred.dbv2.util;
 
 import de.staticred.dbv2.player.DBUPlayer;
 
+import java.util.UUID;
+
 /**
  * This is a superclass of all kind of proxies
  *
@@ -19,5 +21,12 @@ public interface Proxy {
      * @return player if found, null otherwise
      */
     DBUPlayer getOnlinePlayer(String name);
+
+    /**
+     * Gets player by uuid from proxy
+     * @param uuid the uuid
+     * @return player if found, null otherwise
+     */
+    DBUPlayer getPlayer(UUID uuid);
 
 }

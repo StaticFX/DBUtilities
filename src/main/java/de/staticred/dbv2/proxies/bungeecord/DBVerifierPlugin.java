@@ -15,6 +15,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Class extending Plugin used if a bungeecord plugin
@@ -53,6 +54,14 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
         return player != null ? new BungeePlayer(player) : null;
     }
 
+
+    @Override
+    public DBUPlayer getPlayer(UUID uuid) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
+
+        return player != null ? new BungeePlayer(player) : null;
+    }
+
     @Override
     public void onDisable() {
         dbUtil.shutDown();
@@ -61,4 +70,7 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
     public static DBVerifierPlugin getInstance() {
         return INSTANCE;
     }
+
+
+
 }

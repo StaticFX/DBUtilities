@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author Devin Fritz
@@ -54,6 +55,13 @@ public class DBVerifierPlugin implements Proxy {
     @Override
     public DBUPlayer getOnlinePlayer(String name) {
         Optional<Player> player = server.getPlayer(name);
+
+        return player.map(VelocityPlayer::new).orElse(null);
+    }
+
+    @Override
+    public DBUPlayer getPlayer(UUID uuid) {
+        Optional<Player> player = server.getPlayer(uuid);
 
         return player.map(VelocityPlayer::new).orElse(null);
     }

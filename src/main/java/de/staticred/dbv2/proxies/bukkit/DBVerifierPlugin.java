@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class DBVerifierPlugin extends JavaPlugin implements Proxy {
 
@@ -53,4 +54,13 @@ public class DBVerifierPlugin extends JavaPlugin implements Proxy {
     public static DBVerifierPlugin getInstance() {
         return INSTANCE;
     }
+
+
+    @Override
+    public DBUPlayer getPlayer(UUID uuid) {
+        Player player = Bukkit.getPlayer(uuid);
+
+        return player != null ? new BukkitPlayer(player) : null;
+    }
+
 }

@@ -3,6 +3,7 @@ package de.staticred.dbv2.player;
 import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import de.staticred.dbv2.DBUtil;
 import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.BaseComponent;
 
 import java.util.UUID;
 
@@ -56,5 +57,10 @@ public class VelocityConsole implements DBUPlayer {
     @Override
     public boolean hasPermission(String permission) {
         return console.hasPermission(permission);
+    }
+
+    @Override
+    public void sendComponent(Component component) {
+        console.sendMessage(component);
     }
 }

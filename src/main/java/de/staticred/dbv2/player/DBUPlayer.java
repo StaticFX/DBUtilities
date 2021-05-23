@@ -1,6 +1,9 @@
 package de.staticred.dbv2.player;
 
 
+import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.BaseComponent;
+
 import java.util.UUID;
 
 /**
@@ -26,5 +29,7 @@ public interface DBUPlayer extends CommandSender {
     UUID getUUID();
 
     String getName();
+
+    void sendComponent(Component component);
 
 }

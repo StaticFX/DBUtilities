@@ -1,7 +1,9 @@
 package de.staticred.dbv2.player;
 
 import de.staticred.dbv2.DBUtil;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.UUID;
@@ -57,5 +59,10 @@ public class BungeeConsole implements DBUPlayer {
     @Override
     public String getName() {
         return "console";
+    }
+
+    @Override
+    public void sendComponent(Component component) {
+        sender.sendMessage(new TextComponent(component.toString()));
     }
 }

@@ -1,6 +1,9 @@
 package de.staticred.dbv2.player;
 
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.proxies.bukkit.DBVerifierPlugin;
+import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.entity.Player;
 
@@ -59,5 +62,10 @@ public class BukkitPlayer implements DBUPlayer {
     @Override
     public String getName() {
         return bukkitPlayer.getName();
+    }
+
+    @Override
+    public void sendComponent(Component component) {
+        DBVerifierPlugin.getInstance().getBukkitAudiences().player(bukkitPlayer).sendMessage(component);
     }
 }

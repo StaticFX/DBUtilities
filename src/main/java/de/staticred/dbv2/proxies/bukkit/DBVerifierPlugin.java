@@ -8,6 +8,7 @@ import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.util.ConsoleLogger;
 import de.staticred.dbv2.util.Mode;
 import de.staticred.dbv2.util.Proxy;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,8 @@ public class DBVerifierPlugin extends JavaPlugin implements Proxy {
 
     private DBUtil dbUtil;
 
+    private BukkitAudiences bukkitAudiences;
+
     @Override
     public void onEnable() {
 
@@ -31,6 +34,7 @@ public class DBVerifierPlugin extends JavaPlugin implements Proxy {
             return;
         }
 
+        bukkitAudiences = BukkitAudiences.create(this);
 
         INSTANCE = this;
 
@@ -55,6 +59,9 @@ public class DBVerifierPlugin extends JavaPlugin implements Proxy {
         return INSTANCE;
     }
 
+    public BukkitAudiences getBukkitAudiences() {
+        return bukkitAudiences;
+    }
 
     @Override
     public DBUPlayer getPlayer(UUID uuid) {

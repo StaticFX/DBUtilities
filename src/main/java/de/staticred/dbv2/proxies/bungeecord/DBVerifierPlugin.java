@@ -10,6 +10,7 @@ import de.staticred.dbv2.proxies.bungeecord.events.CommandEvent;
 import de.staticred.dbv2.util.ConsoleLogger;
 import de.staticred.dbv2.util.Mode;
 import de.staticred.dbv2.util.Proxy;
+import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -31,6 +32,8 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
 
     private DBUtil dbUtil;
 
+    private BungeeAudiences bungeeAudiences;
+
     @Override
     public void onEnable() {
         try {
@@ -39,6 +42,8 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
             exception.printStackTrace();
             return;
         }
+
+        bungeeAudiences = BungeeAudiences.create(this);
 
         INSTANCE = this;
 
@@ -54,6 +59,9 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
         return player != null ? new BungeePlayer(player) : null;
     }
 
+    public BungeeAudiences getBungeeAudiences() {
+        return bungeeAudiences;
+    }
 
     @Override
     public DBUPlayer getPlayer(UUID uuid) {

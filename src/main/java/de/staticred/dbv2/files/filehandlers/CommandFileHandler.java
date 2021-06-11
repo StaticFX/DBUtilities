@@ -3,6 +3,7 @@ package de.staticred.dbv2.files.filehandlers;
 import de.staticred.dbv2.commands.util.DBUCommand;
 import de.staticred.dbv2.commands.util.DiscordCommand;
 import de.staticred.dbv2.commands.util.MixCommand;
+import de.staticred.dbv2.constants.FileConstants;
 import de.staticred.dbv2.files.ConfigObject;
 import de.staticred.dbv2.files.util.DBUtilFile;
 import org.simpleyaml.configuration.file.YamlFile;
@@ -20,12 +21,12 @@ public class CommandFileHandler extends DBUtilFile {
     /**
      * The constant NAME.
      */
-    public static final String NAME = "commands.yml";
+    public static final String NAME = FileConstants.RESOURCE_LOCATION + "commands.yml";
 
     private boolean isValidFile;
 
     public CommandFileHandler(File commands) {
-        super(commands);
+        super(commands, FileConstants.RESOURCE_LOCATION + "commands.yml");
     }
 
     /**

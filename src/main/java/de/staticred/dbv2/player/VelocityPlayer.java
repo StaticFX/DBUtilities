@@ -60,4 +60,9 @@ public class VelocityPlayer implements DBUPlayer {
     public boolean hasPermission(String permission) {
         return player.hasPermission(permission);
     }
+
+    @Override
+    public void sendComponent(Component component) {
+        player.sendMessage(component);
+    }
 }

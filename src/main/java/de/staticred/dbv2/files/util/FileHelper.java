@@ -61,6 +61,7 @@ public class FileHelper {
 
     /**
      * gets a file from the internal Plugin resources
+     * using DBUitl classloader!
      * @param name of the file
      * @return file
      */
@@ -79,5 +80,22 @@ public class FileHelper {
         return file;
     }
 
+
+    public File getFileFromResource(ClassLoader loader, String name) {
+        File file = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath() + "/temp", name);
+        file.getParentFile().mkdirs();
+        try (InputStream in = loader.getResourceAsStream(name)) {
+            if (in == null)
+                throw new IOException("Can't load " + name + " from default resource package");
+
+            DBUtil.getINSTANCE().getLogger().postDebug("Loading file from: " + loader.getResource(name).getPath());
+
+            Files.copy(in, file.toPath());
+        } catch (IOException exception) {
+            DBUtil.getINSTANCE().getLogger().postError("Cant load file from resource package: ");
+            exception.printStackTrace();
+        }
+        return file;
+    }
 
 }

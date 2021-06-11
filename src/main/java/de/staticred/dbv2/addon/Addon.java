@@ -57,18 +57,32 @@ public abstract class Addon {
     private final AddonInfo addonInfo;
 
     /**
+     * classloader
+     */
+    private final ClassLoader classLoader;
+
+    /**
+     * mode of DBUTIL
+     * @see Mode
+     */
+    private final Mode mode;
+
+    /**
      * constructor.
      * @param info addoninfo
      * @param dataFolder datafolder
      * @param logger main folder
      * @param commandManager commandManager
+     * @param classLoader loader of the addon
      */
-    public Addon(AddonInfo info, File dataFolder, Logger logger, CommandManager commandManager, Mode mode) {
+    public Addon(AddonInfo info, File dataFolder, Logger logger, CommandManager commandManager, Mode mode, ClassLoader classLoader) {
         this.addonInfo = info;
         this.name = info.getName();
         this.dataFolder = dataFolder;
         this.logger = logger;
         this.commandManager = commandManager;
+        this.classLoader = classLoader;
+        this.mode = mode;
     }
 
     /**
@@ -84,6 +98,10 @@ public abstract class Addon {
      */
     public abstract void onEnd();
 
+
+    public Mode getMode() {
+        return mode;
+    }
 
     /**
      * Gets data folder.
@@ -131,6 +149,18 @@ public abstract class Addon {
 
     public Proxy getProxy() {
         return DBUtil.getINSTANCE().getProxy();
+    }
+
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    /**
+     * @return file from resource package, null if not available
+     */
+    public File getFileFromInnerJar(String fileName) {
+        String path = addonInfo.getFile().getAbsolutePath() + "!" + fileName;
+        return new File(path);
     }
 
     /**

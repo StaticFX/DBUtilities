@@ -6,7 +6,6 @@ import de.staticred.dbv2.files.util.Updatable;
 import net.dv8tion.jda.api.entities.Activity;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public class ConfigFileManager extends Updatable {
     private boolean isValidFile;
 
     public ConfigFileManager(File config, File newest) {
-        super(config, newest);
+        super(config, newest, FileConstants.RESOURCE_LOCATION + "config.yml");
     }
 
     public ConfigObject getConfigObject() {

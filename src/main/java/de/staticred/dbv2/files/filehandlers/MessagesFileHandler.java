@@ -19,7 +19,7 @@ public class MessagesFileHandler extends DBUtilFile {
      * @param current the current
      */
     public MessagesFileHandler(File current) {
-        super(current);
+        super(current, FileConstants.RESOURCE_LOCATION + "messages.yml");
     }
 
     public String getPrefix() {

@@ -139,7 +139,7 @@ public class AddonManager {
 
         Object addonClass;
 
-        AddonInfo info = new AddonInfo(name, version, author, main);
+        AddonInfo info = new AddonInfo(name, version, author, main, jarFile);
 
         if (addons.stream().anyMatch(addon -> addon.getAddonInfo().getName().equals(name))) {
             DBUtil.getINSTANCE().getLogger().postMessage("Skipping addon " + name + " already running.");
@@ -149,7 +149,7 @@ public class AddonManager {
         File dataFolder = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath() + "/addons/" + name);
 
         try {
-            addonClass = cls.getConstructors()[0].newInstance(info, dataFolder, new ConsoleLogger(name), DBUtil.getINSTANCE().getCommandManager(), DBUtil.getINSTANCE().getMode());
+            addonClass = cls.getConstructors()[0].newInstance(info, dataFolder, new ConsoleLogger(name), DBUtil.getINSTANCE().getCommandManager(), DBUtil.getINSTANCE().getMode(), cl);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             DBUtil.getINSTANCE().getLogger().postError("Cannot create addon class for unknown reason: " + jarFile.getName());
             e.printStackTrace();
@@ -204,7 +204,7 @@ public class AddonManager {
         }
         URL[] urls = new URL[]{url};
 
-        return new URLClassLoader(urls, this.getClass().getClassLoader());
+        return new URLClassLoader(urls, getClass().getClassLoader());
     }
 
     private YamlFile getYamlFileFor(ClassLoader cl, File jarFile) {

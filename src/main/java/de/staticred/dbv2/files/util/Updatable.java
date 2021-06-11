@@ -7,6 +7,7 @@ import org.simpleyaml.exceptions.InvalidConfigurationException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Updatable files will be compared to their newest version and then auto updated.
@@ -25,8 +26,6 @@ import java.io.IOException;
  */
 public abstract class Updatable extends DBUtilFile {
 
-    private final File current;
-    private final File newest;
     private final String name;
     @Nullable
 
@@ -42,11 +41,10 @@ public abstract class Updatable extends DBUtilFile {
      *
      * @param current file
      * @param newest  file
+     * @param location where the file is in resource package
      */
-    public Updatable(File current, File newest) {
-        super(current);
-        this.current = current;
-        this.newest = newest;
+    public Updatable(File current, String location) {
+        super(current, location);
         this.name = current.getName();
         update();
     }
@@ -140,6 +138,9 @@ public abstract class Updatable extends DBUtilFile {
     }
 
 
+    private InputStream getYAMLInputStream(String resourceLocation) {
+        return getClass().getClassLoader().getResourceAsStream(resourceLocation);
+    }
 
     public String getName() {
         return name;

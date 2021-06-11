@@ -1,6 +1,8 @@
 package de.staticred.dbv2.files.util;
 
+import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.constants.FileConstants;
+import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.exceptions.InvalidConfigurationException;
 
@@ -21,19 +23,36 @@ public abstract class DBUtilFile {
 
     private final File file;
     private final String name;
+    private @Nullable ClassLoader classLoader;
     protected YamlFile configuration;
-
+    private final String location;
 
     /**
      * Instantiates a new Db util file.
      *
-     * @param current the current
+     * @param current the current, where the file where be saved
+     * @param location where to read the file from, searches in resource package for it
      */
-    public DBUtilFile(File current) {
+    public DBUtilFile(File current, String location) {
+        this.classLoader = getClass().getClassLoader();
         this.file = current;
         this.name = current.getName();
+        this.location = location;
         load();
     }
+
+    public DBUtilFile(ClassLoader classLoader, File current, String location) {
+        this.classLoader = classLoader;
+        this.file = current;
+        this.name = current.getName();
+        this.location = location;
+        load();
+    }
+
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+
 
     /**
      * Loads the current file of this file
@@ -46,12 +65,13 @@ public abstract class DBUtilFile {
 
             file.getParentFile().mkdirs();
 
+            DBUtil.getINSTANCE().getLogger().postDebug("Loading file: " + location);
 
             //directories exist
             //now create the file
-            try (InputStream in = getClass().getClassLoader().getResourceAsStream(FileConstants.RESOURCE_LOCATION + file.getName())) {
+            try (InputStream in = classLoader.getResourceAsStream(location)) {
                 if (in == null) {
-                    throw new IOException("Can't read " + getName() + " from resource package");
+                    throw new IOException("Can't read " + location + " from resource package");
                 }
 
                 Files.copy(in, file.toPath());

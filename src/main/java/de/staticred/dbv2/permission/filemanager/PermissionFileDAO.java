@@ -1,5 +1,6 @@
 package de.staticred.dbv2.permission.filemanager;
 
+import de.staticred.dbv2.constants.FileConstants;
 import de.staticred.dbv2.files.util.DBUtilFile;
 import de.staticred.dbv2.permission.PermissionDAO;
 import de.staticred.dbv2.discord.util.BotHelper;
@@ -15,19 +16,14 @@ import java.util.Map;
 
 public class PermissionFileDAO extends DBUtilFile implements PermissionDAO {
 
-    public static final String NAME = "permissions.yml";
-
-    /**
-     * whether the file is valid or not
-     */
-    private boolean isValidFile;
+    public static final String NAME = FileConstants.RESOURCE_LOCATION + "permissions.yml";
 
     /**
      * Constructor.
      * @param file location
      */
     public PermissionFileDAO(File file) {
-        super(file);
+        super(file, NAME);
     }
 
     @Override

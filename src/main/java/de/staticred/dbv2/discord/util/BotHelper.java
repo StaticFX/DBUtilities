@@ -17,6 +17,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandUpdateAction;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Util class help to manage the bot
@@ -40,6 +42,8 @@ public class BotHelper {
      * The guild the bot is sitting on
      */
     public static Guild guild;
+
+    public static List<CommandData> commandsToLoad = new ArrayList<>();
 
 
     /**
@@ -95,6 +99,12 @@ public class BotHelper {
      * @param command to register
      */
     public static void registerNewCommand(CommandData command) {
+
+        if (guild == null) {
+            commandsToLoad.add(command);
+            return;
+        }
+
         Guild mainGuild = jda.getGuilds().get(0);
         CommandUpdateAction commands = mainGuild.updateCommands();
         commands.addCommands(command).queue();

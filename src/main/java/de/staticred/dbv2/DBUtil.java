@@ -305,7 +305,7 @@ public class DBUtil {
     }
 
     private void loadFiles() {
-        configFileManager = new ConfigFileManager(new File(getDataFolder().getAbsoluteFile(), "config.yml"), DBUtil.getINSTANCE().getFileHelper().getFileFromResource("config.yml"));
+        configFileManager = new ConfigFileManager(new File(getDataFolder().getAbsoluteFile(), "config.yml"));
         fileHelper.registerManager(configFileManager);
         mcMessagesFileHandler = new MessagesFileHandler(new File(getDataFolder().getAbsoluteFile() + "/messages", "messages.yml"));
         fileHelper.registerManager(mcMessagesFileHandler);

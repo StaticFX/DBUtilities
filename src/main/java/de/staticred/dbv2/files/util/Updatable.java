@@ -26,7 +26,7 @@ import java.io.InputStream;
  */
 public abstract class Updatable extends DBUtilFile {
 
-    private final String name;
+    private final String name, location;
     @Nullable
 
     /**
@@ -40,12 +40,12 @@ public abstract class Updatable extends DBUtilFile {
      * @see FileHelper
      *
      * @param current file
-     * @param newest  file
      * @param location where the file is in resource package
      */
     public Updatable(File current, String location) {
         super(current, location);
         this.name = current.getName();
+        this.location = location;
         update();
     }
 
@@ -58,7 +58,6 @@ public abstract class Updatable extends DBUtilFile {
                 exception.printStackTrace();
             }
         }
-        newest.delete();
     }
 
     @Override
@@ -69,19 +68,11 @@ public abstract class Updatable extends DBUtilFile {
         if (configuration == null)
             throw new IllegalStateException("Method can't be invoked when yml = null");
 
-        if (newest.isDirectory())
-            throw new IllegalStateException("File can't be a directory");
-
-        if (!newest.canRead())
-            throw new IllegalStateException("Can't read file");
-
-        //file is valid
-        YamlFile newestFile = new YamlFile(newest);
+        YamlFile newestFile = new YamlFile();
         try {
-            newestFile.load();
-        } catch (InvalidConfigurationException | IOException e) {
-            e.printStackTrace();
-            return false;
+            newestFile.load(getYAMLInputStream(location));
+        } catch (IOException | InvalidConfigurationException exception) {
+            throw new IllegalStateException("Illegal YAML file");
         }
 
         int newKeysAmount = newestFile.getKeys(false).size() - configuration.getKeys(true).size();
@@ -105,7 +96,20 @@ public abstract class Updatable extends DBUtilFile {
     }
 
     public boolean updateFile() throws IOException {
-        YamlFile newYamlFile = new YamlFile(newest);
+        YamlFile newYamlFile = new YamlFile();
+        try {
+            newYamlFile.load(getYAMLInputStream(location));
+        } catch (IOException | InvalidConfigurationException exception) {
+            throw new IllegalStateException("Illegal YAML file");
+        }
+
+        try {
+            newYamlFile.load();
+        } catch (InvalidConfigurationException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
 
         try {
             newYamlFile.load();

@@ -1,6 +1,7 @@
 package de.staticred.dbv2.proxies.bukkit;
 
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.proxies.bukkit.commands.DBUCommand;
 import de.staticred.dbv2.proxies.bukkit.events.BukkitEventManager;
 import de.staticred.dbv2.proxies.bukkit.events.CommandEvent;
 import de.staticred.dbv2.player.BukkitPlayer;
@@ -37,7 +38,7 @@ public class DBVerifierPlugin extends JavaPlugin implements Proxy {
         bukkitAudiences = BukkitAudiences.create(this);
 
         INSTANCE = this;
-
+        getCommand("dbu").setExecutor(new DBUCommand());
         getServer().getPluginManager().registerEvents(new CommandEvent(), this);
 
     }

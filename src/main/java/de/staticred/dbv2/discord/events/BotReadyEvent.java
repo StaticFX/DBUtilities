@@ -4,6 +4,7 @@ import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.discord.util.BotHelper;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
 /**
  * @author Devin Fritz
@@ -23,8 +24,13 @@ public class BotReadyEvent extends ListenerAdapter {
         }
 
 
-        if (BotHelper.jda.getGuilds().size() != 0)
+        if (BotHelper.jda.getGuilds().size() != 0) {
             BotHelper.guild = BotHelper.jda.getGuilds().get(0);
+
+            for (CommandData command : BotHelper.commandsToLoad) {
+                BotHelper.guild.updateCommands().addCommands(command).queue();
+            }
+        }
 
         BotHelper.registerEvent(new MessageEvent());
         BotHelper.registerEvent(new RoleCreateEvent());

@@ -17,13 +17,8 @@ import java.util.List;
  */
 public class ConfigFileManager extends Updatable {
 
-    /**
-     * indicates if the config.yml file was readable
-     */
-    private boolean isValidFile;
-
-    public ConfigFileManager(File config, File newest) {
-        super(config, newest, FileConstants.RESOURCE_LOCATION + "config.yml");
+    public ConfigFileManager(File config) {
+        super(config, FileConstants.RESOURCE_LOCATION + "config.yml");
     }
 
     public ConfigObject getConfigObject() {

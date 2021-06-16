@@ -26,7 +26,8 @@ public interface DiscordSender extends CommandSender {
     /**
      * Sends a embed to the sender
      * @param embed the embed
+     * @return id of sent message
      */
-    void sendEmbed(MessageEmbed embed);
+    long sendEmbed(MessageEmbed embed);
 
 }

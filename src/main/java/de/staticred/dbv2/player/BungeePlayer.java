@@ -3,7 +3,6 @@ package de.staticred.dbv2.player;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.proxies.bungeecord.DBVerifierPlugin;
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -29,7 +28,7 @@ public class BungeePlayer implements DBUPlayer {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public long sendMessage(String message) {
         bungeeCordPlayer.sendMessage(new TextComponent(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message));
     }
 

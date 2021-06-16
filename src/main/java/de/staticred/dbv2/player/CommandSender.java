@@ -11,8 +11,9 @@ public interface CommandSender {
     /**
      * sends a message to the executor
      * @param message to send
+     * @return
      */
-    void sendMessage(String message);
+    long sendMessage(String message);
 
     /**
      * if the executor has the permission

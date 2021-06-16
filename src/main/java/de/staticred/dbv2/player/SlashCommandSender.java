@@ -25,7 +25,7 @@ public class SlashCommandSender implements DiscordSender {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public long sendMessage(String message) {
         Embed embed = new Embed(message, DBUtil.PLUGIN_NAME, true, Color.ORANGE, sender.getUser().getAvatarUrl());
         sendEmbed(embed.build());
     }

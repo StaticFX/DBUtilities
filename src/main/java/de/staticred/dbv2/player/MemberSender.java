@@ -3,6 +3,7 @@ package de.staticred.dbv2.player;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.discord.util.Embed;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -32,9 +33,9 @@ public class MemberSender implements DiscordSender {
     }
 
     @Override
-    public void sendMessage(String message) {
+    public long sendMessage(String message) {
         Embed embed = new Embed(message, DBUtil.PLUGIN_NAME, true, Color.ORANGE, member.getUser().getAvatarUrl());
-        sendEmbed(embed.build());
+        return sendEmbed(embed.build());
     }
 
     @Override
@@ -49,15 +50,21 @@ public class MemberSender implements DiscordSender {
      *
      * @param embed to send
      */
-    public void sendEmbed(MessageEmbed embed) {
+    public long sendEmbed(MessageEmbed embed) {
         int deleteTime = DBUtil.getINSTANCE().getConfigFileManager().deleteTime();
 
+        long id;
+
         if (deleteTime < -1)
-            tc.sendMessage(embed).queue();
+            id = tc.sendMessage(embed).complete().getIdLong();
         else if (deleteTime == -1)
-            tc.sendMessage(embed).queue();
-         else
-            tc.sendMessage(embed).queue(message -> message.delete().queueAfter(deleteTime, TimeUnit.SECONDS));
+            id = tc.sendMessage(embed).complete().getIdLong();
+         else {
+            Message message = tc.sendMessage(embed).complete();
+            message.delete().queueAfter(deleteTime, TimeUnit.SECONDS);
+            id = message.getIdLong();
+        }
+         return id;
     }
 
     public Member getMember() {

@@ -32,4 +32,5 @@ public interface DBUPlayer extends CommandSender {
 
     void sendComponent(Component component);
 
+
 }

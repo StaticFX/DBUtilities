@@ -8,6 +8,7 @@ import de.staticred.dbv2.commands.util.MixCommand;
 import de.staticred.dbv2.discord.util.Embed;
 import de.staticred.dbv2.player.DiscordSender;
 import de.staticred.dbv2.player.MemberSender;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -35,7 +36,7 @@ public class HelpDiscordCommand implements DiscordCommand {
     }
 
     @Override
-    public void execute(DiscordSender member, TextChannel tc, String[] args) {
+    public void execute(DiscordSender member, TextChannel tc, Message message, String[] args) {
         StringBuilder sb = new StringBuilder();
         for (DiscordCommand command : DBUtil.getINSTANCE().getCommandManager().getCopyOfRegisteredDiscordCommands()) {
             sb.append(command.getPrefix()).append(command.getName()).append("\n");

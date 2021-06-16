@@ -5,6 +5,7 @@ import de.staticred.dbv2.commands.util.DiscordCommand;
 import de.staticred.dbv2.player.DiscordSender;
 import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 /**
@@ -36,7 +37,7 @@ public class InfoDiscordCommand implements DiscordCommand {
     }
 
     @Override
-    public void execute(DiscordSender member, TextChannel tc, String[] args) {
+    public void execute(DiscordSender member, TextChannel tc, Message message, String[] args) {
         member.sendMessage("Running " + DBUtil.PLUGIN_NAME + " version: " + DBUtil.VERSION + "\nDeveloped by StaticRed");
     }
 }

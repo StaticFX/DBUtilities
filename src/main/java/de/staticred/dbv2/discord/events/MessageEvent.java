@@ -30,7 +30,6 @@ public class MessageEvent extends ListenerAdapter {
         if (event.getMember().getUser().isBot())
             return;
 
-
         ConfigFileManager config = DBUtil.getINSTANCE().getConfigFileManager();
 
         int deleteTime = config.deleteTime();
@@ -41,7 +40,7 @@ public class MessageEvent extends ListenerAdapter {
             String channelID = event.getChannel().getId();
 
             if (channelIDs.isEmpty()) {
-                DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage().getContentRaw());
+                DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw());
                 if (deleteTime > -1)
                     event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
                 return;
@@ -52,11 +51,11 @@ public class MessageEvent extends ListenerAdapter {
             }
 
             if (!config.removeOwnerMessages() && event.getMember().isOwner()) {
-                DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage().getContentRaw());
+                DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw());
                 return;
             }
 
-            if (!DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage().getContentRaw())) {
+            if (!DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw())) {
                 event.getMessage().delete().queue();
                 return;
             }
@@ -64,13 +63,11 @@ public class MessageEvent extends ListenerAdapter {
             if (deleteTime > -1)
                 event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
         } else {
-            if (DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage().getContentRaw())) {
+            if (DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw())) {
                 if (deleteTime > -1) {
                     event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
                 }
             }
-
         }
     }
-
 }

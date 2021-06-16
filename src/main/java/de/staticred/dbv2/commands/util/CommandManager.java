@@ -7,6 +7,7 @@ import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.player.MemberSender;
 import de.staticred.dbv2.player.SlashCommandSender;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.io.File;
@@ -97,9 +98,10 @@ public class CommandManager {
      * Handles discord input via. slashcommand
      * @param in string
      * @param sender sender
-     * @param tc textchannel
+     * @param tc textchanne
+     * @param message messagel
      */
-    public void handleDiscordInputSlashCommand(String in, SlashCommandSender sender, TextChannel tc) {
+    public void handleDiscordInputSlashCommand(String in, SlashCommandSender sender, TextChannel tc, Message message) {
         if (in.isEmpty())
             return;
         String command = getCommand(in);
@@ -107,7 +109,7 @@ public class CommandManager {
 
         for (DiscordCommand dcCommand : discordCommands) {
             if (dcCommand.getName().equalsIgnoreCase(command)) {
-                dcCommand.execute(sender, tc, args);
+                dcCommand.execute(sender, tc, message, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + sender.getMember().getEffectiveName() + " executed command: " + command);
                 return;
             }
@@ -130,9 +132,10 @@ public class CommandManager {
      * Handles discord input via. chat
      * @param in string
      * @param member sender
+     * @param message message
      * @param tc textchannel
      */
-    public boolean handleDiscordInput(Member member, TextChannel tc, String in) {
+    public boolean handleDiscordInput(Member member, TextChannel tc, Message message, String in) {
         if (in.isEmpty())
             return false;
 
@@ -151,7 +154,7 @@ public class CommandManager {
             String prefix = in.substring(0, commandPrefix.length());
             List<String> aliases = commandFileHandler.getAliasesFor(dcCommand.getName());
             if ((dcCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) && commandPrefix.equals(prefix)) {
-                dcCommand.execute(new MemberSender(tc, member), tc, args);
+                dcCommand.execute(new MemberSender(tc, member), tc, message, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
                 System.out.println("here5");
                 return true;

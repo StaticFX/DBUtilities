@@ -3,6 +3,7 @@ package de.staticred.dbv2.commands.util;
 import de.staticred.dbv2.player.DiscordSender;
 import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -37,9 +38,10 @@ public interface DiscordCommand {
      * execute method of every discord command
      * @param member who executed the command
      * @param tc the command was send in
+     * @param message message the user sent
      * @param args of the command
      */
-    void execute(DiscordSender member, TextChannel tc, String[] args);
+    void execute(DiscordSender member, TextChannel tc, Message message, String[] args);
 
 
 }

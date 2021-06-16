@@ -51,7 +51,7 @@ public class SlashCommandEvent extends ListenerAdapter {
 
         SlashCommandSender sender = new SlashCommandSender(event);
 
-        DBUtil.getINSTANCE().getCommandManager().handleDiscordInputSlashCommand(sb.toString(), sender, event.getTextChannel());
+        DBUtil.getINSTANCE().getCommandManager().handleDiscordInputSlashCommand(sb.toString(), sender, event.getTextChannel(), null);
 
     }
 }

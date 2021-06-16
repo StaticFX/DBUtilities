@@ -31,6 +31,11 @@ public @interface Side {
         BUNGEECORD,
 
         /**
+         * Velocity proxy
+         */
+        VELOCITY,
+
+        /**
          * no specific side
          */
         MIX

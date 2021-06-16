@@ -31,15 +31,4 @@ public class CommandEvent implements Listener {
         }
     }
 
-    @Side(proxy = Side.Proxy.BUKKIT)
-    @EventHandler
-    public void onConsoleCMD(ServerCommandEvent event) {
-        String cmd = event.getCommand();
-        if (DBUtil.getINSTANCE().getCommandManager().doesCommandExist(cmd)) {
-            event.setCancelled(true);
-            DBUtil.getINSTANCE().getCommandManager().handleMCInput(new BukkitConsole(event.getSender()), cmd);
-            return;
-        }
-    }
-
 }

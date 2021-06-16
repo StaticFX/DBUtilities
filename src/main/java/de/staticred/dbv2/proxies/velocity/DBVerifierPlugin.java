@@ -9,8 +9,9 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.player.VelocityPlayer;
-import de.staticred.dbv2.proxies.velocity.events.CommandEvent;
+import de.staticred.dbv2.proxies.velocity.events.VelocityChatEvent;
 import de.staticred.dbv2.proxies.velocity.events.VelocityEventManager;
+import de.staticred.dbv2.proxies.velocity.events.VelocityJoinEvent;
 import de.staticred.dbv2.util.ConsoleLogger;
 import de.staticred.dbv2.util.Mode;
 import de.staticred.dbv2.util.Proxy;
@@ -44,6 +45,9 @@ public class DBVerifierPlugin implements Proxy {
         
         eventManager = new VelocityEventManager();
         ConsoleLogger logger1 = new ConsoleLogger(DBUtil.PLUGIN_NAME);
+        eventManager.registerEvent(new VelocityJoinEvent());
+        eventManager.registerEvent(new VelocityChatEvent());
+
 
         try {
             dbUtil = new DBUtil(this, eventManager, Mode.VELOCITY, logger1);
@@ -68,7 +72,6 @@ public class DBVerifierPlugin implements Proxy {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        eventManager.registerEvent(new CommandEvent());
         eventManager.init();
     }
 

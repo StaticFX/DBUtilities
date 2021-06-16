@@ -6,6 +6,7 @@ import de.staticred.dbv2.player.BungeePlayer;
 import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.proxies.bungeecord.commands.DBCommand;
 import de.staticred.dbv2.proxies.bungeecord.events.BungeeEventManager;
+import de.staticred.dbv2.proxies.bungeecord.events.BungeeJoinEvent;
 import de.staticred.dbv2.proxies.bungeecord.events.CommandEvent;
 import de.staticred.dbv2.util.ConsoleLogger;
 import de.staticred.dbv2.util.Mode;
@@ -49,6 +50,8 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
 
         getProxy().getPluginManager().registerCommand(this, new DBCommand("dbu"));
         getProxy().getPluginManager().registerListener(this, new CommandEvent());
+        getProxy().getPluginManager().registerListener(this, new BungeeJoinEvent());
+
         //Metrics metrics = new Metrics(this, DBUtil.PLUGIN_ID);
     }
 

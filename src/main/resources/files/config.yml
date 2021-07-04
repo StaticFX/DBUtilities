@@ -47,7 +47,8 @@ removeOwnerMessages: true
 enablePrefixCommands: true
 
 #will delete all messages not resulting in a reply from the bot
-forceCleanChannel: true
+#to make this work, listenToChannels may no be empty.
+forceCleanChannel: false
 
 #If the plugin should delete send discord messages after a time
 #Delay in seconds

@@ -103,21 +103,6 @@ public abstract class Updatable extends DBUtilFile {
             throw new IllegalStateException("Illegal YAML file");
         }
 
-        try {
-            newYamlFile.load();
-        } catch (InvalidConfigurationException | IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-
-        try {
-            newYamlFile.load();
-        } catch (InvalidConfigurationException e) {
-            e.printStackTrace();
-            return false;
-        }
-
         FileBackUpHelper.createBackUpFor(getName(), configuration.getString("VERSION"), configuration);
 
         configuration.remove("VERSION");

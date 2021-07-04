@@ -20,7 +20,7 @@ public class MessageEvent extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
-        DBUtil.getINSTANCE().getLogger().postDebug("Message received by: " + event.getMessage().getContentRaw() + "in " + event.getChannel().getName());
+        DBUtil.getINSTANCE().getLogger().postDebug("Message received by: " + event.getMessage().getContentRaw() + " in " + event.getChannel().getName());
 
         if (event.getMessage().getContentRaw().isEmpty())
             return;

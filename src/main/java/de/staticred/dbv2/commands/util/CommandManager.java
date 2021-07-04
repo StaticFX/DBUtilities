@@ -150,29 +150,29 @@ public class CommandManager {
         String[] args = getArgs(in);
 
         for (DiscordCommand dcCommand : discordCommands) {
-            System.out.println(command);
-            System.out.println(dcCommand.getName());
             String commandPrefix = commandFileHandler.getPrefixFor(dcCommand.getName());
             String prefix = in.substring(0, commandPrefix.length());
+
+            String rawCommand = command.substring(prefix.length());
+
             List<String> aliases = commandFileHandler.getAliasesFor(dcCommand.getName());
-            if ((dcCommand.getName().equalsIgnoreCase(command) || aliases.contains(command)) && commandPrefix.equals(prefix)) {
+            if ((dcCommand.getName().equalsIgnoreCase(rawCommand) || aliases.contains(rawCommand)) && commandPrefix.equals(prefix)) {
                 dcCommand.execute(new MemberSender(tc, member), tc, message, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
-                System.out.println("here5");
                 return true;
             }
         }
 
 
         for (MixCommand mixCommand : mixCommands) {
-            System.out.println(command);
             DBUtil.getINSTANCE().getLogger().postDebug(mixCommand.getName());
             String commandPrefix = commandFileHandler.getPrefixFor(mixCommand.getName());
             String prefix = in.substring(0, commandPrefix.length());
             List<String> aliases = commandFileHandler.getAliasesFor(mixCommand.getName());
-            command = getCommand(in.substring(commandPrefix.length()));
 
-            if ((mixCommand.getName().equalsIgnoreCase(command) || aliases.contains(command) ) && commandPrefix.equals(prefix)) {
+            String rawCommand = command.substring(prefix.length());
+
+            if ((mixCommand.getName().equalsIgnoreCase(rawCommand) || aliases.contains(rawCommand) ) && commandPrefix.equals(prefix)) {
                 mixCommand.executeDC(new MemberSender(tc, member),args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
                 return true;

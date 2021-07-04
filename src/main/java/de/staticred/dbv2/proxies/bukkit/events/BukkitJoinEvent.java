@@ -4,8 +4,7 @@ import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.EventHandler;
 import de.staticred.dbv2.annotations.Side;
 import de.staticred.dbv2.events.JoinEvent;
-import de.staticred.dbv2.player.BukkitPlayer;
-import de.staticred.dbv2.proxies.bukkit.DBVerifierPlugin;
+import de.staticred.dbv2.player.mcimplementations.BukkitPlayer;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 

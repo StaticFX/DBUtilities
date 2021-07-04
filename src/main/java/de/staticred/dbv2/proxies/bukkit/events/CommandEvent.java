@@ -2,12 +2,10 @@ package de.staticred.dbv2.proxies.bukkit.events;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.Side;
-import de.staticred.dbv2.player.BukkitConsole;
-import de.staticred.dbv2.player.BukkitPlayer;
+import de.staticred.dbv2.player.mcimplementations.BukkitPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.server.ServerCommandEvent;
 
 /**
  * Event when a user executes a command on the bukkit site

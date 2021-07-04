@@ -1,10 +1,9 @@
 package de.staticred.dbv2.proxies.bukkit.commands;
 
 import de.staticred.dbv2.DBUtil;
-import de.staticred.dbv2.player.BukkitConsole;
-import de.staticred.dbv2.player.BukkitPlayer;
+import de.staticred.dbv2.player.mcimplementations.BukkitConsole;
+import de.staticred.dbv2.player.mcimplementations.BukkitPlayer;
 import de.staticred.dbv2.player.DBUPlayer;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

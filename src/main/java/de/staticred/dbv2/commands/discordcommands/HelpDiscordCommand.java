@@ -1,6 +1,5 @@
 package de.staticred.dbv2.commands.discordcommands;
 
-import com.sun.corba.se.impl.activation.CommandHandler;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.commands.util.CommandManager;
 import de.staticred.dbv2.commands.util.DiscordCommand;

@@ -1,14 +1,11 @@
 package de.staticred.dbv2.proxies.velocity.events;
 
-import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChatEvent;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.Side;
 import de.staticred.dbv2.events.MessageEvent;
-import de.staticred.dbv2.player.VelocityPlayer;
-
-import java.util.Objects;
+import de.staticred.dbv2.player.mcimplementations.VelocityPlayer;
 
 /**
  * @author Devin Fritz

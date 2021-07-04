@@ -41,6 +41,10 @@ listenToChannels:
 #only effective when foreCleanChannel is set to true
 removeOwnerMessages: true
 
+#discordcommands using a prefix will be used.
+#example: !help can be disabled when setting this to false
+#WARNING: if discord commands do not have a slashcommandexecutor they´re not accessible anymore
+enablePrefixCommands: true
 
 #will delete all messages not resulting in a reply from the bot
 forceCleanChannel: true

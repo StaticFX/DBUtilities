@@ -1,15 +1,13 @@
 package de.staticred.dbv2.proxies.bungeecord.commands;
 
 import de.staticred.dbv2.DBUtil;
-import de.staticred.dbv2.player.BungeeConsole;
-import de.staticred.dbv2.player.BungeePlayer;
+import de.staticred.dbv2.player.mcimplementations.BungeeConsole;
+import de.staticred.dbv2.player.mcimplementations.BungeePlayer;
 import de.staticred.dbv2.player.DBUPlayer;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
-import org.bukkit.command.ConsoleCommandSender;
-import org.omg.PortableServer.SERVANT_RETENTION_POLICY_ID;
 
 /**
  * @author Devin Fritz

@@ -1,7 +1,8 @@
-package de.staticred.dbv2.player;
+package de.staticred.dbv2.player.mcimplementations;
 
 import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.player.DBUPlayer;
 import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class VelocityConsole implements DBUPlayer {
     @Override
     public void sendMessageRaw(String message) {
         console.sendMessage(Component.text(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message));
+
     }
 
     @Override
@@ -51,6 +53,7 @@ public class VelocityConsole implements DBUPlayer {
     @Override
     public long sendMessage(String message) {
         console.sendMessage(Component.text(message));
+        return -1;
     }
 
     @Override

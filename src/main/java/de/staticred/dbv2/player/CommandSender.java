@@ -11,7 +11,7 @@ public interface CommandSender {
     /**
      * sends a message to the executor
      * @param message to send
-     * @return
+     * @return long containing the id to the discord embed that was send, or the interaction hook. MC Messages will return -1
      */
     long sendMessage(String message);
 

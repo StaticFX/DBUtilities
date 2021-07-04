@@ -42,4 +42,5 @@ public class FileConstants {
     public static final String COMMANDS_LOCATION = "commands.yml";
 
     public static final File TEMP_DIRECTORY = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath() + "/temp");
+    public static final String ENABLE_DISCORD_PREFIX = "enablePrefixCommands";
 }

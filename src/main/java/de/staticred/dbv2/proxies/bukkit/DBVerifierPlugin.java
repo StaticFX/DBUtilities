@@ -5,7 +5,7 @@ import de.staticred.dbv2.proxies.bukkit.commands.DBUCommand;
 import de.staticred.dbv2.proxies.bukkit.events.BukkitEventManager;
 import de.staticred.dbv2.proxies.bukkit.events.BukkitJoinEvent;
 import de.staticred.dbv2.proxies.bukkit.events.CommandEvent;
-import de.staticred.dbv2.player.BukkitPlayer;
+import de.staticred.dbv2.player.mcimplementations.BukkitPlayer;
 import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.util.ConsoleLogger;
 import de.staticred.dbv2.util.Mode;

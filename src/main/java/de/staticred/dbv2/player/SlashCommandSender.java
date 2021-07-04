@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 
 import java.awt.Color;
 
@@ -24,10 +25,13 @@ public class SlashCommandSender implements DiscordSender {
         this.sender = sender;
     }
 
+    /**
+     * @return interactionhook id
+     */
     @Override
     public long sendMessage(String message) {
         Embed embed = new Embed(message, DBUtil.PLUGIN_NAME, true, Color.ORANGE, sender.getUser().getAvatarUrl());
-        sendEmbed(embed.build());
+        return sendEmbed(embed.build());
     }
 
     @Override
@@ -35,9 +39,13 @@ public class SlashCommandSender implements DiscordSender {
         return DBUtil.getINSTANCE().getPermissionHandler().hasPermission(sender.getMember(), permission);
     }
 
+    /**
+     * @return interactionhook id
+     */
     @Override
-    public void sendEmbed(MessageEmbed embed) {
-        sender.replyEmbeds(embed).queue();
+    public long sendEmbed(MessageEmbed embed) {
+        InteractionHook hook = sender.replyEmbeds(embed).complete();
+        return hook.getInteraction().getIdLong();
     }
 
     @Override

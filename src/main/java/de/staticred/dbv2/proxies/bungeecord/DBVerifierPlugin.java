@@ -1,8 +1,7 @@
 package de.staticred.dbv2.proxies.bungeecord;
 
 import de.staticred.dbv2.DBUtil;
-import de.staticred.dbv2.player.BukkitPlayer;
-import de.staticred.dbv2.player.BungeePlayer;
+import de.staticred.dbv2.player.mcimplementations.BungeePlayer;
 import de.staticred.dbv2.player.DBUPlayer;
 import de.staticred.dbv2.proxies.bungeecord.commands.DBCommand;
 import de.staticred.dbv2.proxies.bungeecord.events.BungeeEventManager;

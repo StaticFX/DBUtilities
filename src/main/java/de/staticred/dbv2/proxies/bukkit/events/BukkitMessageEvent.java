@@ -3,7 +3,7 @@ package de.staticred.dbv2.proxies.bukkit.events;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.Side;
 import de.staticred.dbv2.events.MessageEvent;
-import de.staticred.dbv2.player.BukkitPlayer;
+import de.staticred.dbv2.player.mcimplementations.BukkitPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;

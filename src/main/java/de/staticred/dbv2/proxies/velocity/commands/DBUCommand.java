@@ -5,12 +5,10 @@ import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
 import de.staticred.dbv2.DBUtil;
-import de.staticred.dbv2.player.BungeeConsole;
 import de.staticred.dbv2.player.DBUPlayer;
-import de.staticred.dbv2.player.VelocityConsole;
-import de.staticred.dbv2.player.VelocityPlayer;
+import de.staticred.dbv2.player.mcimplementations.VelocityConsole;
+import de.staticred.dbv2.player.mcimplementations.VelocityPlayer;
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.TextComponent;
 
 /**
  * @author Devin Fritz

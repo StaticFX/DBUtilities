@@ -5,7 +5,7 @@ import com.velocitypowered.api.event.connection.PostLoginEvent;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.annotations.Side;
 import de.staticred.dbv2.events.JoinEvent;
-import de.staticred.dbv2.player.VelocityPlayer;
+import de.staticred.dbv2.player.mcimplementations.VelocityPlayer;
 
 /**
  * @author Devin Fritz

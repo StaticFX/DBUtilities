@@ -8,7 +8,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.DBUPlayer;
-import de.staticred.dbv2.player.VelocityPlayer;
+import de.staticred.dbv2.player.mcimplementations.VelocityPlayer;
 import de.staticred.dbv2.proxies.velocity.events.VelocityChatEvent;
 import de.staticred.dbv2.proxies.velocity.events.VelocityEventManager;
 import de.staticred.dbv2.proxies.velocity.events.VelocityJoinEvent;

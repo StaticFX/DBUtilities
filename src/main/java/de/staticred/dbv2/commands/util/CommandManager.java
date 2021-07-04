@@ -150,6 +150,8 @@ public class CommandManager {
         String[] args = getArgs(in);
 
         for (DiscordCommand dcCommand : discordCommands) {
+            System.out.println(command);
+            System.out.println(dcCommand.getName());
             String commandPrefix = commandFileHandler.getPrefixFor(dcCommand.getName());
             String prefix = in.substring(0, commandPrefix.length());
             List<String> aliases = commandFileHandler.getAliasesFor(dcCommand.getName());
@@ -163,6 +165,8 @@ public class CommandManager {
 
 
         for (MixCommand mixCommand : mixCommands) {
+            System.out.println(command);
+            DBUtil.getINSTANCE().getLogger().postDebug(mixCommand.getName());
             String commandPrefix = commandFileHandler.getPrefixFor(mixCommand.getName());
             String prefix = in.substring(0, commandPrefix.length());
             List<String> aliases = commandFileHandler.getAliasesFor(mixCommand.getName());

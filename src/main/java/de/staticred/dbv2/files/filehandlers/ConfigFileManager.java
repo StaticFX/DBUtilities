@@ -85,6 +85,9 @@ public class ConfigFileManager extends Updatable {
         return configuration.getBoolean(FileConstants.REMOVE_OWNER_MESSAGES);
     }
 
+    public boolean enabledDiscordMessages() {
+        return configuration.getBoolean(FileConstants.ENABLE_DISCORD_PREFIX);
+    }
 
     public String getActivityDescription() {
         return configuration.getString(FileConstants.ACTIVITY_DESCRIPTION);

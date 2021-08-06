@@ -2,7 +2,9 @@ package de.staticred.dbv2.player;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.discord.util.Embed;
+import de.staticred.dbv2.util.DoubleOptional;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -29,7 +31,7 @@ public class SlashCommandSender implements DiscordSender {
      * @return interactionhook id
      */
     @Override
-    public long sendMessage(String message) {
+    public DoubleOptional<Message, InteractionHook> sendMessage(String message) {
         Embed embed = new Embed(message, DBUtil.PLUGIN_NAME, true, Color.ORANGE, sender.getUser().getAvatarUrl());
         return sendEmbed(embed.build());
     }
@@ -43,9 +45,9 @@ public class SlashCommandSender implements DiscordSender {
      * @return interactionhook id
      */
     @Override
-    public long sendEmbed(MessageEmbed embed) {
+    public DoubleOptional<Message, InteractionHook> sendEmbed(MessageEmbed embed) {
         InteractionHook hook = sender.replyEmbeds(embed).complete();
-        return hook.getInteraction().getIdLong();
+        return new DoubleOptional<>(null, hook.getInteraction().getHook());
     }
 
     @Override

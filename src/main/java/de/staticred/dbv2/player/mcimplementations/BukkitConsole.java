@@ -2,6 +2,9 @@ package de.staticred.dbv2.player.mcimplementations;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.DBUPlayer;
+import de.staticred.dbv2.util.DoubleOptional;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 
@@ -22,9 +25,9 @@ public class BukkitConsole implements DBUPlayer {
     }
 
     @Override
-    public long sendMessage(String message) {
+    public DoubleOptional<Message, InteractionHook> sendMessage(String message) {
         sender.sendMessage(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message);
-        return -1;
+        return null;
     }
 
     @Override

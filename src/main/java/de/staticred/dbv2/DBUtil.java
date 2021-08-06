@@ -104,15 +104,6 @@ public class DBUtil {
 
     private final Proxy proxy;
 
-    /*TODO
-           - Add DataBase (with updater from VESE)
-           - Add LinkingFeatures (MC -> DC, DC -> MC)
-           - Add all Old command from DBV 1.0
-           - Readd metric system (with new stats aswell)
-           - Find a way to communicate between bukkit and bungeecord without bridging / redis
-
-     */
-
     /**
      * indicates the mode the plugin is running in
      */

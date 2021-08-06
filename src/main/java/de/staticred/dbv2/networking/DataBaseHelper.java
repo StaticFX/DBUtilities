@@ -7,7 +7,7 @@ package de.staticred.dbv2.networking;
  *
  * Containing different helpful methods you can use to access the database easily
  *
- * This class is for API purposes only, it will not actually be used arount the project.
+ * This class is for API purposes only, it will not actually be used around the project.
  * The DBVerifier will directly use its on instance of DataBase helper
  *
  *

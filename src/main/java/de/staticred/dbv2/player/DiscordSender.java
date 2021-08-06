@@ -1,8 +1,11 @@
 package de.staticred.dbv2.player;
 
+import de.staticred.dbv2.util.DoubleOptional;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 
 /**
  * Models a sender from a discord
@@ -22,12 +25,11 @@ public interface DiscordSender extends CommandSender {
      */
     TextChannel getTextChannel();
 
-
     /**
      * Sends a embed to the sender
      * @param embed the embed
-     * @return id of sent message
+     * @return either messageobject or interactionhook
      */
-    long sendEmbed(MessageEmbed embed);
+    DoubleOptional<Message, InteractionHook> sendEmbed(MessageEmbed embed);
 
 }

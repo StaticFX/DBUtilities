@@ -46,6 +46,8 @@ public class DBUCommand implements CommandExecutor {
             return false;
         }
 
+
+        DBUtil.getINSTANCE().getLogger().postDebug("Processing dbu command: " + cmd.toString());
         DBUtil.getINSTANCE().getCommandManager().handleMCInput(dbuPlayer, cmd.toString());
         return true;
     }

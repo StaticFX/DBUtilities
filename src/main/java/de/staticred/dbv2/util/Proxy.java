@@ -29,4 +29,11 @@ public interface Proxy {
      */
     DBUPlayer getPlayer(UUID uuid);
 
+
+    /**
+     * will execute the given command in the console of the proxy
+     * @param command to execute
+     */
+    void executeConsoleCommand(String command);
+
 }

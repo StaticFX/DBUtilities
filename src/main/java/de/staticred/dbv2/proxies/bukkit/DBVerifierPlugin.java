@@ -49,6 +49,10 @@ public class DBVerifierPlugin extends JavaPlugin implements Proxy {
         dbUtil.shutDown();
     }
 
+    @Override
+    public void executeConsoleCommand(String command) {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+    }
 
     @Override
     public DBUPlayer getOnlinePlayer(String name) {

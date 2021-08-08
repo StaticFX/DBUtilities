@@ -61,6 +61,11 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
         return player != null ? new BungeePlayer(player) : null;
     }
 
+    @Override
+    public void executeConsoleCommand(String command) {
+        ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), command);
+    }
+
     public BungeeAudiences getBungeeAudiences() {
         return bungeeAudiences;
     }

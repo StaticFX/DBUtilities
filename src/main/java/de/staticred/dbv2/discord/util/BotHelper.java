@@ -130,11 +130,11 @@ public class BotHelper {
 
         SubcommandData addInherit = new SubcommandData("addinherit", "adds a new inherit group")
                 .addOption(new OptionData(OptionType.ROLE, "role", "this role will inherit from the other").setRequired(true))
-                .addOption(new OptionData(OptionType.ROLE, "otherRole", "the first role will inherit from this").setRequired(true));
+                .addOption(new OptionData(OptionType.ROLE, "otherrole", "the first role will inherit from this").setRequired(true));
         SubcommandData backUp = new SubcommandData("backup", "creates a backup from the current permissions config");
-        SubcommandData removeInherit = new SubcommandData("removeInherit", "will remove a inherit from a group")
+        SubcommandData removeInherit = new SubcommandData("removeinherit", "will remove a inherit from a group")
                 .addOption(new OptionData(OptionType.ROLE, "role", "role to remove the inherit from").setRequired(true))
-                .addOption(new OptionData(OptionType.ROLE, "otherRole", "this role will get removes as inherit").setRequired(true));
+                .addOption(new OptionData(OptionType.ROLE, "otherrole", "this role will get removes as inherit").setRequired(true));
 
         SubcommandData remove = new SubcommandData("remove", "removes permission node from a given role")
                 .addOption(new OptionData(OptionType.ROLE, "role", "role to remove the permission from").setRequired(true))
@@ -159,6 +159,10 @@ public class BotHelper {
         commands.addCommands(infoCMD).queue();
         commands.addCommands(helpCMD).queue();
 
+        for (CommandData command : BotHelper.commandsToLoad) {
+            DBUtil.getINSTANCE().getLogger().postDebug("Loading / command " + command.getName());
+            commands.addCommands(command).queue();
+        }
 
 
         commands.queue();

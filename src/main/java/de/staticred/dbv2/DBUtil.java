@@ -280,7 +280,7 @@ public class DBUtil {
 
     private void registerCommands() {
         commandManager.registerDiscordCommand(new InfoDiscordCommand());
-        commandManager.registerDCLCommand(new InfoDBUCommand());
+        commandManager.registerDBUCommand(new InfoDBUCommand());
         commandManager.registerMixCommand(new PermissionMixCommand());
         commandManager.registerDiscordCommand(new HelpDiscordCommand());
         commandManager.registerMixCommand(new AddonsMixCommand());

@@ -15,6 +15,7 @@ import de.staticred.dbv2.proxies.velocity.events.VelocityJoinEvent;
 import de.staticred.dbv2.util.ConsoleLogger;
 import de.staticred.dbv2.util.Mode;
 import de.staticred.dbv2.util.Proxy;
+import net.kyori.adventure.text.Component;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -61,6 +62,11 @@ public class DBVerifierPlugin implements Proxy {
         Optional<Player> player = server.getPlayer(name);
 
         return player.map(VelocityPlayer::new).orElse(null);
+    }
+
+    @Override
+    public void executeConsoleCommand(String command) {
+        server.getCommandManager().executeImmediatelyAsync( server.getConsoleCommandSource(), command);
     }
 
     @Override

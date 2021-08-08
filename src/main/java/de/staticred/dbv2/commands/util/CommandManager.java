@@ -74,7 +74,7 @@ public class CommandManager {
      * registers a DBUCommand
      * @param command to register
      */
-    public void registerDCLCommand(DBUCommand command) {
+    public void registerDBUCommand(DBUCommand command) {
         if (dbuCommands.stream().anyMatch(dbucommand -> dbucommand.getName().equalsIgnoreCase(command.getName())))
             return;
 
@@ -165,7 +165,6 @@ public class CommandManager {
 
 
         for (MixCommand mixCommand : mixCommands) {
-            DBUtil.getINSTANCE().getLogger().postDebug(mixCommand.getName());
             String commandPrefix = commandFileHandler.getPrefixFor(mixCommand.getName());
             String prefix = in.substring(0, commandPrefix.length());
             List<String> aliases = commandFileHandler.getAliasesFor(mixCommand.getName());

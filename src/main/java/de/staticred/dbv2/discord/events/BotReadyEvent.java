@@ -27,9 +27,9 @@ public class BotReadyEvent extends ListenerAdapter {
         if (BotHelper.jda.getGuilds().size() != 0) {
             BotHelper.guild = BotHelper.jda.getGuilds().get(0);
 
-            for (CommandData command : BotHelper.commandsToLoad) {
-                BotHelper.guild.updateCommands().addCommands(command).queue();
-            }
+
+
+            BotHelper.registerDefaultCommands();
         }
 
         BotHelper.registerEvent(new MessageEvent());

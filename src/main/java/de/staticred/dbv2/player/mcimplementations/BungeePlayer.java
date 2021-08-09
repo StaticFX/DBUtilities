@@ -33,7 +33,7 @@ public class BungeePlayer implements DBUPlayer {
 
     @Override
     public DoubleOptional<Message, InteractionHook> sendMessage(String message) {
-        bungeeCordPlayer.sendMessage(new TextComponent(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message));
+        bungeeCordPlayer.sendMessage(new TextComponent(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message.replaceAll("&", "§")));
         return null;
     }
 

@@ -26,7 +26,7 @@ public class BukkitConsole implements DBUPlayer {
 
     @Override
     public DoubleOptional<Message, InteractionHook> sendMessage(String message) {
-        sender.sendMessage(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message);
+        sender.sendMessage(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message.replaceAll("&", "§"));
         return null;
     }
 

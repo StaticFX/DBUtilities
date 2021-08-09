@@ -34,7 +34,7 @@ public class VelocityConsole implements DBUPlayer {
 
     @Override
     public void sendMessageRaw(String message) {
-        console.sendMessage(Component.text(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message));
+        console.sendMessage(Component.text(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message.replaceAll("&", "§")));
 
     }
 

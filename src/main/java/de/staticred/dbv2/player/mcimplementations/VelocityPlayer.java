@@ -55,7 +55,7 @@ public class VelocityPlayer implements DBUPlayer {
 
     @Override
     public DoubleOptional<Message, InteractionHook> sendMessage(String message) {
-        player.sendMessage(Component.text(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message));
+        player.sendMessage(Component.text(DBUtil.getINSTANCE().getMcMessagesFileHandler().getPrefix() + message.replaceAll("&", "§")));
         return null;
     }
 

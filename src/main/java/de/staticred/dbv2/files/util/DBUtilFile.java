@@ -83,7 +83,7 @@ public abstract class DBUtilFile {
         }
         configuration = new YamlFile(file);
         try {
-            configuration.load();
+            configuration.loadWithComments();
         } catch (InvalidConfigurationException | IOException e) {
             e.printStackTrace();
             return;

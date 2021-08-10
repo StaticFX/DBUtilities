@@ -67,7 +67,7 @@ public class BukkitEventManager implements EventManager {
                             if(parameter.getType().getName().equalsIgnoreCase(event.getClass().getName())) {
                                 try {
                                     method.invoke(listener,event);
-                                    DBUtil.getINSTANCE().getLogger().postError("Method " + method.getName() + " fired!");
+                                    DBUtil.getINSTANCE().getLogger().postDebug("Method " + method.getName() + " fired!");
                                 } catch (IllegalAccessException e) {
                                     DBUtil.getINSTANCE().getLogger().postError("Method is inaccessible, please check the following lines.");
                                     e.printStackTrace();

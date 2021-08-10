@@ -75,14 +75,15 @@ public abstract class Updatable extends DBUtilFile {
             throw new IllegalStateException("Illegal YAML file");
         }
 
-        int newKeysAmount = newestFile.getKeys(false).size() - configuration.getKeys(true).size();
+        int newKeysAmount = newestFile.getKeys(true).size() - configuration.getKeys(true).size();
 
         DBUtil.getINSTANCE().getLogger().postDebug("Found: " + newKeysAmount + " keys to update to the old file");
 
-        for (String key : newestFile.getKeys(false)) {
+        for (String key : newestFile.getKeys(true)) {
             boolean sameAsAtLeastOneKey = false;
 
-            for (String oldLKey: configuration.getKeys(false)) {
+
+            for (String oldLKey: configuration.getKeys(true)) {
                 if (key.equals(oldLKey)) {
                     sameAsAtLeastOneKey = true;
                 }
@@ -108,14 +109,14 @@ public abstract class Updatable extends DBUtilFile {
         configuration.remove("VERSION");
 
 
-        for (String key : configuration.getKeys(false)) {
+        for (String key : configuration.getKeys(true)) {
             if (!newYamlFile.contains(key)) {
                 configuration.set(key, null);
             }
         }
 
 
-        for (String key : newYamlFile.getKeys(false)) {
+        for (String key : newYamlFile.getKeys(true)) {
             if (!configuration.contains(key)) {
                 configuration.set(key, newYamlFile.get(key));
             }

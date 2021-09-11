@@ -54,10 +54,7 @@ public class CommandManager {
                 commandFileHandler.addCommand(mixCommand);
         }
 
-
-
     }
-
     /**
      * registers a discord command
      * @param command to register

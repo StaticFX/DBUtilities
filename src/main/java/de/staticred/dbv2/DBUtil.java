@@ -4,6 +4,7 @@ import de.staticred.dbv2.addon.Addon;
 import de.staticred.dbv2.addon.AddonManager;
 import de.staticred.dbv2.commands.discordcommands.HelpDiscordCommand;
 import de.staticred.dbv2.commands.discordcommands.InfoDiscordCommand;
+import de.staticred.dbv2.commands.mccommands.HelpMCCommand;
 import de.staticred.dbv2.commands.mccommands.InfoDBUCommand;
 import de.staticred.dbv2.commands.mixcommands.addonsmixcommand.AddonMixCommand;
 import de.staticred.dbv2.commands.mixcommands.addonsmixcommand.AddonsMixCommand;
@@ -80,7 +81,7 @@ public class DBUtil {
     /**
      * Version of the plugin
      */
-    public static final String VERSION = "2.0.0 Beta b7";
+    public static final String VERSION = "2.0.0 Beta b8";
 
     /**
      * time pattern to use globally
@@ -244,7 +245,8 @@ public class DBUtil {
      */
     public void shutDown() {
         addonManager.stopAddons();
-        dataBaseConnector.shutDown();
+        if (dataBaseConnector != null)
+            dataBaseConnector.shutDown();
         if (dataBaseLogger != null)
             dataBaseLogger.disable();
         BotHelper.jda.shutdown();
@@ -286,6 +288,8 @@ public class DBUtil {
         commandManager.registerMixCommand(new AddonsMixCommand());
         commandManager.registerMixCommand(new AddonMixCommand());
         commandManager.registerMixCommand(new BotMixCommand());
+        commandManager.registerDBUCommand(new HelpMCCommand());
+
     }
 
     private File getLocation() throws UnsupportedEncodingException {

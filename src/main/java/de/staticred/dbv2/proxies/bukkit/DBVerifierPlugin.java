@@ -40,8 +40,10 @@ public class DBVerifierPlugin extends JavaPlugin implements Proxy {
 
         INSTANCE = this;
         getCommand("dbu").setExecutor(new DBUCommand());
+        DBUtil.getINSTANCE().getLogger().postDebug("Registering bukkit events");
         getServer().getPluginManager().registerEvents(new CommandEvent(), this);
         getServer().getPluginManager().registerEvents(new BukkitJoinEvent(), this);
+        DBUtil.getINSTANCE().getLogger().postDebug("Registered bukkit events");
     }
 
     @Override

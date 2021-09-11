@@ -2,6 +2,7 @@ package de.staticred.dbv2.player.mcimplementations;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.player.DBUPlayer;
+import de.staticred.dbv2.proxies.bukkit.DBVerifierPlugin;
 import de.staticred.dbv2.util.DoubleOptional;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.interactions.InteractionHook;
@@ -61,6 +62,5 @@ public class BukkitConsole implements DBUPlayer {
 
     @Override
     public void sendComponent(Component component) {
-        sender.sendMessage(component.toString());
-    }
+        DBVerifierPlugin.getInstance().getBukkitAudiences().sender(sender).sendMessage(component);    }
 }

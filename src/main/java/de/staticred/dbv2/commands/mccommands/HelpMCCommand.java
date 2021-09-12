@@ -29,7 +29,7 @@ public class HelpMCCommand implements DBUCommand {
         }
 
         for (MixCommand command : DBUtil.getINSTANCE().getCommandManager().getCopyOfRegisteredMixCommands()) {
-            player.sendMessage("/" + command.getPrefix() + command.getName());
+            player.sendMessage("/" + command.getName());
         }
     }
 }

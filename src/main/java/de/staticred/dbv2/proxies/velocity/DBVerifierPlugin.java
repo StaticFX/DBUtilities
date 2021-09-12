@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @author Devin Fritz
@@ -66,6 +67,7 @@ public class DBVerifierPlugin implements Proxy {
 
     @Override
     public void executeConsoleCommand(String command) {
+        DBUtil.getINSTANCE().getLogger().postMessage("Executing console command: " + command);
         server.getCommandManager().executeImmediatelyAsync( server.getConsoleCommandSource(), command);
     }
 

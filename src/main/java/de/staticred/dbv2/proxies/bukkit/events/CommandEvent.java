@@ -22,7 +22,12 @@ public class CommandEvent implements Listener {
 
         cmd = cmd.substring(1);
 
-        if (DBUtil.getINSTANCE().getCommandManager().doesCommandExist(cmd)) {
+        System.out.println(cmd);
+
+        if (cmd.startsWith("dbu"))
+            return;
+
+        if (DBUtil.getINSTANCE().getCommandManager().doesCommandExist(cmd)  && !cmd.startsWith("dbu")) {
             event.setCancelled(true);
             DBUtil.getINSTANCE().getCommandManager().handleMCInput(new BukkitPlayer(event.getPlayer()), cmd);
             return;

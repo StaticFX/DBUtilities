@@ -53,7 +53,9 @@ public class DBVerifierPlugin extends JavaPlugin implements Proxy {
 
     @Override
     public void executeConsoleCommand(String command) {
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        DBUtil.getINSTANCE().getLogger().postMessage("Executing console command: " + command);
+
+        Bukkit.getScheduler().callSyncMethod(this, () -> Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command));
     }
 
     @Override

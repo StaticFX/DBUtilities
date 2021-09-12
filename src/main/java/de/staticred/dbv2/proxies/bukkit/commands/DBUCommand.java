@@ -22,7 +22,7 @@ public class DBUCommand implements CommandExecutor {
 
         if (args.length == 0) {
             sender.sendMessage(("§cUse /dbu <command>"));
-            return false;
+            return true;
         }
 
 
@@ -41,13 +41,8 @@ public class DBUCommand implements CommandExecutor {
             dbuPlayer = new BukkitConsole(sender);
         }
 
-        if (!DBUtil.getINSTANCE().getCommandManager().doesCommandExist(args[0])) {
-            sender.sendMessage(("§cCommand not found"));
-            return false;
-        }
 
-
-        DBUtil.getINSTANCE().getLogger().postDebug("Processing dbu command: " + cmd.toString());
+        DBUtil.getINSTANCE().getLogger().postDebug("Processing dbu command: " + cmd);
         DBUtil.getINSTANCE().getCommandManager().handleMCInput(dbuPlayer, cmd.toString());
         return true;
     }

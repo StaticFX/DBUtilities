@@ -27,6 +27,7 @@ import de.staticred.dbv2.util.FileLogger;
 import de.staticred.dbv2.util.Logger;
 import de.staticred.dbv2.util.Mode;
 import de.staticred.dbv2.util.Proxy;
+import de.staticred.dbv2.util.UpdateChecker;
 import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
@@ -77,6 +78,11 @@ public class DBUtil {
      *
      */
     public static final int PLUGIN_ID = 10253;
+
+    /**
+     * Unique ID of the plugin registered on spigotmc.org
+     */
+    public static final int SPIGOT_ID = 90724;
 
     /**
      * Version of the plugin
@@ -136,6 +142,11 @@ public class DBUtil {
      */
     private final CommandManager commandManager;
 
+    /**
+     * the updateChecker
+     */
+    private final UpdateChecker updateChecker;
+
     private ConfigFileManager configFileManager;
 
     private MessagesFileHandler mcMessagesFileHandler;
@@ -182,6 +193,7 @@ public class DBUtil {
         this.logger = logger;
         this.fileHelper = new FileHelper();
         this.commandManager = new CommandManager();
+        this.updateChecker = new UpdateChecker(logger, SPIGOT_ID);
         addons = new HashSet<>();
 
         try {
@@ -353,6 +365,10 @@ public class DBUtil {
 
     public ConfigFileManager getConfigFileManager() {
         return configFileManager;
+    }
+
+    public UpdateChecker getUpdateChecker() {
+        return updateChecker;
     }
 
     @Nullable

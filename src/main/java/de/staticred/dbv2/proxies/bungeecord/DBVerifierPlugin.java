@@ -14,6 +14,7 @@ import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.bstats.bungeecord.Metrics;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -51,7 +52,8 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
         getProxy().getPluginManager().registerListener(this, new CommandEvent());
         getProxy().getPluginManager().registerListener(this, new BungeeJoinEvent());
 
-        //Metrics metrics = new Metrics(this, DBUtil.PLUGIN_ID);
+        Metrics metrics = new Metrics(this, DBUtil.PLUGIN_ID);
+
     }
 
     @Override
@@ -63,6 +65,7 @@ public class DBVerifierPlugin extends Plugin implements Proxy {
 
     @Override
     public void executeConsoleCommand(String command) {
+        DBUtil.getINSTANCE().getLogger().postMessage("Executing console command: " + command);
         ProxyServer.getInstance().getPluginManager().dispatchCommand(ProxyServer.getInstance().getConsole(), command);
     }
 

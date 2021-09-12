@@ -28,13 +28,12 @@ public class CommandEvent implements Listener {
 
         String message = event.getMessage();
 
-        System.out.println(event.getMessage());
-
         if (event.getSender() instanceof ProxiedPlayer) {
             //player send the message
             if (message.startsWith("/")) {
                 message = message.substring(1);
-                if (DBUtil.getINSTANCE().getCommandManager().doesCommandExist(message)) {
+
+                if (DBUtil.getINSTANCE().getCommandManager().doesCommandExist(message) && !message.startsWith("dbu")) {
                     event.setCancelled(true);
                     if (event.getSender() instanceof ProxiedPlayer) {
                         ProxiedPlayer player = (ProxiedPlayer) event.getSender();

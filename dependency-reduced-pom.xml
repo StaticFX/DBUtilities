@@ -29,6 +29,10 @@
                   <pattern>net.kyori</pattern>
                   <shadedPattern>de.staticred.dbv2</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>org.bstats</pattern>
+                  <shadedPattern>de.staticred.dbv2</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>

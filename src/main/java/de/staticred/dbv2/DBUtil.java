@@ -87,7 +87,7 @@ public class DBUtil {
     /**
      * Version of the plugin
      */
-    public static final String VERSION = "2.0.0 Beta b8";
+    public static final String VERSION = "2.0.0";
 
     /**
      * time pattern to use globally
@@ -261,7 +261,8 @@ public class DBUtil {
             dataBaseConnector.shutDown();
         if (dataBaseLogger != null)
             dataBaseLogger.disable();
-        BotHelper.jda.shutdown();
+        if (BotHelper.jda != null)
+            BotHelper.jda.shutdown();
         errorLogger.disable();
     }
 

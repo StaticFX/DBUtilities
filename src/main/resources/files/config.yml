@@ -60,4 +60,4 @@ debugMode: false
 
 #file version of the config.yml
 #dont change, but if changed, not a big problem, all you're configs will be backuped
-VERSION: "2.0.0 Beta b5"
+VERSION: "2.0.0 Beta"

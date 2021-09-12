@@ -33,13 +33,9 @@ logDBToFile: true
 
 
 #channel id the bot will listen to for commands
-#leave empty for no channel
+#leave empty for no channel to listen to
 listenToChannels:
   - ""
-
-#if the bot should also remove messages from owner which would not give a result
-#only effective when foreCleanChannel is set to true
-removeOwnerMessages: true
 
 #discordcommands using a prefix will be used.
 #example: !help can be disabled when setting this to false
@@ -47,10 +43,15 @@ removeOwnerMessages: true
 enablePrefixCommands: true
 
 #will delete all messages not resulting in a reply from the bot
-#to make this work, listenToChannels may no be empty.
+#to make this work, listenToChannels may not be empty.
 forceCleanChannel: false
 
-#If the plugin should delete send discord messages after a time
+#if the bot should also remove messages from owner which would not give a result
+#only effective when forceCleanChannel is set to true
+removeOwnerMessages: true
+
+#If the bot should delete send discord messages after a time which would result in a reply
+#Example: a command like !help, would delete the users input of command "!info" and the bots return
 #Delay in seconds
 # -1 for no delete
 autoDeleteDiscordMessages: 10

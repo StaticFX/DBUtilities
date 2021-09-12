@@ -154,8 +154,8 @@ public class CommandManager {
 
             List<String> aliases = commandFileHandler.getAliasesFor(dcCommand.getName());
             if ((dcCommand.getName().equalsIgnoreCase(rawCommand) || aliases.contains(rawCommand)) && commandPrefix.equals(prefix)) {
-                dcCommand.execute(new MemberSender(tc, member), tc, message, args);
                 DBUtil.getINSTANCE().getLogger().postMessage("User " + member.getEffectiveName() + " executed command: " + command);
+                dcCommand.execute(new MemberSender(tc, member), tc, message, args);
                 return true;
             }
         }

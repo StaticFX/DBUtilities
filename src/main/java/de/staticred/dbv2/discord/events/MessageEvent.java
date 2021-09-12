@@ -20,7 +20,7 @@ public class MessageEvent extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 
-        DBUtil.getINSTANCE().getLogger().postDebug("Message received by: " + event.getMessage().getContentRaw() + " in " + event.getChannel().getName());
+        DBUtil.getINSTANCE().getLogger().postDebug("Message received: " + event.getMessage().getContentRaw() + " in " + event.getChannel().getName());
 
         if (event.getMessage().getContentRaw().isEmpty())
             return;
@@ -76,6 +76,24 @@ public class MessageEvent extends ListenerAdapter {
             if (deleteTime > -1)
                 event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
         } else {
+            List<String> channelIDs = config.getChanelIDs();
+
+            String channelID = event.getChannel().getId();
+
+            if (channelIDs.isEmpty()) {
+                debug.postDebug("CCList is empty");
+                debug.postDebug("Executing command handler");
+                DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw());
+                if (deleteTime > -1)
+                    event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
+                return;
+            }
+
+            if (!channelIDs.contains(channelID)) {
+                debug.postDebug("Wrong channel detected, ignoring messages.");
+                return;
+            }
+
             debug.postDebug("Executing command handler");
             if (DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw())) {
                 if (deleteTime > -1) {

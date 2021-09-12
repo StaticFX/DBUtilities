@@ -22,8 +22,6 @@ public class CommandEvent implements Listener {
 
         cmd = cmd.substring(1);
 
-        System.out.println(cmd);
-
         if (cmd.startsWith("dbu"))
             return;
 

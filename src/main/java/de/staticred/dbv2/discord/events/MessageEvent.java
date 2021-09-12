@@ -50,9 +50,9 @@ public class MessageEvent extends ListenerAdapter {
             if (channelIDs.isEmpty()) {
                 debug.postDebug("CCList is empty");
                 debug.postDebug("Executing command handler");
-                DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw());
-                if (deleteTime > -1)
-                    event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
+                if (DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw()))
+                    if (deleteTime > -1)
+                        event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
                 return;
             }
 
@@ -83,9 +83,9 @@ public class MessageEvent extends ListenerAdapter {
             if (channelIDs.isEmpty()) {
                 debug.postDebug("CCList is empty");
                 debug.postDebug("Executing command handler");
-                DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw());
-                if (deleteTime > -1)
-                    event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
+                if (DBUtil.getINSTANCE().getCommandManager().handleDiscordInput(event.getMember(), event.getChannel(), event.getMessage(), event.getMessage().getContentRaw()))
+                    if (deleteTime > -1)
+                        event.getMessage().delete().queueAfter(deleteTime, TimeUnit.SECONDS);
                 return;
             }
 

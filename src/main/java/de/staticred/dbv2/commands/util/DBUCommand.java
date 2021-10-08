@@ -1,6 +1,7 @@
 package de.staticred.dbv2.commands.util;
 
 import de.staticred.dbv2.player.DBUPlayer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Models an executable command via. MC
@@ -34,5 +35,5 @@ public interface DBUCommand {
      * @param player who executed
      * @param args arguments
      */
-    void execute(DBUPlayer player, String[] args);
+    void execute(@NotNull DBUPlayer player, String[] args);
 }

@@ -144,9 +144,17 @@ public class BotHelper {
                 .addOption(new OptionData(OptionType.STRING, "permission", "permission node to edit the state on").setRequired(true))
                 .addOption(new OptionData(OptionType.BOOLEAN, "state", "state of the permission node").setRequired(true));
 
+        SubcommandData check = new SubcommandData("check", "checks if a certain role has given permission")
+                .addOption(new OptionData(OptionType.ROLE, "role", "role to check the permission for").setRequired(true))
+                .addOption(new OptionData(OptionType.STRING, "permission", "permission to check for").setRequired(true));
+
+        SubcommandData checkMC = new SubcommandData("checkmc", "checks if a certain player has given permission (false if player not found)")
+                .addOption(new OptionData(OptionType.STRING, "mcgroup", "minecraft group to check the permission for").setRequired(true))
+                .addOption(new OptionData(OptionType.STRING, "permission", "permission to check for").setRequired(true));
+
         SubcommandGroupData subCommandGroups = new SubcommandGroupData("perms", "subcommand");
         subCommandGroups.addSubcommand(add).addSubcommand(list).addSubcommand(addInherit)
-        .addSubcommand(backUp).addSubcommand(removeInherit).addSubcommand(remove).addSubcommand(set);
+        .addSubcommand(backUp).addSubcommand(removeInherit).addSubcommand(remove).addSubcommand(set).addSubcommand(check).addSubcommand(checkMC);
 
         CommandData infoCMD = new CommandData("info", "Displays info about the current dbutil version.");
         CommandData helpCMD = new CommandData("help", "Returns all commands registered.");

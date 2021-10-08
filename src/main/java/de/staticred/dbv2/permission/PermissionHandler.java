@@ -1,6 +1,7 @@
 package de.staticred.dbv2.permission;
 
 import de.staticred.dbv2.DBUtil;
+import de.staticred.dbv2.discord.util.BotHelper;
 import de.staticred.dbv2.files.util.FileBackUpHelper;
 import de.staticred.dbv2.permission.db.PermissionDBDAO;
 import de.staticred.dbv2.permission.filemanager.PermissionFileDAO;
@@ -77,7 +78,10 @@ public class PermissionHandler {
         if (member.isOwner())
             return true;
 
-        for (Role role : member.getRoles()) {
+        List<Role> roles = member.getRoles();
+        roles.add(BotHelper.guild.getPublicRole());
+
+        for (Role role : roles) {
             Map<String, Boolean> map = getPermission(role.getIdLong(), true);
 
             if (map.containsKey("*")) {

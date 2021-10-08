@@ -27,9 +27,8 @@ public class RoleBuilder {
             roleID = Long.parseLong(string);
         } catch (NumberFormatException e) {
             //role is not a number, maybe its a role name?
-            Role role = BotHelper.jda.getRolesByName(string, true).get(0);
 
-            return role;
+            return BotHelper.jda.getRolesByName(string, true).get(0);
         }
 
         return BotHelper.jda.getRoleById(roleID);

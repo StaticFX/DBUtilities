@@ -53,7 +53,8 @@ public class PermissionMixCommand implements MixCommand {
                     "dbperms addInherit <role> <role> - adds inherit role\n" +
                     "dbperms removeInherit <role> <role> - removes inherit role\n" +
                     "dbperms set <role> <permission> <state> - set enabled state\n" +
-                    "dbperms backup - saves current permissiondata as file in the backup folder\n"
+                    "dbperms backup - saves current permissiondata as file in the backup folder\n" +
+                    "dbperms check <role/player> <permission> - checks if a user or role has given permission\n"
                     , "DBUtil Permission System", true, Color.ORANGE, sender.getMember().getUser().getAvatarUrl());
             sender.sendEmbed(embed.build());
             return;
@@ -89,6 +90,10 @@ public class PermissionMixCommand implements MixCommand {
                 new BackUpSubCommand().execute(sender, args);
                 return;
             }
+            case "CHECK": {
+                new CheckPermissionCommand().execute(sender, args);
+                return;
+            }
         }
 
         sb.append("dbperms add <role> <permission> - adds permission\n");
@@ -98,6 +103,7 @@ public class PermissionMixCommand implements MixCommand {
         sb.append("dbperms removeInherit <role> <role> - removes inherit role\n");
         sb.append("dbperms set <role> <permission> <state> - set enabled state\n");
         sb.append("dbperms backup - saves current permissiondata as file in the backup folder\n");
+        sb.append("dbperms check <role/player> <permission> - checks if a user or role has given permission\n");
         Embed embed = new Embed(sb.toString(), "DBUtil Permission System", true, Color.ORANGE, sender.getMember().getUser().getAvatarUrl());
         sender.sendEmbed(embed.build());
     }
@@ -113,6 +119,7 @@ public class PermissionMixCommand implements MixCommand {
             sender.sendMessage("dbperms removeInherit <role> <role> - removes inherit role\n");
             sender.sendMessage("dbperms set <role> <permission> <state> - set enabled state\n");
             sender.sendMessage("dbperms backup - saves current permissiondata as file in the backup folder\n");
+            sender.sendMessage("dbperms check <role/player> <permission> - checks if a user or role has given permission\n");
             return;
         }
 
@@ -146,6 +153,10 @@ public class PermissionMixCommand implements MixCommand {
                 new BackUpSubCommand().execute(sender, args);
                 return;
             }
+            case "CHECK": {
+                new CheckPermissionCommand().execute(sender, args);
+                return;
+            }
         }
 
         sender.sendMessage("dbperms add <role> <permission> - adds permission\n");
@@ -155,5 +166,6 @@ public class PermissionMixCommand implements MixCommand {
         sender.sendMessage("dbperms removeInherit <role> <role> - removes inherit role\n");
         sender.sendMessage("dbperms set <role> <permission> <state> - set enabled state\n");
         sender.sendMessage("dbperms backup - saves current permissiondata as file in the backup folder\n");
+        sender.sendMessage("dbperms check <role/player> <permission> - checks if a user or role has given permission\n");
     }
 }

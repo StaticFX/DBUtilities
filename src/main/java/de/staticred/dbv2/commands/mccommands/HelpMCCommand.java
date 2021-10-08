@@ -4,6 +4,7 @@ import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.commands.util.DBUCommand;
 import de.staticred.dbv2.commands.util.MixCommand;
 import de.staticred.dbv2.player.DBUPlayer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Devin Fritz
@@ -23,7 +24,7 @@ public class HelpMCCommand implements DBUCommand {
     }
 
     @Override
-    public void execute(DBUPlayer player, String[] args) {
+    public void execute(@NotNull DBUPlayer player, String[] args) {
         for (DBUCommand command : DBUtil.getINSTANCE().getCommandManager().getCopyOfRegisteredMCCommands()) {
             player.sendMessage("/" + command.getName());
         }

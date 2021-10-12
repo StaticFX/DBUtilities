@@ -47,7 +47,7 @@ enablePrefixCommands: true
 prefix: "!"
 
 #discord embed footer
-footer: "ISW Minecraft"
+footer: "DBUtilities"
 
 #will delete all messages not resulting in a reply from the bot
 #to make this work, listenToChannels may not be empty.

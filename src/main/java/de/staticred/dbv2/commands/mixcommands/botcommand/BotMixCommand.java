@@ -1,6 +1,5 @@
 package de.staticred.dbv2.commands.mixcommands.botcommand;
 
-import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.commands.mixcommands.botcommand.subcommands.InfoCommand;
 import de.staticred.dbv2.commands.mixcommands.botcommand.subcommands.ReloadCommand;
 import de.staticred.dbv2.commands.util.MixCommand;
@@ -15,7 +14,7 @@ public class BotMixCommand implements MixCommand {
 
     public final static String NAME = "bot";
     public final static String PERMISSION = "dbu.cmd.bot";
-    public final static String PREFIX = DBUtil.getINSTANCE().getConfigFileManager().getPrefix();
+    public final static String PREFIX = "!";
 
     @Override
     public String getName() {

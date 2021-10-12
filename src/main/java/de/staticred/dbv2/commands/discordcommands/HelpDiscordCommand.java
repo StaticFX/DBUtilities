@@ -16,7 +16,7 @@ public class HelpDiscordCommand implements DiscordCommand {
 
 
     private static final String NAME = "Help";
-    private static final String PREFIX = DBUtil.getINSTANCE().getConfigFileManager().getPrefix();
+    private static final String PREFIX = "!";
     private static final String PERMISSION = "";
 
     @Override

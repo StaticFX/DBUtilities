@@ -97,5 +97,13 @@ public class ConfigFileManager extends Updatable {
         return configuration.getInt(FileConstants.DELETE_TIME);
     }
 
+    public String getPrefix() {
+        return configuration.getString(FileConstants.PREFIX);
+    }
+
+    public String getFooter() {
+        return configuration.getString(FileConstants.FOOTER);
+    }
+
 
 }

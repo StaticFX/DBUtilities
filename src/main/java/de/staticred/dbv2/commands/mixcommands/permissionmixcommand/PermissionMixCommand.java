@@ -1,5 +1,6 @@
 package de.staticred.dbv2.commands.mixcommands.permissionmixcommand;
 
+import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.commands.mixcommands.permissionmixcommand.subcommands.*;
 import de.staticred.dbv2.commands.util.MixCommand;
 import de.staticred.dbv2.discord.util.Embed;
@@ -23,7 +24,7 @@ public class PermissionMixCommand implements MixCommand {
 
     public static final String PERMISSION = "dbu.cmd.mix.dbperms";
 
-    public static final String PREFIX = "!";
+    public static final String PREFIX = DBUtil.getINSTANCE().getConfigFileManager().getPrefix();
 
     @Override
     public String getName() {

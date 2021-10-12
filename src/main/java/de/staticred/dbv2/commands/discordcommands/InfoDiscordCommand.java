@@ -2,6 +2,7 @@ package de.staticred.dbv2.commands.discordcommands;
 
 import de.staticred.dbv2.DBUtil;
 import de.staticred.dbv2.commands.util.DiscordCommand;
+import de.staticred.dbv2.files.filehandlers.ConfigFileManager;
 import de.staticred.dbv2.player.DiscordSender;
 import de.staticred.dbv2.player.MemberSender;
 import net.dv8tion.jda.api.entities.Member;
@@ -15,9 +16,8 @@ import net.dv8tion.jda.api.entities.TextChannel;
  * @version 1.0.0
  */
 public class InfoDiscordCommand implements DiscordCommand {
-
     private static final String NAME = "Info";
-    private static final String PREFIX = "!";
+    private static final String PREFIX = DBUtil.getINSTANCE().getConfigFileManager().getPrefix();
     private static final String PERMISSION = "dc.cmd.info";
 
 

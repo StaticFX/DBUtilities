@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.Role;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +79,7 @@ public class PermissionHandler {
         if (member.isOwner())
             return true;
 
-        List<Role> roles = member.getRoles();
+        List<Role> roles = new ArrayList<>(member.getRoles());
         roles.add(BotHelper.guild.getPublicRole());
 
         for (Role role : roles) {

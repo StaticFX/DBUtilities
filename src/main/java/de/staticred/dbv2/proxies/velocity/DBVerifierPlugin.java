@@ -44,12 +44,7 @@ public class DBVerifierPlugin implements Proxy {
     public DBVerifierPlugin(ProxyServer server, Logger logger) {
         this.server = server;
         this.logger = logger;
-        
-        eventManager = new VelocityEventManager();
         ConsoleLogger logger1 = new ConsoleLogger(DBUtil.PLUGIN_NAME);
-        eventManager.registerEvent(new VelocityJoinEvent());
-        eventManager.registerEvent(new VelocityChatEvent());
-
 
         try {
             dbUtil = new DBUtil(this, eventManager, Mode.VELOCITY, logger1);
@@ -80,7 +75,10 @@ public class DBVerifierPlugin implements Proxy {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
+        eventManager = new VelocityEventManager();
         eventManager.init();
+        eventManager.registerEvent(new VelocityJoinEvent());
+        eventManager.registerEvent(new VelocityChatEvent());
     }
 
     @Subscribe

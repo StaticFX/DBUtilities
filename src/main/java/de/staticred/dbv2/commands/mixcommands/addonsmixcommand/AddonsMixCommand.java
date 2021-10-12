@@ -16,7 +16,7 @@ public class AddonsMixCommand implements MixCommand {
 
     public static String NAME = "Addons";
     public static String PERMISSION = "dbu.cmd.addons";
-    public static String PREFIX = "!";
+    public static String PREFIX = DBUtil.getINSTANCE().getConfigFileManager().getPrefix();
 
 
     @Override

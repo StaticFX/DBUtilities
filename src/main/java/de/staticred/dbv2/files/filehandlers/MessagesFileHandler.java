@@ -14,9 +14,8 @@ import java.io.File;
 public class MessagesFileHandler extends DBUtilFile {
 
     /**
-     * Instantiates a new Mc messages file handler.
      *
-     * @param current the current
+     * @param current the in resources
      */
     public MessagesFileHandler(File current) {
         super(current, FileConstants.RESOURCE_LOCATION + "messages.yml");

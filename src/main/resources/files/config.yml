@@ -21,6 +21,7 @@ Token: ""
 botActivityType: "WATCHING"
 
 #Description of what the bot is doing
+#Leave empty if you don't want to set an activity
 botActitivyDescription: "DBUtil by StaticRed"
 
 #If the bot should use discord ids for roles

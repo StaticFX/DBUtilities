@@ -43,9 +43,6 @@ listenToChannels:
 #WARNING: if discord commands do not have a slashcommandexecutor they´re not accessible anymore
 enablePrefixCommands: true
 
-#discord embed footer
-footer: "DBUtilities"
-
 #will delete all messages not resulting in a reply from the bot
 #to make this work, listenToChannels may not be empty.
 forceCleanChannel: false

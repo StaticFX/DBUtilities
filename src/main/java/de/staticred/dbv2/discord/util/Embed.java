@@ -30,7 +30,7 @@ public class Embed {
         if (useAuthorTag) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DBUtil.TIME_PATTERN);
             String time = dateFormat.format(new Date(System.currentTimeMillis()));
-            builder.setFooter(time + " sent by " + DBUtil.getINSTANCE().getConfigFileManager().getFooter());
+            builder.setFooter(time + " sent by " + DBUtil.getINSTANCE().getMcMessagesFileHandler().getFooter());
         }
     }
 
@@ -44,7 +44,7 @@ public class Embed {
         if (useAuthorTag) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DBUtil.TIME_PATTERN);
             String time = dateFormat.format(new Date(System.currentTimeMillis()));
-            builder.setFooter(time + " send by " + DBUtil.getINSTANCE().getConfigFileManager().getFooter());
+            builder.setFooter(time + " send by " + DBUtil.getINSTANCE().getMcMessagesFileHandler().getFooter());
         }
     }
 

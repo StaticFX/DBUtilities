@@ -14,7 +14,7 @@ import java.io.File;
 public class MessagesFileHandler extends DBUtilFile {
 
     /**
-     * Instantiates a new Mc messages file handler.
+     * Instantiates a new messages file handler.
      *
      * @param current the current
      */
@@ -24,6 +24,10 @@ public class MessagesFileHandler extends DBUtilFile {
 
     public String getPrefix() {
         return convertToMcString(configuration.getString(FileConstants.PREFIX));
+    }
+
+    public String getFooter() {
+        return configuration.getString(FileConstants.FOOTER);
     }
 
     public String getInvalidChannel() {

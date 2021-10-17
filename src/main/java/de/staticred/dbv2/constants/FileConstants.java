@@ -44,4 +44,5 @@ public class FileConstants {
 
     public static final File TEMP_DIRECTORY = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath() + "/temp");
     public static final String ENABLE_DISCORD_PREFIX = "enablePrefixCommands";
+    public static final String ENABLE_SLASH_COMMANDS = "enableSlashCommands";
 }

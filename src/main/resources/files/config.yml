@@ -40,8 +40,12 @@ listenToChannels:
 
 #discordcommands using a prefix will be used.
 #example: !help can be disabled when setting this to false
-#WARNING: if discord commands do not have a slashcommandexecutor they´re not accessible anymore
 enablePrefixCommands: true
+
+#true: slash commands will be implemented
+#WARNING: once slashcommands are enabled, you can only undo this with re-inviting your discord bot
+#WARNING: if discord commands do not have a slashcommandexecutor they´re not accessible anymore
+enableSlashCommands: false
 
 #will delete all messages not resulting in a reply from the bot
 #to make this work, listenToChannels may not be empty.

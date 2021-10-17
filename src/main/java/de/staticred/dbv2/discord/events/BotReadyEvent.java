@@ -27,15 +27,16 @@ public class BotReadyEvent extends ListenerAdapter {
         if (BotHelper.jda.getGuilds().size() != 0) {
             BotHelper.guild = BotHelper.jda.getGuilds().get(0);
 
+            if (DBUtil.getINSTANCE().getConfigFileManager().enabledSlashCommands()) {
+                BotHelper.registerDefaultCommands();
+            }
 
-
-            BotHelper.registerDefaultCommands();
         }
 
-        BotHelper.registerEvent(new MessageEvent());
+        if (DBUtil.getINSTANCE().getConfigFileManager().enabledDiscordMessages()) BotHelper.registerEvent(new MessageEvent());
         BotHelper.registerEvent(new RoleCreateEvent());
         BotHelper.registerEvent(new RoleDeleteEvent());
-        BotHelper.registerEvent(new SlashCommandEvent());
+        if (DBUtil.getINSTANCE().getConfigFileManager().enabledSlashCommands()) BotHelper.registerEvent(new SlashCommandEvent());
 
     }
 

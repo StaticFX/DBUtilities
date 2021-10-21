@@ -34,6 +34,7 @@ public class FileConstants {
     public static final String FORCE_CLEAN_CHANNEL = "forceCleanChannel";
 
     public static final String PREFIX = "prefix";
+    public static final String FOOTER = "footer";
     public static final String INVALID_CHANNEL = "discord.invalidChannel";
 
 
@@ -43,4 +44,5 @@ public class FileConstants {
 
     public static final File TEMP_DIRECTORY = new File(DBUtil.getINSTANCE().getDataFolder().getAbsolutePath() + "/temp");
     public static final String ENABLE_DISCORD_PREFIX = "enablePrefixCommands";
+    public static final String ENABLE_SLASH_COMMANDS = "enableSlashCommands";
 }

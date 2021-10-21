@@ -89,6 +89,10 @@ public class ConfigFileManager extends Updatable {
         return configuration.getBoolean(FileConstants.ENABLE_DISCORD_PREFIX);
     }
 
+    public boolean enabledSlashCommands() {
+        return configuration.getBoolean(FileConstants.ENABLE_SLASH_COMMANDS);
+    }
+
     public String getActivityDescription() {
         return configuration.getString(FileConstants.ACTIVITY_DESCRIPTION);
     }

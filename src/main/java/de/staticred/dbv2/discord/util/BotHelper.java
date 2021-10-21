@@ -66,7 +66,7 @@ public class BotHelper {
      */
     public static void startBot(String token) throws LoginException {
         jda = JDABuilder.create(token, GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_BANS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_PRESENCES).build();
-        jda.getPresence().setActivity(DBUtil.getINSTANCE().getConfigFileManager().getActivity());
+        if(!DBUtil.getINSTANCE().getConfigFileManager().getActivityDescription().isEmpty()) jda.getPresence().setActivity(DBUtil.getINSTANCE().getConfigFileManager().getActivity());
         botstartup = System.currentTimeMillis();
         registerEvent(new BotReadyEvent());
     }

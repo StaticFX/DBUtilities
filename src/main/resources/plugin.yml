@@ -1,9 +1,0 @@
-name: DBUtilities
-version: 2.0.1
-author: StaticRed
-main: de.staticred.dbv2.proxies.bukkit.DBVerifierPlugin
-
-commands:
-  dbu:
-    description: Executed db utilities commands
-    usage: /dbu <dbu commands>
